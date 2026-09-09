@@ -1,0 +1,1802 @@
+<!DOCTYPE html>
+<html lang="es" data-tema="rojas"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<!--
+  EL TALLER DE EXEQUIAS · áreas y capacidad
+  Manipulativo para 2.º de ESO · misión secundaria · prototipo v0.1
+  © 2026 Andrés Asensio · CC BY-NC-SA 4.0
+
+  EL MODELO. El mismo barro, extendido en el suelo o levantado en vasija.
+  Lo que OCUPA una figura se mide con cuadrados; lo que CABE en un cuerpo
+  se mide llenándolo. Son dos preguntas distintas sobre el mismo barro, y
+  el alumno de segundo las confunde a la vez con una tercera: cuánto barro
+  hay. La app separa las tres con las manos:
+    · el área ........... cuántos cuadrados de un palmo cubren el barro
+    · el barro .......... cuánto hay, y no cambia por estirarlo o levantarlo
+    · la capacidad ...... cuánto cabe en el hueco, que no es el barro
+  Las áreas se hacen CORTANDO Y MOVIENDO —un triángulo es medio rectángulo
+  porque se ve el corte; un paralelogramo es un rectángulo con un triángulo
+  cambiado de lado; un trapecio, pegado con su gemelo boca abajo, es un
+  paralelogramo— y ésas son las dos propiedades que Wu dice que definen el
+  área: lo que se mueve no cambia y lo que se junta se suma. La capacidad
+  se hace LLENANDO: cuántas veces cabe la vasija pequeña en la grande. Y
+  el puente entre las dos es un cubo de un palmo de lado, que es el litro
+  que dejó apuntado la obra de Jefeops.
+
+  QUIÉN HABLA. Exequias, el alfarero pulpo, da el encargo con la voz de
+  quien tiene ocho brazos y aun así se le cae algo. Y contesta LA VASIJA:
+  en Grecia las vasijas hablaban en primera persona —el Exequias de verdad
+  firmaba «Exequias me pintó y me hizo»—, así que aquí la vasija dice «en
+  mí caben doce kotylai». Tiene cara: la de las copas de ojos, que llevaban
+  dos ojos enormes pintados para espantar el mal, y una sonrisa de asa.
+  Exequias está copiado de la línea del tiempo tal cual; la vasija es nueva
+  porque no existía. Y Jeferión, el jefe de cuadrilla de la palestra de al
+  lado, asoma cuando el alumno se queda quieto: comparten Grecia.
+
+  LAS MEDIDAS SON DE VERDAD. La kotyle (unos 0,27 litros), el chous de doce
+  kotylai y el metretes de doce choes, que es lo que cabe en un ánfora:
+  Grecia contaba en docenas, y ese contraste con el diez por diez de la
+  estepa de Jefén se dice. Y un palmo cúbico es, hoy, un litro.
+
+  LAS CUATRO SALAS, y una quinta que no está en el índice
+  1. LA MESA DE ESTIRAR · el barro sobre una malla de palmos: rectángulo,
+     triángulo, paralelogramo y trapecio, con el botón de cortar y mover.
+  2. EL TORNO · el mismo pegote, disco o vasija. Tres números que no se
+     confunden: el área del disco, el barro que hay, lo que cabe.
+  3. EL CÍRCULO DEL TORNO · el disco en sectores recolocados en zigzag,
+     hacia π·r². Se dice que es un límite y no una demostración.
+  4. LA ALACENA · las vasijas con sus medidas de verdad. Se llena la grande
+     con la pequeña, contando. Y el cubo de un palmo: el litro.
+  ·  LA FIRMA · oculta. Se abre desde la firma del ánfora o escribiendo
+     «exekias». Dentro, la firma de verdad y Áyax y Aquiles con los dados.
+
+  LOS DOS TEMAS SON LAS DOS TÉCNICAS. El modo noche es FIGURAS ROJAS —fondo
+  de barniz negro, figuras de barro— y el modo papel es FIGURAS NEGRAS
+  —fondo de barro, figuras negras—, que es la técnica de Exequias. El
+  mismo dibujo con fondo y figura cambiados, como hizo Andócides hacia el
+  530 a.C. Es el único sitio de la casa donde el modo papel tiene nombre
+  propio y razón histórica.
+
+  LO DE LA TERMINAL: arranque, el horno en vez del reloj (sube con los
+  encargos y llega a 950 grados al cerrar, que es a la que se cuece el
+  barniz), franja de rango, guía, glosario, ajustes, el sello como albarán,
+  el asomo con cinco motivos, taller con hoja, deudas, índice, diagnóstico
+  y turno guardado. Sin valenciano ni panel docente en la v0.1.
+-->
+<meta name="author" content="Andrés Asensio">
+<meta name="description" content="Áreas y capacidad para 2.º de ESO: el mismo barro extendido o levantado, cortar y mover, y llenar vasijas griegas con sus medidas de verdad.">
+<meta name="theme-color" content="#1A1310">
+<title>El taller de Exequias</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Marcellus&family=Space+Mono:wght@400;700&family=Atkinson+Hyperlegible:wght@400;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  /* FIGURAS ROJAS: barniz negro de fondo, figuras y texto de barro cocido.
+     Lo que se dibuja va en --figura, y por eso al cambiar de técnica el
+     mismo dibujo se invierte solo. */
+  --fondo:#1A1310; --panel:#2B1F19; --panel2:#33261F; --linea:#4A372C;
+  --tinta:#EDE0C8; --tenue:#B5A48F;
+  --barro:#D2743F; --barroO:#A8552A; --cal:#EDE0C8; --purpura:#8C3A46;
+  --oro:#D9A441; --oliva:#7E8F55; --brasa:#E8562E;
+  --figura:#D2743F; --figuraO:#A8552A; --hueco:#1A1310;
+  --sombra:rgba(0,0,0,.55); --cuenta:#D2743F; --texto:15px;
+}
+[data-tema="negras"]{
+  /* FIGURAS NEGRAS: la técnica de Exequias. Fondo de barro, figuras negras. */
+  --fondo:#D2743F; --panel:#DC8A5C; --panel2:#E29A70; --linea:#A8552A;
+  --tinta:#1A1310; --tenue:#4A2E1E;
+  --barro:#1A1310; --barroO:#3A2418; --cal:#F3E9D6; --purpura:#6E2A36;
+  --oro:#7A4A0C; --oliva:#4E5E2E; --brasa:#8C2A12;
+  --figura:#1A1310; --figuraO:#3A2418; --hueco:#D2743F;
+  --sombra:rgba(0,0,0,.18); --cuenta:#3A2418;
+}
+[data-texto="grande"]{--texto:17.5px}
+*{box-sizing:border-box}
+[hidden]{display:none !important}
+html{background:var(--fondo)}
+html,body{overflow-x:clip}
+body{margin:0;color:var(--tinta);
+  background:
+    radial-gradient(ellipse 120% 50% at 50% -6%, rgba(210,116,63,.12), transparent 60%),
+    var(--fondo);
+  background-attachment:fixed;
+  font-family:'Atkinson Hyperlegible',system-ui,sans-serif;font-size:var(--texto);line-height:1.55;
+  padding:12px 12px 40px;max-width:580px;margin:0 auto;-webkit-text-size-adjust:100%}
+[data-fuente="inscripcion"] body{font-family:'Marcellus','Atkinson Hyperlegible',serif}
+[data-movimiento="menos"] *{animation-duration:.001ms !important;transition-duration:.001ms !important}
+
+/* LOS RAYOS del pie de las ánforas: el friso de esta app. La greca es del
+   pulso; los rayos los llevan casi todas las vasijas de figuras negras. */
+.rayos{height:16px;margin:0 -12px 8px;opacity:.85;
+  background:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='24' height='16'><path d='M0 16 L12 1 L24 16 Z' fill='%23D2743F'/><path d='M4 16 L12 6 L20 16 Z' fill='%231A1310'/></svg>") repeat-x center bottom / 24px 16px}
+[data-tema="negras"] .rayos{
+  background:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='24' height='16'><path d='M0 16 L12 1 L24 16 Z' fill='%231A1310'/><path d='M4 16 L12 6 L20 16 Z' fill='%23D2743F'/></svg>") repeat-x center bottom / 24px 16px}
+
+header .cabeza{display:flex;align-items:flex-end;gap:12px;flex-wrap:wrap}
+h1{font-family:'Marcellus',serif;font-weight:400;font-size:28px;letter-spacing:.6px;margin:0;color:var(--barro);line-height:1.05}
+.sub{font-family:'Space Mono',monospace;font-size:10.5px;letter-spacing:1.6px;text-transform:uppercase;color:var(--tenue);margin:3px 0 0}
+/* EL HORNO, en vez del reloj: sube con los encargos y llega a 950 al cerrar */
+.horno{margin-left:auto;font-family:'Space Mono',monospace;font-size:11px;letter-spacing:1.4px;color:var(--tenue);
+  border:1px solid var(--linea);border-radius:20px;padding:4px 10px;display:inline-flex;gap:8px;align-items:baseline;
+  transition:box-shadow .6s ease,border-color .6s ease}
+.horno b{color:var(--barro);font-weight:400;font-variant-numeric:tabular-nums}
+.horno.brasa{border-color:var(--brasa);box-shadow:0 0 18px var(--brasa)}
+.barra{display:flex;gap:2px 14px;align-items:center;flex-wrap:wrap;margin:10px 0 4px}
+.barra a,.barra button{font-family:'Marcellus',serif;font-size:13.5px;letter-spacing:1.2px;text-transform:uppercase;color:var(--tenue);
+  background:none;border:0;padding:4px 0;cursor:pointer;text-decoration:none}
+.barra a:hover,.barra button:hover,.barra button[aria-pressed="true"]{color:var(--barro)}
+button:focus-visible,input:focus-visible,a:focus-visible,summary:focus-visible{outline:2px solid var(--oro);outline-offset:3px;border-radius:4px}
+
+.franja{margin:8px 0 2px;padding:8px 12px;border:1px solid var(--linea);border-radius:10px;background:linear-gradient(180deg,var(--panel),var(--panel2))}
+.franja .linea1{display:flex;justify-content:space-between;align-items:baseline;gap:10px;flex-wrap:wrap}
+.franja .rango{font-family:'Marcellus',serif;font-size:15.5px;color:var(--barro);letter-spacing:.5px}
+.franja .rango small{font-family:'Space Mono',monospace;font-size:10px;letter-spacing:1.4px;text-transform:uppercase;color:var(--tenue);margin-left:8px}
+.franja .cuenta{font-family:'Space Mono',monospace;font-size:10.5px;letter-spacing:1.2px;text-transform:uppercase;color:var(--tenue)}
+.franja .barraR{height:6px;border-radius:3px;background:var(--fondo);margin-top:7px;overflow:hidden}
+.franja .barraR i{display:block;height:100%;width:0;border-radius:3px;background:linear-gradient(90deg,var(--barroO),var(--barro));transition:width .5s ease}
+
+.panel{background:linear-gradient(180deg,var(--panel),var(--panel2));border:1px solid var(--linea);border-radius:12px;
+  padding:14px 14px 12px;margin:10px 0;box-shadow:0 6px 18px var(--sombra);position:relative}
+.salaRot{margin:-2px 0 10px}
+.salaRot b{font-family:'Marcellus',serif;font-weight:400;font-size:16.5px;letter-spacing:.8px;text-transform:uppercase;color:var(--barro)}
+.salaRot b::before{content:'';display:inline-block;width:10px;height:10px;background:var(--barro);margin-right:8px;vertical-align:0;
+  clip-path:polygon(50% 0,100% 100%,0 100%)}
+.salaRot span{font-family:'Marcellus',serif;font-style:italic;font-size:14px;color:var(--tenue);margin-left:8px}
+
+.fila{display:flex;gap:6px;align-items:center;flex-wrap:wrap;margin-top:8px}
+.etq{font-family:'Space Mono',monospace;font-size:10px;letter-spacing:1.4px;text-transform:uppercase;color:var(--tenue);min-width:74px}
+button.n{font-family:'Space Mono',monospace;font-weight:700;font-size:14px;min-width:34px;min-height:34px;padding:5px 9px;border-radius:8px;
+  border:1px solid var(--linea);background:var(--panel);color:var(--tinta);cursor:pointer}
+button.n[aria-pressed="true"]{background:var(--barro);border-color:var(--barro);color:var(--fondo)}
+button.n.v{font-family:'Marcellus',serif;font-weight:400;font-size:13.5px;letter-spacing:.4px}
+button.b{font-family:'Marcellus',serif;font-size:14px;letter-spacing:1px;text-transform:uppercase;min-height:38px;padding:8px 14px;border-radius:9px;
+  border:1px solid var(--linea);background:var(--panel);color:var(--tinta);cursor:pointer}
+button.b:hover{border-color:var(--barro)}
+button.b.ok{background:var(--barro);border-color:var(--barro);color:var(--fondo)}
+button.b:disabled{opacity:.4;cursor:default}
+button.b.armado{border-color:var(--brasa);color:var(--brasa)}
+button.b[aria-pressed="true"]{border-color:var(--barro);color:var(--barro)}
+
+.escena{background:var(--fondo);border:1px solid var(--linea);border-radius:10px;padding:10px;margin-top:10px;overflow-x:auto;position:relative}
+.escena svg{display:block;width:100%;height:auto}
+.lectura{margin:10px 0 0;font-size:calc(var(--texto) - .5px);color:var(--tinta)}
+.lectura b{color:var(--barro)}
+.lectura .cuenta{font-family:'Space Mono',monospace;font-size:13.5px;color:var(--cuenta);display:block;margin:6px 0 0;overflow-x:auto;white-space:nowrap;padding-bottom:2px}
+.lectura .def{display:block;margin:0 0 6px;padding:6px 10px;border-left:3px solid var(--purpura);font-family:'Marcellus',serif;font-style:italic;font-size:calc(var(--texto) + .5px);color:var(--tinta)}
+.lectura .murmullo{display:block;margin-top:6px;font-family:'Marcellus',serif;font-style:italic;font-size:13px;color:var(--tenue)}
+
+.encargo{padding-left:70px;min-height:82px}
+.cara{position:absolute;left:12px;top:11px;width:46px;height:48px}
+.cara svg{width:100%;height:100%;display:block}
+.quien{font-family:'Space Mono',monospace;font-size:9.5px;letter-spacing:1.6px;text-transform:uppercase;color:var(--oliva);margin-bottom:4px}
+.informe .quien{color:var(--oro)}
+.informe{border-left:3px solid var(--oro)}
+.informe.mal{border-left-color:var(--brasa)}
+.encTxt{margin:0}
+.encTxt b{color:var(--barro)}
+.ops{display:flex;flex-direction:column;gap:6px;margin-top:10px}
+.op{font-family:inherit;font-size:calc(var(--texto) - 1px);text-align:left;padding:10px 12px;border-radius:9px;border:1px solid var(--linea);
+  background:var(--panel);color:var(--tinta);cursor:pointer;line-height:1.4}
+.op[aria-pressed="true"]{border-color:var(--barro);background:var(--panel2)}
+.op.fallada{border-color:var(--brasa);opacity:.65}
+.paso{font-family:'Space Mono',monospace;font-size:10.5px;letter-spacing:1.3px;text-transform:uppercase;color:var(--tenue);margin-left:auto}
+
+/* LOS ASOMOS. Un personaje asoma por un borde y se esconde solo. Cinco
+   motivos: acierto (cabeza entera por arriba), fallo (a media altura),
+   espera (el vecino por la derecha), ascenso (de cuerpo entero) y huevo. */
+.asomo{position:absolute;pointer-events:none;z-index:4;opacity:0;overflow:hidden;
+  transition:transform .44s cubic-bezier(.34,1.56,.64,1), opacity .2s ease}
+.asomo svg{width:100%;height:auto;display:block;filter:drop-shadow(0 3px 8px rgba(0,0,0,.5))}
+.asomo.arriba{right:14px;top:0;width:62px;transform:translateY(20px)}
+.asomo.arriba.mira{opacity:1;transform:translateY(calc(-64% + 2px))}
+.asomo.arriba.mira.falla{transform:translateY(calc(-42% + 2px));transition:transform .5s ease-out, opacity .2s ease}
+.asomo.lado{right:0;top:18px;width:70px;transform:translateX(80px)}
+.asomo.lado.mira{opacity:1;transform:translateX(26px)}
+.asomo.entero{right:14px;top:-10px;width:76px;transform:translateY(-20px) scale(.6)}
+.asomo.entero.mira{opacity:1;transform:translateY(-70%) scale(1)}
+.globo{position:absolute;right:96px;top:22px;max-width:190px;background:var(--cal);color:#1A1310;border-radius:12px;padding:8px 11px;
+  font-size:13px;line-height:1.35;z-index:5;opacity:0;transform:translateY(6px);transition:opacity .3s ease,transform .3s ease;pointer-events:none}
+.globo::after{content:'';position:absolute;right:-8px;top:14px;border:6px solid transparent;border-left-color:var(--cal)}
+.globo.mira{opacity:1;transform:none}
+/* los malabares: ocho vasijas girando alrededor de Exequias */
+.malabar{position:absolute;right:20px;top:-84px;width:140px;height:140px;pointer-events:none;z-index:5}
+.malabar i{position:absolute;left:50%;top:50%;width:14px;height:20px;margin:-10px 0 0 -7px;
+  background:var(--barro);border-radius:4px 4px 6px 6px;transform-origin:50% 70px;animation:orbita 2.4s linear infinite}
+.malabar i.cae{animation:orbita 2.4s linear infinite, cae 1.2s ease-in 1.6s forwards}
+@keyframes orbita{from{transform:rotate(0)}to{transform:rotate(360deg)}}
+@keyframes cae{to{margin-top:180px;opacity:0;transform:rotate(200deg)}}
+
+.listaEnc{margin-top:8px;max-height:260px;overflow-y:auto;border:1px solid var(--linea);border-radius:9px;background:var(--fondo)}
+.listaEnc button{display:block;width:100%;text-align:left;background:none;border:0;border-bottom:1px solid var(--linea);color:var(--tenue);cursor:pointer;
+  font-family:inherit;font-size:13px;padding:9px 11px}
+.listaEnc button:last-child{border-bottom:0}
+.listaEnc button:hover{background:var(--panel2);color:var(--tinta)}
+.listaEnc button b{color:var(--barro);font-family:'Space Mono',monospace;font-size:11px;margin-right:6px}
+.listaEnc button.hecho b{color:var(--oliva)}
+.listaEnc button.actual{color:var(--tinta);background:var(--panel2)}
+#diag{font-family:'Space Mono',monospace;font-size:11.5px;line-height:1.5;margin-top:10px}
+#diag .ok{color:var(--oliva)} #diag .ko{color:var(--brasa)}
+.glosa{border-top:1px solid var(--linea);padding:9px 0;display:grid;grid-template-columns:120px 1fr;gap:4px 12px}
+.glosa:last-child{border-bottom:1px solid var(--linea)}
+.glosa b{font-family:'Marcellus',serif;color:var(--barro);font-size:15px;font-weight:400}
+.glosa i{font-family:'Space Mono',monospace;font-style:normal;font-size:10px;color:var(--tenue);display:block;letter-spacing:1px}
+.glosa p{margin:0;font-size:14px;color:var(--tinta)}
+.glosa.marca{background:rgba(217,164,65,.08);border-radius:8px;padding:9px 8px}
+@media (max-width:460px){ .glosa{grid-template-columns:1fr} }
+.deuda{border-top:1px solid var(--linea);padding:10px 0}
+.deuda:last-child{border-bottom:1px solid var(--linea)}
+.deuda summary{cursor:pointer;font-weight:700;color:var(--tinta);font-size:15px;list-style:none;display:flex;gap:10px;align-items:baseline}
+.deuda summary::-webkit-details-marker{display:none}
+.deuda summary::before{content:'¿por qué es así?';font-family:'Space Mono',monospace;font-size:9.5px;letter-spacing:1.3px;text-transform:uppercase;color:var(--oro);white-space:nowrap}
+.deuda[open] summary::before{content:'porque'}
+.deuda p{margin:8px 0 0;font-size:14px;color:var(--tenue);max-width:62ch}
+.deuda p b{color:var(--tinta)}
+.aviso{font-size:12.5px;color:var(--tenue);margin:8px 0 0}
+
+/* LA FIRMA, la sala oculta */
+.firma{border:1px solid var(--oro)}
+.firma .griego{font-family:'Marcellus',serif;font-size:22px;letter-spacing:3px;color:var(--oro);text-align:center;margin:8px 0 2px}
+.firma .trad{font-family:'Marcellus',serif;font-style:italic;text-align:center;color:var(--tenue);font-size:14px;margin:0 0 12px}
+.firma .escena{padding:6px}
+
+.taller{border-left:3px solid var(--oro)}
+.tipos{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px}
+.tipos button.b{font-size:12.5px;padding:6px 10px;min-height:34px}
+.ejer{font-size:17px;margin:14px 0 8px;line-height:1.5}
+.ejer b{color:var(--barro)}
+.resp{font-family:'Space Mono',monospace;font-size:16px;padding:8px 10px;border-radius:9px;border:1px solid var(--linea);background:var(--fondo);color:var(--tinta);width:170px}
+.veredicto{margin-top:9px;padding:9px 11px;border:1px solid var(--linea);border-radius:9px;font-size:14px;color:var(--tinta);background:var(--fondo)}
+.veredicto.bien{border-color:var(--oro)}
+.veredicto b{color:var(--barro)}
+.marcador{display:flex;gap:16px;margin-top:10px;font-family:'Space Mono',monospace;font-size:11px;letter-spacing:1.2px;text-transform:uppercase;color:var(--tenue)}
+.marcador b{color:var(--barro);font-size:13px;margin-left:4px}
+.hoja{display:none}
+body.imprimiendo .hoja{display:block;background:#fff;color:#222;padding:20px;font-family:Georgia,serif}
+body.imprimiendo > *:not(.hoja){display:none !important}
+.hoja h2{font-family:'Marcellus',serif;font-size:20px;margin:0 0 4px}
+.hoja .cab{font-size:12px;color:#666;margin-bottom:14px}
+.hoja ol{padding-left:22px;font-size:15px;line-height:2.1}
+.hoja .clave{break-before:page;page-break-before:always;margin-top:30px;border-top:1px solid #999;padding-top:10px}
+.hoja .clave ol{line-height:1.7;font-size:13px}
+@media print{ .hoja{display:block} }
+
+.modal{position:fixed;inset:0;z-index:60;background:rgba(10,7,5,.72);display:flex;align-items:center;justify-content:center;padding:16px}
+.modal .caja{background:linear-gradient(180deg,var(--panel),var(--panel2));border:1px solid var(--linea);border-radius:14px;padding:18px 18px 14px;
+  width:min(520px,100%);max-height:92vh;overflow:auto;box-shadow:0 20px 50px rgba(0,0,0,.6)}
+.modal h2{font-family:'Marcellus',serif;font-weight:400;font-size:19px;color:var(--barro);margin:0 0 2px;letter-spacing:.6px}
+.modal .sub{margin-bottom:12px}
+.aj{display:grid;grid-template-columns:110px 1fr;gap:8px 12px;align-items:center;margin-top:6px}
+.aj .etq{min-width:0}
+.aj .ops2{display:flex;gap:6px;flex-wrap:wrap}
+.aj .ops2 button{font-family:'Space Mono',monospace;font-size:11.5px;padding:6px 10px;border-radius:8px;border:1px solid var(--linea);background:var(--fondo);color:var(--tinta);cursor:pointer}
+.aj .ops2 button[aria-pressed="true"]{background:var(--barro);border-color:var(--barro);color:var(--fondo)}
+.aj .ops2 button:disabled{opacity:.4;cursor:default}
+@media (max-width:460px){ .aj{grid-template-columns:1fr} }
+.albaran{font-family:'Space Mono',monospace;font-size:12px;line-height:1.55;white-space:pre-wrap;background:var(--fondo);border:1px solid var(--linea);
+  border-radius:9px;padding:12px;margin-top:10px;color:var(--tinta);max-height:40vh;overflow:auto}
+.albaran .sello{color:var(--brasa)}
+input.nombre{font-family:inherit;font-size:15px;padding:8px 10px;border-radius:9px;border:1px solid var(--linea);background:var(--fondo);color:var(--tinta);width:100%}
+
+.tourCapa{position:fixed;inset:0;z-index:80;cursor:pointer}
+.tourFoco{position:fixed;border-radius:12px;border:2px solid var(--oro);pointer-events:none;
+  box-shadow:0 0 0 9999px rgba(10,7,5,.78), 0 0 22px rgba(217,164,65,.45);transition:top .28s ease,left .28s ease,width .28s ease,height .28s ease}
+.tourGlobo{position:fixed;z-index:81;width:min(320px,calc(100vw - 32px));background:linear-gradient(180deg,var(--panel),var(--panel2));border:1px solid var(--oro);
+  border-radius:12px;padding:12px 14px;box-shadow:0 12px 40px rgba(0,0,0,.6)}
+.tourGlobo b{font-family:'Marcellus',serif;font-size:15px;color:var(--barro);display:block;margin-bottom:4px;font-weight:400}
+.tourGlobo p{margin:0;font-size:14px;color:var(--tinta)}
+.tourGlobo .pie{display:flex;justify-content:space-between;align-items:center;margin-top:10px;gap:8px}
+.tourGlobo .num{font-family:'Space Mono',monospace;font-size:10.5px;letter-spacing:1.2px;color:var(--tenue)}
+.tourGlobo button{font-family:'Marcellus',serif;font-size:13px;letter-spacing:.8px;text-transform:uppercase;padding:6px 12px;border-radius:8px;
+  border:1px solid var(--linea);background:var(--panel);color:var(--tinta);cursor:pointer}
+.tourGlobo button.pri{background:var(--barro);border-color:var(--barro);color:var(--fondo)}
+
+/* EL ARRANQUE: el torno girando y el barro subiendo. Dos segundos y medio. */
+.boot{position:fixed;inset:0;z-index:9999;background:#1A1310;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;
+  padding:24px;text-align:center;transition:opacity .5s ease;color:#EDE0C8}
+.boot.fuera{opacity:0;pointer-events:none}
+.boot .tit{font-family:'Marcellus',serif;font-size:clamp(24px,6vw,34px);color:#D2743F;letter-spacing:1px}
+.boot .torno{width:120px;height:120px}
+.boot .torno .rueda{transform-origin:60px 96px;animation:gira 1.1s linear infinite}
+.boot .torno .barro{transform-origin:60px 96px;animation:sube 2.4s ease-out forwards}
+@keyframes gira{to{transform:rotate(360deg)}}
+@keyframes sube{0%{transform:scaleY(.25)}100%{transform:scaleY(1)}}
+.boot .lista{font-family:'Space Mono',monospace;font-size:12px;letter-spacing:1.6px;text-transform:uppercase;color:#B5A48F;display:flex;gap:14px}
+.boot .lista span{opacity:0;animation:pasaLista .3s forwards}
+.boot .saltar{position:absolute;bottom:26px;font-family:'Space Mono',monospace;font-size:10.5px;letter-spacing:1.6px;text-transform:uppercase;color:#B5A48F;opacity:.8}
+@keyframes pasaLista{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+@keyframes aparece{from{opacity:0}to{opacity:1}}
+.nueva{animation:aparece .28s ease-out}
+@keyframes desliza{from{opacity:0;transform:translateX(-18px)}to{opacity:1;transform:none}}
+.movida{animation:desliza .5s ease-out}
+
+footer.pie{margin-top:28px;padding-top:14px;border-top:1px solid var(--linea);display:flex;align-items:center;justify-content:center;gap:12px;flex-wrap:wrap;
+  font-family:'Space Mono',monospace;font-size:10.5px;letter-spacing:1.2px;text-transform:uppercase;color:var(--tenue)}
+footer.pie a{color:var(--tenue);text-decoration:none;display:inline-flex;align-items:center;gap:10px}
+footer.pie a:hover{color:var(--barro)}
+footer.pie svg{height:22px;width:auto;display:block}
+footer.pie svg text{font-family:'Space Mono',monospace;font-weight:700;font-size:9.5px;fill:var(--fondo)}
+footer.pie svg circle{fill:var(--tenue)}
+@media (prefers-reduced-motion: reduce){
+  *{animation-duration:.001ms !important;transition-duration:.001ms !important}
+  .asomo.arriba.mira,.asomo.arriba.mira.falla{transform:translateY(calc(-64% + 2px))}
+}
+</style>
+</head><body>
+
+<div class="boot" id="boot" role="status" aria-live="polite">
+  <div class="tit">El taller de Exequias</div>
+  <svg class="torno" viewBox="0 0 120 120" aria-hidden="true">
+    <ellipse cx="60" cy="100" rx="52" ry="9" fill="#3A2418"/>
+    <g class="rueda"><ellipse cx="60" cy="96" rx="44" ry="7" fill="#4A372C" stroke="#D2743F" stroke-width="1.5"/>
+      <path d="M20 96 H100 M60 89 V103" stroke="#D2743F" stroke-width="1" opacity=".6"/></g>
+    <g class="barro"><path d="M44 96 Q38 60 48 40 Q52 28 60 24 Q68 28 72 40 Q82 60 76 96 Z" fill="#D2743F"/>
+      <path d="M50 32 Q60 26 70 32" stroke="#1A1310" stroke-width="1.5" fill="none"/></g>
+  </svg>
+  <div class="lista" id="bootLista"></div>
+  <div class="saltar">toca para saltar</div>
+</div>
+
+<header>
+  <div class="rayos" aria-hidden="true"></div>
+  <div class="cabeza">
+    <div>
+      <h1>El taller de Exequias</h1>
+      <p class="sub">Áreas y capacidad · el taller de ánforas</p>
+    </div>
+    <div class="horno" id="horno" aria-label="Temperatura del horno"><span>horno</span><b id="hornoT">20 °C</b></div>
+  </div>
+  <nav class="barra" id="barra">
+    <a href="https://diazepamina-creator.github.io/linea.html">← Materiales</a>
+    <button id="bGuia">Guía</button>
+    <button id="bTaller" aria-pressed="false">Taller</button>
+    <button id="bIndice" aria-pressed="false">Salas</button>
+    <button id="bGlosario" aria-pressed="false">Glosario</button>
+    <button id="bDeudas" aria-pressed="false">Deudas</button>
+    <span style="flex:1"></span>
+    <button id="bSello">Sello</button>
+    <button id="bAjustes">Ajustes</button>
+  </nav>
+  <div class="franja" id="franja">
+    <div class="linea1">
+      <span class="rango"><span id="rangoNom">Aprendiz de barro</span><small id="rangoSig"></small></span>
+      <span class="cuenta" id="rangoCuenta"></span>
+    </div>
+    <div class="barraR"><i id="rangoBarra"></i></div>
+  </div>
+</header>
+
+<div class="panel encargo" id="pEncargo">
+  <div class="asomo lado" id="asomoLado" aria-hidden="true"></div>
+  <div class="globo" id="globoLado" aria-hidden="true"></div>
+  <div class="asomo entero" id="asomoEntero" aria-hidden="true"></div>
+  <div class="cara" id="caraExequias"></div>
+  <div class="quien">Exequias, alfarero</div>
+  <p class="encTxt" id="encTxt"></p>
+  <div class="ops" id="ops" hidden></div>
+  <div class="fila">
+    <button class="b" id="atras" aria-label="Encargo anterior">◀</button>
+    <button class="b ok" id="comprobar">Comprobar</button>
+    <span class="paso" id="cual"></span>
+  </div>
+</div>
+<div class="panel informe encargo" id="informe" hidden>
+  <div class="asomo arriba" id="asomoArriba" aria-hidden="true"></div>
+  <div class="cara" id="caraVasija"></div>
+  <div class="quien">La vasija</div>
+  <p class="encTxt" id="infTxt"></p>
+</div>
+
+<!-- ═══ EL TALLER ═══ -->
+<div class="panel taller" id="pTaller" hidden>
+  <div class="malabar" id="malabar" hidden></div>
+  <div class="salaRot"><b>El taller</b><span>práctica libre, y a la sala si hace falta</span></div>
+  <div class="tipos" id="tipos"></div>
+  <div class="ejer" id="ejer"></div>
+  <div class="fila" style="margin-top:6px" id="filaSiNo" hidden>
+    <button class="b" id="bSi">Sí</button><button class="b" id="bNo">No</button>
+  </div>
+  <div class="fila" style="margin-top:6px" id="filaResp">
+    <input class="resp" id="resp" type="text" inputmode="decimal" autocomplete="off" placeholder="tu respuesta">
+    <button class="b ok" id="corrige">Corregir</button>
+  </div>
+  <div class="fila" style="margin-top:6px">
+    <button class="b" id="otro">Otro</button>
+    <button class="b" id="verlo" hidden>Verlo en la sala</button>
+  </div>
+  <div class="veredicto" id="verTaller" hidden></div>
+  <div class="marcador"><span>aciertos <b id="tAc">0</b></span><span>racha <b id="tRacha">0</b></span><span>mejor <b id="tMejor">0</b></span></div>
+  <div class="fila">
+    <button class="b" id="hojaDiez">Imprimir una hoja de diez</button>
+    <span class="etq" style="min-width:0">con la clave en hoja aparte</span>
+  </div>
+</div>
+<div class="hoja" id="hoja"></div>
+
+<!-- ═══ EL GLOSARIO ═══ -->
+<div class="panel" id="pGlosario" hidden>
+  <div class="salaRot"><b>El glosario</b><span>las palabras del taller</span></div>
+  <div id="glosas"></div>
+</div>
+
+<!-- ═══ LAS DEUDAS ═══ -->
+<div class="panel" id="pDeudas" hidden>
+  <div class="salaRot"><b>Las deudas</b><span>lo que se define, lo que es un límite y lo que se eligió</span></div>
+  <p class="aviso" style="margin:0 0 10px">Tres cosas de este taller no son teoremas. Una es una propiedad que define
+  el área, otra es un límite que se pasa por demostración, y la tercera es una decisión de hace dos siglos.</p>
+  <details class="deuda">
+    <summary>Por qué cortar y mover no cambia el área</summary>
+    <p>No es un teorema: es una de las dos cosas que <b>definen</b> qué es el área. Wu lo dice así: el área de una figura es
+    un número que cumple dos propiedades —si mueves la figura sin deformarla, el número no cambia; y si la partes en trozos
+    que no se solapan, el número es la suma de los de los trozos—. Todo lo demás se deduce de ahí: el rectángulo se cuenta,
+    el triángulo es medio rectángulo, el paralelogramo es un rectángulo con un trozo cambiado de sitio.</p>
+    <p>Si alguien preguntara «¿y por qué el área no cambia al mover?», la respuesta honesta es: porque es lo que
+    queremos que signifique «área». Es una definición, y es la única razonable.</p>
+  </details>
+  <details class="deuda">
+    <summary>Por qué el zigzag del círculo no es una demostración</summary>
+    <p>Con ocho sectores el zigzag es una cosa abollada; con treinta y dos casi es un rectángulo; con mil, casi del todo.
+    Pero nunca lo <b>es</b>: los bordes de arriba y abajo son arcos, no rectas. Lo que se ve es que la figura se acerca a un
+    rectángulo de base π·r y altura r tanto como se quiera. Eso es un <b>límite</b>, y demostrar que el área del círculo es
+    exactamente π·r² pide manejar límites, que no es de segundo.</p>
+    <p>Lo que sí es honesto decir: la fórmula es exacta, la razón se ve aquí, y la demostración con todas las letras es de
+    Arquímedes, dos siglos después de Exequias, y se llama método de exhausción. Aquí se ve; allí se prueba.</p>
+  </details>
+  <details class="deuda">
+    <summary>Por qué un litro es un decímetro cúbico</summary>
+    <p>Porque se <b>decidió</b>. En 1795, en Francia, se definió el litro como el volumen de un cubo de un decímetro de lado,
+    y el kilo como lo que pesa ese litro de agua. Podría haberse elegido otra cosa; se eligió ésa porque une la longitud,
+    la capacidad y el peso con la misma unidad y sin números raros.</p>
+    <p>Un palmo son unos diez centímetros —un decímetro—, así que el cubo de un palmo de este taller es, hoy, un litro.
+    Exequias no lo sabía, y su ánfora cabía unos treinta y nueve.</p>
+  </details>
+</div>
+
+<!-- ═══ LA FIRMA · oculta ═══ -->
+<div class="panel firma" id="pFirma" hidden>
+  <div class="salaRot"><b>La firma</b><span>lo que no está en el índice</span></div>
+  <p class="griego">ΕΧΣΕΚΙΑΣ ΕΓΡΑΦΣΕ ΚΑΠΟΙΕΣΕ ΜΕ</p>
+  <p class="trad">«Exequias me pintó y me hizo»</p>
+  <p>Así firmaba el Exequias de verdad, alfarero y pintor de Atenas hacia el 540 antes de Cristo: en primera persona y en la
+  propia vasija, que era la que hablaba. Se conservan una docena de firmas suyas. La más famosa está en un ánfora que hoy
+  vive en el Vaticano: <b>Áyax y Aquiles</b>, en plena guerra de Troya, inclinados sobre una mesa jugando a los dados.
+  Al lado de cada uno, el pintor escribió lo que grita: <b>ΤΕΣΑΡΑ</b>, cuatro, dice Aquiles; <b>ΤΡΙΑ</b>, tres, dice Áyax.
+  Aquiles gana. Es la escena más tranquila que se pintó nunca de dos hombres que van a morir.</p>
+  <div class="escena"><svg id="svgFirma" viewBox="0 0 540 220" role="img" aria-label="Áyax y Aquiles jugando a los dados, en figuras negras"></svg></div>
+  <p style="margin-top:10px">Y su otra obra mayor es una copa, la <b>kylix de Dioniso</b>: por dentro, el dios navega en un
+  barco con una vid que trepa por el mástil, rodeado de siete delfines. Quien vacíe una kylix en la alacena la verá.</p>
+  <p class="aviso">Esta sala se ha abierto porque alguien ha tocado la firma del ánfora, o ha escrito el nombre. No sale en el índice.</p>
+</div>
+
+<!-- ═══ EL ÍNDICE ═══ -->
+<div class="panel" id="pIndice" hidden>
+  <div class="salaRot"><b>Índice</b><span>las salas, sueltas</span></div>
+  <div class="fila"><span class="etq">salas</span><span id="ixSalas"></span></div>
+  <div class="fila">
+    <button class="b" id="ixCerrar">Volver al encargo</button>
+    <button class="b" id="ixTodo">Marcar todo hecho</button>
+    <button class="b" id="ixCero">Empezar de cero</button>
+  </div>
+  <div class="etq" style="margin-top:12px">los encargos</div>
+  <div class="listaEnc" id="ixLista"></div>
+  <div class="fila">
+    <button class="b" id="ixDiag">Autodiagnóstico</button>
+    <span class="etq" style="min-width:0">prueba cada cuenta contra sí misma</span>
+  </div>
+  <div id="diag" hidden></div>
+</div>
+
+<!-- ═══ SALA 1 · LA MESA DE ESTIRAR ═══ -->
+<div class="panel" id="pMesa">
+  <div class="fila" style="margin-top:0"><span class="etq">figura</span><span id="mFig"></span></div>
+  <div class="fila"><span class="etq">base</span><span id="mBase"></span></div>
+  <div class="fila" id="filaB2"><span class="etq">base menor</span><span id="mB2"></span></div>
+  <div class="fila"><span class="etq">altura</span><span id="mAlt"></span></div>
+  <div class="fila"><span class="etq">el gesto</span><button class="b" id="mCorta" aria-pressed="false">Cortar y mover</button></div>
+  <div class="escena"><svg id="svgMesa" viewBox="0 0 540 300" role="img" aria-label="El barro sobre la malla de palmos, y el trozo cortado y movido"></svg></div>
+  <p class="lectura" id="lecMesa"></p>
+</div>
+
+<!-- ═══ SALA 2 · EL TORNO ═══ -->
+<div class="panel" id="pTorno" hidden>
+  <div class="fila" style="margin-top:0"><span class="etq">barro</span><span id="tBarro"></span></div>
+  <div class="fila"><span class="etq">grosor</span><span id="tGrosor"></span></div>
+  <div class="fila"><span class="etq">forma</span><span id="tForma"></span></div>
+  <div class="escena"><svg id="svgTorno" viewBox="0 0 540 300" role="img" aria-label="El mismo barro, extendido en disco o levantado en vasija"></svg></div>
+  <p class="lectura" id="lecTorno"></p>
+</div>
+
+<!-- ═══ SALA 3 · EL CÍRCULO DEL TORNO ═══ -->
+<div class="panel" id="pCirculo" hidden>
+  <div class="fila" style="margin-top:0"><span class="etq">radio</span><span id="cRadio"></span></div>
+  <div class="fila"><span class="etq">sectores</span><span id="cSect"></span></div>
+  <div class="fila"><span class="etq">el gesto</span><button class="b" id="cColoca" aria-pressed="false">Recolocar en zigzag</button></div>
+  <div class="escena"><svg id="svgCirculo" viewBox="0 0 540 300" role="img" aria-label="El disco cortado en sectores y recolocado en zigzag"></svg></div>
+  <p class="lectura" id="lecCirculo"></p>
+</div>
+
+<!-- ═══ SALA 4 · LA ALACENA ═══ -->
+<div class="panel" id="pAlacena" hidden>
+  <div class="fila" style="margin-top:0"><span class="etq">la grande</span><span id="aGrande"></span></div>
+  <div class="fila"><span class="etq">la pequeña</span><span id="aPeq"></span></div>
+  <div class="fila"><span class="etq">llenar</span>
+    <button class="b ok" id="aUna">Verter una</button>
+    <button class="b" id="aTodas">Hasta llenar</button>
+    <button class="b" id="aVaciar">Vaciar</button>
+  </div>
+  <div class="escena"><svg id="svgAlacena" viewBox="0 0 540 300" role="img" aria-label="La vasija grande llenándose con la pequeña"></svg></div>
+  <p class="lectura" id="lecAlacena"></p>
+</div>
+
+<!-- ═══ LOS MODALES ═══ -->
+<div class="modal" id="mAjustes" hidden>
+  <div class="caja" role="dialog" aria-modal="true" aria-labelledby="ajTit">
+    <h2 id="ajTit">Ajustes</h2>
+    <p class="sub">Para el aula y para cada aparato</p>
+    <div class="aj" id="aj"></div>
+    <div class="fila" style="margin-top:14px">
+      <button class="b" id="ajCerrar">Cerrar</button>
+      <span class="etq" style="min-width:0">se guardan en este aparato</span>
+    </div>
+  </div>
+</div>
+<div class="modal" id="mSello" hidden>
+  <div class="caja" role="dialog" aria-modal="true" aria-labelledby="selloTit">
+    <h2 id="selloTit">El sello del taller</h2>
+    <p class="sub">Lo hecho en esta sesión, para copiar y pegar donde haga falta</p>
+    <input class="nombre" id="selloNombre" placeholder="Nombre del aprendiz" autocomplete="off" aria-label="Nombre">
+    <div class="albaran" id="selloTexto"></div>
+    <div class="fila" style="margin-top:12px">
+      <button class="b ok" id="selloCopiar">Copiar</button>
+      <button class="b" id="selloCerrar">Cerrar</button>
+      <span class="etq" id="selloAviso" style="min-width:0"></span>
+    </div>
+  </div>
+</div>
+<div class="tourCapa" id="tourCapa" hidden>
+  <div class="tourFoco" id="tourFoco"></div>
+  <div class="tourGlobo" id="tourGlobo" role="dialog" aria-modal="true">
+    <b id="tourTit"></b><p id="tourTxt"></p>
+    <div class="pie"><span class="num" id="tourNum"></span>
+      <span><button id="tourSalir">Salir</button> <button class="pri" id="tourSig">Siguiente</button></span></div>
+  </div>
+</div>
+
+<footer class="pie">
+  <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.es" rel="license" aria-label="Licencia Creative Commons Reconocimiento-NoComercial-CompartirIgual 4.0">
+    <svg viewBox="0 0 100 22" aria-hidden="true">
+      <circle cx="11" cy="11" r="10"/><text x="11" y="14.5" text-anchor="middle">CC</text>
+      <circle cx="37" cy="11" r="10"/><text x="37" y="14.5" text-anchor="middle">BY</text>
+      <circle cx="63" cy="11" r="10"/><text x="63" y="14.5" text-anchor="middle">NC</text>
+      <circle cx="89" cy="11" r="10"/><text x="89" y="14.5" text-anchor="middle">SA</text>
+    </svg>
+    <span>© 2026 Andrés Asensio · CC BY-NC-SA 4.0</span>
+  </a>
+</footer>
+
+<script>
+const $ = id => document.getElementById(id);
+const NS = 'http://www.w3.org/2000/svg';
+const redondo = (x, n = 2) => Math.round(x * 10**n) / 10**n;
+function cifra(x, n = 2){
+  const v = redondo(x, n); const [ent, dec] = String(v).split('.');
+  return ent.replace(/\B(?=(\d{3})+$)/g, '.') + (dec ? ',' + dec : '');
+}
+const PI = Math.PI;
+
+/* ── LAS MEDIDAS DEL TALLER. Un palmo es, hoy, un decímetro; un palmo
+   cúbico, un litro. Y las de Grecia, de verdad: la kotyle de unos 0,27
+   litros, el chous de doce kotylai y el metretes de doce choes. ── */
+const KOTYLE = 0.27;
+const VASIJAS = {
+  kylix:   {nom:'kylix',   pl:'kylikes',  kot:1,   uso:'la copa de beber; una kotyle'},
+  oinocoe: {nom:'oinocoe', pl:'oinocoes', kot:12,  uso:'la jarra de servir; un chous, doce kotylai'},
+  hidria:  {nom:'hidria',  pl:'hidrias',  kot:48,  uso:'la de ir a la fuente, con tres asas; cuatro choes'},
+  cratera: {nom:'crátera', pl:'cráteras', kot:96,  uso:'donde se mezcla el vino con agua; ocho choes'},
+  anfora:  {nom:'ánfora',  pl:'ánforas',  kot:144, uso:'la de guardar y transportar; un metretes, doce choes'},
+  cubo:    {nom:'cubo de un palmo', pl:'cubos de un palmo', kot:1/KOTYLE, uso:'un litro: lo que hoy se usa en la cocina'}
+};
+const litros = kot => kot * KOTYLE;
+
+/* ── LOS RETRATOS. Exequias y Jeferión, copiados de la línea del tiempo tal
+   cual. La vasija es nueva: una copa de ojos —las de verdad llevaban dos
+   ojos enormes pintados para espantar el mal— con sonrisa de asa. ── */
+const CARA_EXEQUIAS = `<svg viewBox="0 0 46 48" aria-hidden="true">
+  <!-- EXEQUIAS · el alfarero. Pulpo, porque en un torno hacen falta más
+       manos de las que tiene nadie. El nombre es el del alfarero ateniense
+       que firmaba sus ánforas. Va en los rojos de la cerámica de figuras
+       negras, que es su oficio pintado encima. -->
+  <ellipse cx="23" cy="45" rx="17" ry="3" fill="#140F1F" opacity=".5"/>
+  <!-- los brazos: cuatro a la vista, con sus ventosas -->
+  <g fill="none" stroke="#241C36" stroke-width="5.4" stroke-linecap="round">
+    <path d="M12 30 Q4 34 6 42"/><path d="M17 32 Q11 39 13 45"/>
+    <path d="M29 32 Q35 39 33 45"/><path d="M34 30 Q42 34 40 42"/>
+  </g>
+  <g fill="none" stroke="#A8553F" stroke-width="3.6" stroke-linecap="round">
+    <path d="M12 30 Q4 34 6 42"/><path d="M17 32 Q11 39 13 45"/>
+    <path d="M29 32 Q35 39 33 45"/><path d="M34 30 Q42 34 40 42"/>
+  </g>
+  <path d="M12 30 Q6 28 5 22" fill="none" stroke="#3A2E22" stroke-width="0"/>
+  <g fill="#C4705A"><circle cx="6.6" cy="39" r="1"/><circle cx="7.2" cy="42" r="1"/>
+    <circle cx="12.6" cy="41.6" r="1"/><circle cx="13.2" cy="44.4" r="1"/>
+    <circle cx="33.4" cy="41.6" r="1"/><circle cx="32.8" cy="44.4" r="1"/>
+    <circle cx="39.4" cy="39" r="1"/><circle cx="38.8" cy="42" r="1"/></g>
+  <!-- el manto -->
+  <path d="M23 6 Q37 6 37 20 Q37 30 30 33 L16 33 Q9 30 9 20 Q9 6 23 6 Z"
+        fill="#A8553F" stroke="#241C36" stroke-width="1.4" stroke-linejoin="round"/>
+  <path d="M23 6 Q37 6 37 20 Q37 26 34 30 Q31 20 27 8 Z" fill="#C4705A" opacity=".55"/>
+  <path d="M12 24 Q23 30 34 24" stroke="#8A4433" stroke-width="1.3" fill="none"/>
+  <!-- ojos de pulpo: pupila horizontal -->
+  <ellipse cx="17.4" cy="19" rx="4.4" ry="3.8" fill="#F2EDE2" stroke="#241C36" stroke-width="1.2"/>
+  <ellipse cx="28.6" cy="19" rx="4.4" ry="3.8" fill="#F2EDE2" stroke="#241C36" stroke-width="1.2"/>
+  <rect x="14.8" y="18" width="5.2" height="2.2" rx="1.1" fill="#241C36"/>
+  <rect x="26" y="18" width="5.2" height="2.2" rx="1.1" fill="#241C36"/>
+  <path d="M14.4 13.6 Q17.4 12 20.4 13.4" stroke="#241C36" stroke-width="1.5" fill="none" stroke-linecap="round"/>
+  <path d="M25.6 13.4 Q28.6 12 31.6 13.6" stroke="#241C36" stroke-width="1.5" fill="none" stroke-linecap="round"/>
+  <!-- la cinta de la frente, roja como toda la casa -->
+  <path d="M10.6 11.6 Q23 6.4 35.4 11.6 L34.8 14 Q23 9.4 11.2 14 Z"
+        fill="#B0392C" stroke="#241C36" stroke-width="1.2" stroke-linejoin="round"/>
+  <!-- el ánfora, DELANTE y sujeta por dos brazos: a un lado quedaba
+       cortada por el borde y se leía como un huevo -->
+  <g fill="none" stroke="#241C36" stroke-width="5" stroke-linecap="round">
+    <path d="M15 30 Q13 36 16 40"/><path d="M31 30 Q33 36 30 40"/></g>
+  <g fill="none" stroke="#A8553F" stroke-width="3.4" stroke-linecap="round">
+    <path d="M15 30 Q13 36 16 40"/><path d="M31 30 Q33 36 30 40"/></g>
+  <g transform="translate(14 26) scale(1.05)">
+    <path d="M2.6 5.4 Q0 8 1.6 12" fill="none" stroke="#241C36" stroke-width="1.8"/>
+    <path d="M15.4 5.4 Q18 8 16.4 12" fill="none" stroke="#241C36" stroke-width="1.8"/>
+    <path d="M6 3.4 Q6 0 9 0 Q12 0 12 3.4" fill="none" stroke="#241C36" stroke-width="1.6"/>
+    <path d="M6.4 3.6 L11.6 3.6 L11 6 Q17 9.4 17 13.6 Q17 19 9 20.4
+             Q1 19 1 13.6 Q1 9.4 7 6 Z"
+          fill="#C08A5E" stroke="#241C36" stroke-width="1.4" stroke-linejoin="round"/>
+    <path d="M2 12 Q9 15.4 16 12" stroke="#241C36" stroke-width="1.2" fill="none" opacity=".8"/>
+    <ellipse cx="9" cy="10" rx="3.4" ry="2.4" fill="#3A2E22" opacity=".75"/>
+  </g>
+</svg>`;
+const CARA_JEFERION = `<svg viewBox="4 2 44 44"> <path d="M7 41 Q8 28 20 26 L32 26 Q44 29 45 41 Z" fill="#A9B347" stroke="#241C36" stroke-width="1.2"/> <path d="M45.4 39 L42.6 34.6 L41.2 38 L38.6 33.4 L37.4 36.6" fill="none" stroke="#7A882C" stroke-width="2.4" stroke-linejoin="round" stroke-linecap="round"/> <path d="M13 28.5 Q25 34 35 41" stroke="#7E5C86" stroke-width="4" fill="none"/> <path d="M13 28.5 Q25 34 35 41" stroke="rgba(233,184,78,.55)" stroke-width="1.1" fill="none"/> <path d="M36 30 L43 21 L41.5 14" stroke="#241C36" stroke-width="5.4" fill="none" stroke-linecap="round" stroke-linejoin="round"/> <path d="M36 30 L43 21 L41.5 14" stroke="#A9B347" stroke-width="3.6" fill="none" stroke-linecap="round" stroke-linejoin="round"/> <rect x="38.8" y="10.2" width="5.2" height="4.4" rx="1.8" fill="#A9B347" stroke="#241C36" stroke-width="1"/> <circle cx="24" cy="16" r="8.6" fill="#A9B347" stroke="#241C36" stroke-width="1.2"/> <path d="M20 16.2 L10.2 16.2 Q7 16.2 7 19.4 Q7 22.6 10.2 22.6 L20 22.6 Z" fill="#A9B347" stroke="#241C36" stroke-width="1.2" stroke-linejoin="round"/><rect x="16.5" y="16.6" width="4" height="5.6" fill="#A9B347"/><circle cx="9.6" cy="18.4" r=".75" fill="#241C36"/><path d="M8.8 21.4 H17" stroke="#241C36" stroke-width=".9" stroke-linecap="round"/> <circle cx="20.4" cy="15" r="3.5" fill="#f2f6fb" stroke="#241C36" stroke-width="1.2"/> <circle cx="27.8" cy="14.6" r="3.5" fill="#f2f6fb" stroke="#241C36" stroke-width="1.2"/> <path d="M23.9 14.9 H24.3" stroke="#241C36" stroke-width="1.2"/> <circle cx="20.7" cy="15.2" r="1.35" fill="#140F1F"/><circle cx="28.1" cy="14.8" r="1.35" fill="#140F1F"/> <rect x="25.6" y="9.5" width="5" height="1.6" rx=".8" fill="#241C36" transform="rotate(12 28.1 10.3)"/> <rect x="17.2" y="9.9" width="5" height="1.6" rx=".8" fill="#241C36" transform="rotate(-12 19.7 10.7)"/> <path d="M16.6 8 Q24 3.4 31.4 8" fill="none" stroke="#5E7A2A" stroke-width="1.4" stroke-linecap="round"/> <ellipse cx="18" cy="7.6" rx="2" ry=".9" fill="#7FA33C" stroke="rgba(16,11,26,.35)" stroke-width=".5" transform="rotate(-26 18 7.6)"/> <ellipse cx="30" cy="7.6" rx="2" ry=".9" fill="#7FA33C" stroke="rgba(16,11,26,.35)" stroke-width=".5" transform="rotate(26 30 7.6)"/> <ellipse cx="22.3" cy="5.3" rx="1.9" ry=".85" fill="#7FA33C" stroke="rgba(16,11,26,.35)" stroke-width=".5" transform="rotate(-10 22.3 5.3)"/> <ellipse cx="25.8" cy="5.2" rx="1.9" ry=".85" fill="#7FA33C" stroke="rgba(16,11,26,.35)" stroke-width=".5" transform="rotate(10 25.8 5.2)"/> </svg>`;
+const CARA_VASIJA = `<svg viewBox="0 0 46 48" aria-hidden="true">
+  <!-- LA VASIJA QUE HABLA. Un ánfora panzuda con la cara de las copas de
+       ojos: dos ojos grandes de almendra, la nariz que las copas llevaban
+       entre los ojos, y una sonrisa que es la curva de un asa. Va en los
+       colores de las figuras negras, que es su oficio. -->
+  <ellipse cx="23" cy="46" rx="12" ry="1.8" fill="#000" opacity=".3"/>
+  <path d="M17 3 H29 L28 8 Q40 14 39 26 Q38 40 23 44 Q8 40 7 26 Q6 14 18 8 Z" fill="#D2743F" stroke="#1A1310" stroke-width="1.4" stroke-linejoin="round"/>
+  <path d="M17 3 H29" stroke="#1A1310" stroke-width="2.2" stroke-linecap="round"/>
+  <!-- las asas, que son las orejas -->
+  <path d="M10 12 Q2 18 8 28" fill="none" stroke="#1A1310" stroke-width="2.6" stroke-linecap="round"/>
+  <path d="M36 12 Q44 18 38 28" fill="none" stroke="#1A1310" stroke-width="2.6" stroke-linecap="round"/>
+  <!-- la banda de rayos del pie -->
+  <path d="M12 38 L15 33 L18 38 L21 33 L24 38 L27 33 L30 38 L33 33 L35 38" fill="none" stroke="#1A1310" stroke-width="1"/>
+  <!-- los ojos de la copa de ojos -->
+  <path d="M10.5 20 Q16 13 21.5 20 Q16 27 10.5 20 Z" fill="#EDE0C8" stroke="#1A1310" stroke-width="1.2"/>
+  <path d="M24.5 20 Q30 13 35.5 20 Q30 27 24.5 20 Z" fill="#EDE0C8" stroke="#1A1310" stroke-width="1.2"/>
+  <circle cx="16.4" cy="20" r="3" fill="#1A1310"/><circle cx="29.6" cy="20" r="3" fill="#1A1310"/>
+  <circle cx="17.4" cy="19" r="1" fill="#EDE0C8"/><circle cx="30.6" cy="19" r="1" fill="#EDE0C8"/>
+  <!-- la nariz de las copas de ojos, entre los dos -->
+  <path d="M23 21 L21.6 25.5 H24.4 Z" fill="#8C3A46" stroke="#1A1310" stroke-width=".8"/>
+  <!-- la sonrisa: la curva de un asa -->
+  <path d="M15 29 Q23 36 31 29" fill="none" stroke="#1A1310" stroke-width="1.8" stroke-linecap="round"/>
+  <path d="M15 29 Q23 33.5 31 29" fill="#EDE0C8" stroke="none" opacity=".9"/>
+</svg>`;
+$('caraExequias').innerHTML = CARA_EXEQUIAS;
+$('caraVasija').innerHTML = CARA_VASIJA;
+
+/* ── EL SONIDO: el torno, el barro, el crujido del horno, y lo de siempre. */
+const Ruido = (() => {
+  let ctx = null;
+  const ac = () => { try{ if(!ctx) ctx = new (window.AudioContext || window.webkitAudioContext)(); return ctx; }catch(e){ return null; } };
+  const on = () => AJ.sonido === 'si';
+  const tono = (f, dur, vol = .08, tipo = 'sine', t0 = 0, f2) => {
+    const c = ac(); if(!c || !on()) return;
+    const o = c.createOscillator(), g = c.createGain();
+    o.type = tipo; o.frequency.setValueAtTime(f, c.currentTime + t0);
+    if(f2) o.frequency.exponentialRampToValueAtTime(f2, c.currentTime + t0 + dur);
+    g.gain.setValueAtTime(0, c.currentTime + t0);
+    g.gain.linearRampToValueAtTime(vol, c.currentTime + t0 + .01);
+    g.gain.exponentialRampToValueAtTime(.0001, c.currentTime + t0 + dur);
+    o.connect(g); g.connect(c.destination); o.start(c.currentTime + t0); o.stop(c.currentTime + t0 + dur + .02);
+  };
+  return {
+    despierta(){ const c = ac(); if(c && c.state === 'suspended') c.resume(); },
+    torno(){ tono(70, .5, .05, 'sawtooth', 0, 110); },
+    barro(){ tono(120, .12, .12, 'sine', 0, 60); },
+    horno(){ for(let i = 0; i < 5; i++) tono(2000 + Math.random() * 1500, .03, .03, 'square', i * .06); },
+    bien(){ tono(523, .14, .07, 'triangle'); tono(784, .22, .06, 'triangle', .1); },
+    mal(){ tono(150, .22, .1, 'square'); },
+    asciende(){ tono(392, .16, .08, 'triangle'); tono(523, .16, .08, 'triangle', .16); tono(784, .34, .08, 'triangle', .32); this.horno(); }
+  };
+})();
+
+/* ── LOS AJUSTES. El tema es la técnica: figuras rojas o figuras negras. ── */
+const AJ = {tema:'rojas', texto:'normal', fuente:'legible', movimiento:'normal', sonido:'si', lang:'es', andocides:false};
+const AJ_OPS = {
+  tema:      {etq:'técnica',     ops:[['rojas','figuras rojas'], ['negras','figuras negras · proyector']]},
+  texto:     {etq:'texto',       ops:[['normal','normal'], ['grande','grande']]},
+  fuente:    {etq:'tipografía',  ops:[['legible','legible'], ['inscripcion','de inscripción']]},
+  movimiento:{etq:'movimiento',  ops:[['normal','normal'], ['menos','menos']]},
+  sonido:    {etq:'sonido',      ops:[['si','sí'], ['no','no']]},
+  lang:      {etq:'idioma',      ops:[['es','castellano'], ['va','valencià · pronto']]}
+};
+function aplicaAjustes(){
+  const r = document.documentElement;
+  r.dataset.tema = AJ.tema; r.dataset.texto = AJ.texto; r.dataset.fuente = AJ.fuente; r.dataset.movimiento = AJ.movimiento;
+  document.querySelectorAll('#aj button').forEach(b => b.setAttribute('aria-pressed', String(AJ[b.dataset.k] === b.dataset.v)));
+}
+function pintaAjustes(){
+  const c = $('aj'); c.innerHTML = '';
+  Object.entries(AJ_OPS).forEach(([k, o]) => {
+    const e = document.createElement('span'); e.className = 'etq'; e.textContent = o.etq; c.appendChild(e);
+    const w = document.createElement('div'); w.className = 'ops2';
+    o.ops.forEach(([v, t]) => {
+      const b = document.createElement('button'); b.textContent = t; b.dataset.k = k; b.dataset.v = v;
+      if(k === 'lang' && v === 'va') b.disabled = true;
+      b.addEventListener('click', () => {
+        const cambiaTema = k === 'tema' && AJ[k] !== v;
+        AJ[k] = v; aplicaAjustes(); Ruido.despierta(); guardaTurno();
+        if(cambiaTema) andocides();   // la primera vez que se cambia de técnica, el glosario lo explica
+      });
+      w.appendChild(b);
+    });
+    c.appendChild(w);
+  });
+  aplicaAjustes();
+}
+
+function tira(donde, valores, lee, pon, rotula = v => typeof v === 'number' ? cifra(v, 2) : v, clase = 'n'){
+  const c = $(donde); c.innerHTML = '';
+  valores.forEach(v => {
+    const b = document.createElement('button'); b.className = clase; b.textContent = rotula(v);
+    b.setAttribute('aria-pressed', String(lee() === v));
+    b.addEventListener('click', () => pon(v));
+    c.appendChild(b);
+  });
+}
+const el = (g, t, at, txt) => { const e = document.createElementNS(NS, t); for(const q in at) e.setAttribute(q, at[q]); if(txt !== undefined) e.textContent = txt; g.appendChild(e); return e; };
+const txt = (g, x, y, t, at = {}) => el(g, 'text', Object.assign({x, y, fill:'var(--tenue)', 'font-family':"'Space Mono',monospace", 'font-size':12.5}, at), t);
+const pts = q => q.map(p => p[0].toFixed(1) + ',' + p[1].toFixed(1)).join(' ');
+
+/* ═══ SALA 1 · LA MESA DE ESTIRAR ═════════════════════════════════════
+   El barro sobre una malla de palmos. Un rectángulo se cuenta; lo demás
+   se corta y se mueve hasta que es un rectángulo, y entonces se cuenta.
+   Son las dos propiedades del área (Wu): lo que se mueve no cambia y lo
+   que se junta se suma.                                                 */
+const FIGS = {rect:'rectángulo', tri:'triángulo', para:'paralelogramo', trap:'trapecio'};
+const mesa = {fig:'rect', b:6, h:4, b2:3, corte:false};
+const areaMesa = m => m.fig === 'rect' || m.fig === 'para' ? m.b * m.h : m.fig === 'tri' ? m.b * m.h / 2 : (m.b + m.b2) * m.h / 2;
+
+function pintaMesa(){
+  const g = $('svgMesa'); g.innerHTML = '';
+  const esc = 26, x0 = 62, y0 = 250, {b, h, b2, fig, corte} = mesa;
+  /* la malla de palmos, que es lo que hace contable el barro */
+  for(let i = 0; i <= 17; i++) el(g, 'line', {x1:x0 + i*esc, y1:y0 - 8*esc, x2:x0 + i*esc, y2:y0, stroke:'var(--linea)', 'stroke-width':.6});
+  for(let j = 0; j <= 8; j++) el(g, 'line', {x1:x0, y1:y0 - j*esc, x2:x0 + 17*esc, y2:y0 - j*esc, stroke:'var(--linea)', 'stroke-width':.6});
+  const X = u => x0 + u * esc, Y = v => y0 - v * esc;
+  const barro = (q, extra = {}) => el(g, 'polygon', Object.assign({points:pts(q), fill:'var(--figura)', 'fill-opacity':.85, stroke:'var(--figuraO)', 'stroke-width':1.5, 'stroke-linejoin':'round'}, extra));
+  const d = 2;   // lo que se tuerce el paralelogramo, en palmos
+  if(fig === 'rect'){
+    barro([[X(0), Y(0)], [X(b), Y(0)], [X(b), Y(h)], [X(0), Y(h)]]);
+    for(let i = 0; i < b; i++) for(let j = 0; j < h; j++) el(g, 'rect', {x:X(i) + 2, y:Y(j + 1) + 2, width:esc - 4, height:esc - 4, fill:'none', stroke:'var(--hueco)', 'stroke-width':.8, 'stroke-opacity':.5});
+  }else if(fig === 'tri'){
+    if(!corte){ barro([[X(0), Y(0)], [X(b), Y(0)], [X(0), Y(h)]]); }
+    else{
+      /* el rectángulo entero, y la mitad que sobra en fantasma: dos mitades iguales */
+      barro([[X(0), Y(0)], [X(b), Y(0)], [X(0), Y(h)]]);
+      barro([[X(b), Y(0)], [X(b), Y(h)], [X(0), Y(h)]], {'fill-opacity':.25, 'stroke-dasharray':'5 4', class:'movida'});
+      el(g, 'line', {x1:X(b), y1:Y(0), x2:X(0), y2:Y(h), stroke:'var(--oro)', 'stroke-width':2});
+      txt(g, X(b) + 8, Y(h/2), 'la otra mitad, igual', {fill:'var(--tenue)', 'font-size':11});
+    }
+  }else if(fig === 'para'){
+    if(!corte){ barro([[X(0), Y(0)], [X(b), Y(0)], [X(b + d), Y(h)], [X(d), Y(h)]]); }
+    else{
+      /* se corta en vertical por el pico izquierdo y el triángulo se pasa a la derecha */
+      barro([[X(d), Y(0)], [X(b), Y(0)], [X(b), Y(h)], [X(d), Y(h)]]);
+      barro([[X(b), Y(0)], [X(b + d), Y(0)], [X(b + d), Y(h)], [X(b), Y(h)]], {class:'movida', 'fill-opacity':.6});
+      el(g, 'polygon', {points:pts([[X(0), Y(0)], [X(d), Y(0)], [X(d), Y(h)]]), fill:'none', stroke:'var(--tenue)', 'stroke-width':1.2, 'stroke-dasharray':'5 4'});
+      el(g, 'path', {d:`M${X(1)} ${Y(h) - 14} Q${X(b/2 + 1)} ${Y(h) - 40} ${X(b + 1)} ${Y(h) - 14}`, fill:'none', stroke:'var(--oro)', 'stroke-width':1.5, 'stroke-dasharray':'4 3'});
+      txt(g, X(b/2 + 1), Y(h) - 44, 'el trozo, cambiado de lado', {'text-anchor':'middle', 'font-size':11, fill:'var(--oro)'});
+    }
+  }else{
+    const off = (b - b2) / 2;
+    if(!corte){ barro([[X(0), Y(0)], [X(b), Y(0)], [X(b - off), Y(h)], [X(off), Y(h)]]); }
+    else{
+      /* el gemelo boca abajo, pegado a la derecha: sale un paralelogramo de base B + b */
+      barro([[X(0), Y(0)], [X(b), Y(0)], [X(b - off), Y(h)], [X(off), Y(h)]]);
+      barro([[X(b), Y(0)], [X(b + b2), Y(0)], [X(b + b2 + off), Y(h)], [X(b - off), Y(h)]], {class:'movida', 'fill-opacity':.4});
+      el(g, 'line', {x1:X(b), y1:Y(0), x2:X(b - off), y2:Y(h), stroke:'var(--oro)', 'stroke-width':2});
+      txt(g, X(b + b2/2 + off/2), Y(h/2) + 4, 'su gemelo', {'text-anchor':'middle', 'font-size':11, fill:'var(--oro)'});
+      txt(g, X((b + b2) / 2), Y(0) + 32, 'base ' + b + ' + ' + b2 + ' = ' + (b + b2), {'text-anchor':'middle', 'font-size':11.5, fill:'var(--oro)'});
+    }
+  }
+  /* las cotas */
+  txt(g, X(b/2), Y(0) + 18, 'base ' + b, {'text-anchor':'middle', 'font-size':12, fill:'var(--tinta)'});
+  txt(g, X(0) - 6, Y(h/2) + 4, 'alto ' + h, {'text-anchor':'end', 'font-size':12, fill:'var(--tinta)'});
+  if(fig === 'trap') txt(g, X(b/2), Y(h) - 8, 'base menor ' + b2, {'text-anchor':'middle', 'font-size':11.5, fill:'var(--tinta)'});
+  txt(g, 12, 22, FIGS[fig] + ' · ' + cifra(areaMesa(mesa), 1) + ' palmos cuadrados', {fill:'var(--barro)', 'font-size':14, 'font-family':"'Marcellus',serif"});
+  txt(g, 528, 22, 'un cuadrado = un palmo', {'text-anchor':'end', 'font-size':10.5});
+}
+function leeMesa(){
+  const {b, h, b2, fig, corte} = mesa, A = areaMesa(mesa);
+  let cuerpo, cuenta;
+  if(fig === 'rect'){ cuerpo = 'Un rectángulo de <b>' + b + ' × ' + h + '</b>: ' + b + ' cuadrados por fila y ' + h + ' filas. Se cuenta, y ya está: <b>' + cifra(A, 0) + '</b>.'; cuenta = b + ' × ' + h + ' = ' + cifra(A, 0); }
+  else if(fig === 'tri'){ cuerpo = corte
+    ? 'La diagonal parte el rectángulo de ' + b + ' × ' + h + ' en <b>dos mitades iguales</b>: la que está y la que falta son la misma figura girada. Así que el triángulo vale <b>la mitad</b> del rectángulo: ' + (b*h) + ' ÷ 2 = <b>' + cifra(A, 1) + '</b>. No es una fórmula: es un corte.'
+    : 'Un triángulo de base ' + b + ' y alto ' + h + '. No se deja contar: hay medios cuadrados por la diagonal. <b>Córtelo</b> y mire qué le falta para ser rectángulo.';
+    cuenta = b + ' × ' + h + ' ÷ 2 = ' + cifra(A, 1); }
+  else if(fig === 'para'){ cuerpo = corte
+    ? 'Se corta en vertical por el pico y el triángulo se pasa al otro lado: sale un rectángulo de <b>' + b + ' × ' + h + '</b>. Nada se ha estirado ni encogido; solo ha cambiado de sitio, y lo que cambia de sitio <b>no cambia de área</b>. Vale <b>' + cifra(A, 0) + '</b>, exactamente lo que el rectángulo.'
+    : 'Un paralelogramo torcido, de base ' + b + ' y alto ' + h + '. ¿Vale más, menos o lo mismo que el rectángulo de ' + b + ' × ' + h + '? <b>Córtelo</b> y muévalo antes de contestar.';
+    cuenta = b + ' × ' + h + ' = ' + cifra(A, 0) + '   ·   (el mismo rectángulo, con un trozo movido)'; }
+  else { cuerpo = corte
+    ? 'Su gemelo, boca abajo y pegado al lado, completa un <b>paralelogramo</b> de base ' + b + ' + ' + b2 + ' = ' + (b + b2) + ' y alto ' + h + ', que vale ' + (b + b2) * h + '. El trapecio es <b>la mitad</b> de eso: <b>' + cifra(A, 1) + '</b>. De ahí sale la fórmula, y de ningún otro sitio.'
+    : 'Un trapecio de bases ' + b + ' y ' + b2 + ', alto ' + h + '. Solo no se deja contar. <b>Péguele su gemelo</b> boca abajo y mire qué sale.';
+    cuenta = '(' + b + ' + ' + b2 + ') × ' + h + ' ÷ 2 = ' + cifra(A, 1); }
+  $('lecMesa').innerHTML =
+    '<span class="def">El área de una figura es cuántos cuadrados de un palmo de lado hacen falta para cubrirla. Lo que se mueve no cambia de área; lo que se junta, se suma.</span>'
+    + cuerpo + '<span class="cuenta">' + cuenta + '</span>'
+    + (b === 4 && h === 3 ? '<span class="murmullo">Exequias, por lo bajo: «tesara… tria».</span>' : '');
+}
+function mandosMesa(){
+  tira('mFig', Object.keys(FIGS), () => mesa.fig, v => { mesa.fig = v; mesa.corte = false; Ruido.barro(); pintaMesa2(); }, v => FIGS[v], 'n v');
+  tira('mBase', [2,3,4,5,6,7,8], () => mesa.b, v => { mesa.b = v; if(mesa.b2 >= v) mesa.b2 = v - 1; Ruido.barro(); pintaMesa2(); }, v => String(v));
+  tira('mB2', [1,2,3,4,5,6].filter(v => v < mesa.b), () => mesa.b2, v => { mesa.b2 = v; Ruido.barro(); pintaMesa2(); }, v => String(v));
+  tira('mAlt', [1,2,3,4,5,6], () => mesa.h, v => { mesa.h = v; Ruido.barro(); pintaMesa2(); }, v => String(v));
+  $('filaB2').hidden = mesa.fig !== 'trap';
+  $('mCorta').hidden = mesa.fig === 'rect';
+  $('mCorta').setAttribute('aria-pressed', String(mesa.corte));
+  $('mCorta').textContent = mesa.corte ? 'Volver a juntarlo' : (mesa.fig === 'trap' ? 'Pegarle su gemelo' : 'Cortar y mover');
+}
+function pintaMesa2(){ mandosMesa(); pintaMesa(); leeMesa(); revisa(); }
+$('mCorta').addEventListener('click', () => { mesa.corte = !mesa.corte; Ruido.barro(); pintaMesa2(); });
+
+/* ═══ SALA 2 · EL TORNO ═══════════════════════════════════════════════
+   El mismo pegote de barro, dos veces. Extendido: un disco, y cuanto más
+   fino, más área, con el barro fijo. Levantado: una vasija con paredes de
+   ese grosor, y dentro un hueco. Tres números que no se confunden: el área
+   del disco, el barro que hay, lo que cabe. Es la sala de la tesis.     */
+const torno = {barro:48, grosor:0.5, forma:'disco'};
+const R_INT = 3;   // el radio de dentro de la vasija, en palmos
+function cuentasTorno(t){
+  const A = t.barro / t.grosor, R = Math.sqrt(A / PI);
+  const fondo = PI * R_INT * R_INT * t.grosor;
+  const hueco = t.barro - fondo;
+  const h = hueco > 0 ? hueco / (2 * PI * R_INT * t.grosor) : 0;
+  const cap = PI * R_INT * R_INT * h;
+  return {A, R, h, cap};
+}
+const nombraCap = L => L <= 0 ? 'nada' : L < 1 ? 'una kylix' : L < 5 ? 'un oinocoe' : L < 20 ? 'una hidria' : L < 40 ? 'una crátera' : L < 60 ? 'un ánfora' : 'un pithos: una tinaja';
+
+function pintaTorno(){
+  const g = $('svgTorno'); g.innerHTML = '';
+  const {A, R, h, cap} = cuentasTorno(torno);
+  const esc = 12;
+  if(torno.forma === 'disco'){
+    /* planta del disco, y su canto con el grosor al lado */
+    const cx = 170, cy = 150, r = Math.min(R * esc, 120);
+    el(g, 'circle', {cx, cy, r, fill:'var(--figura)', 'fill-opacity':.85, stroke:'var(--figuraO)', 'stroke-width':1.5});
+    for(let i = -10; i <= 10; i++){ const x = cx + i * esc; if(Math.abs(i * esc) < r) el(g, 'line', {x1:x, y1:cy - Math.sqrt(r*r - (i*esc)**2), x2:x, y2:cy + Math.sqrt(r*r - (i*esc)**2), stroke:'var(--hueco)', 'stroke-width':.5, 'stroke-opacity':.5}); }
+    for(let j = -10; j <= 10; j++){ const y = cy + j * esc; if(Math.abs(j * esc) < r) el(g, 'line', {x1:cx - Math.sqrt(r*r - (j*esc)**2), y1:y, x2:cx + Math.sqrt(r*r - (j*esc)**2), y2:y, stroke:'var(--hueco)', 'stroke-width':.5, 'stroke-opacity':.5}); }
+    el(g, 'line', {x1:cx, y1:cy, x2:cx + r, y2:cy, stroke:'var(--oro)', 'stroke-width':1.6});
+    txt(g, cx + r/2, cy - 6, 'r = ' + cifra(R, 1), {'text-anchor':'middle', fill:'var(--oro)', 'font-size':11.5});
+    /* el canto, visto de lado: el grosor */
+    const gy = 250, gh = Math.max(3, torno.grosor * esc);
+    el(g, 'rect', {x:cx - r, y:gy - gh, width:2 * r, height:gh, fill:'var(--figura)', stroke:'var(--figuraO)', 'stroke-width':1});
+    txt(g, cx + r + 8, gy - gh/2 + 4, 'grosor ' + cifra(torno.grosor, 2), {'font-size':11});
+    txt(g, 360, 100, 'área del disco', {'font-size':11});
+    txt(g, 360, 124, cifra(A, 1) + ' palmos²', {fill:'var(--barro)', 'font-size':16, 'font-family':"'Marcellus',serif"});
+    txt(g, 360, 160, 'barro', {'font-size':11});
+    txt(g, 360, 184, cifra(torno.barro, 0) + ' palmos³', {fill:'var(--tinta)', 'font-size':16, 'font-family':"'Marcellus',serif"});
+    txt(g, 360, 220, 'capacidad', {'font-size':11});
+    txt(g, 360, 244, 'ninguna: no hay hueco', {fill:'var(--tenue)', 'font-size':13, 'font-family':"'Marcellus',serif"});
+  }else{
+    /* la vasija en sección: paredes del grosor elegido y el hueco dentro */
+    const esc2 = 22, cx = 170, base = 262, ri = R_INT * esc2, g_ = Math.max(2, torno.grosor * esc2), hh = Math.min(h * esc2, 200);
+    if(h > 0){
+      el(g, 'path', {d:`M${cx - ri - g_} ${base} V${base - hh - g_} H${cx - ri} V${base - g_} H${cx + ri} V${base - hh - g_} H${cx + ri + g_} V${base} Z`,
+        fill:'var(--figura)', 'fill-opacity':.85, stroke:'var(--figuraO)', 'stroke-width':1.5, 'stroke-linejoin':'round'});
+      el(g, 'rect', {x:cx - ri, y:base - g_ - hh * .82, width:2 * ri, height:hh * .82, fill:'var(--cielo, #5C86A8)', 'fill-opacity':.35});
+      txt(g, cx, base - g_ - hh * .4, 'cabe', {'text-anchor':'middle', 'font-size':11, fill:'var(--tinta)'});
+      txt(g, cx, base - g_ - hh * .4 + 18, cifra(cap, 1) + ' L', {'text-anchor':'middle', 'font-size':15, fill:'var(--tinta)', 'font-family':"'Marcellus',serif"});
+      txt(g, cx + ri + g_ + 8, base - hh/2, 'alto ' + cifra(h, 1), {'font-size':11});
+      txt(g, cx, base + 16, 'radio de dentro ' + R_INT + ' · pared ' + cifra(torno.grosor, 2), {'text-anchor':'middle', 'font-size':10.5});
+    }else{
+      el(g, 'ellipse', {cx, cy:base - 20, rx:60, ry:18, fill:'var(--figura)', 'fill-opacity':.85, stroke:'var(--figuraO)', 'stroke-width':1.5});
+      txt(g, cx, base - 50, 'no llega ni para el fondo', {'text-anchor':'middle', 'font-size':11.5, fill:'var(--brasa)'});
+    }
+    txt(g, 360, 100, 'barro', {'font-size':11});
+    txt(g, 360, 124, cifra(torno.barro, 0) + ' palmos³', {fill:'var(--tinta)', 'font-size':16, 'font-family':"'Marcellus',serif"});
+    txt(g, 360, 160, 'capacidad', {'font-size':11});
+    txt(g, 360, 184, h > 0 ? cifra(cap, 1) + ' litros' : '—', {fill:'var(--barro)', 'font-size':16, 'font-family':"'Marcellus',serif"});
+    txt(g, 360, 204, h > 0 ? cifra(cap / KOTYLE, 0) + ' kylikes' : '', {'font-size':11});
+    txt(g, 360, 220, h > 0 ? nombraCap(cap) : '', {'font-size':11});
+    txt(g, 360, 240, 'área del disco', {'font-size':11});
+    txt(g, 360, 262, 'ya no hay disco', {fill:'var(--tenue)', 'font-size':13, 'font-family':"'Marcellus',serif"});
+  }
+  txt(g, 12, 22, 'el mismo barro: ' + cifra(torno.barro, 0) + ' palmos cúbicos', {fill:'var(--barro)', 'font-size':14, 'font-family':"'Marcellus',serif"});
+  txt(g, 528, 22, 'un palmo cúbico es un litro', {'text-anchor':'end', 'font-size':10.5});
+}
+function leeTorno(){
+  const {A, R, h, cap} = cuentasTorno(torno);
+  $('lecTorno').innerHTML =
+    '<span class="def">Tres preguntas sobre el mismo barro: cuánto ocupa extendido (área), cuánto barro hay (volumen) y cuánto cabe dentro levantado (capacidad). No son la misma.</span>'
+    + (torno.forma === 'disco'
+      ? 'Extendido a <b>' + cifra(torno.grosor, 2) + '</b> de grosor, el pegote de ' + torno.barro + ' palmos cúbicos se vuelve un disco de <b>' + cifra(A, 1) + ' palmos cuadrados</b>, de radio ' + cifra(R, 1) + '. '
+        + 'Estírelo más fino y el área crece; el barro, no: sigue siendo ' + torno.barro + '. El área no es el barro, es <b>lo que cubre</b>.'
+      : (h > 0
+        ? 'Levantado con paredes de <b>' + cifra(torno.grosor, 2) + '</b>, el mismo pegote hace una vasija de ' + cifra(h, 1) + ' de alto en la que caben <b>' + cifra(cap, 1) + ' litros</b>: ' + cifra(cap / KOTYLE, 0) + ' kylikes, ' + nombraCap(cap) + '. '
+          + 'Lo que cabe es el <b>hueco</b>, y el hueco no es barro: con paredes más finas hay más hueco y el barro sigue siendo ' + torno.barro + '.'
+        : 'Con paredes de ' + cifra(torno.grosor, 2) + ' no hay barro ni para el fondo: ' + torno.barro + ' palmos cúbicos no llegan. Póngalas más finas.'))
+    + '<span class="cuenta">' + (torno.forma === 'disco'
+        ? 'área = barro ÷ grosor = ' + torno.barro + ' ÷ ' + cifra(torno.grosor, 2) + ' = ' + cifra(A, 1) + ' palmos²'
+        : 'capacidad = π · ' + R_INT + '² · ' + cifra(h, 2) + ' = ' + cifra(cap, 1) + ' palmos³ = ' + cifra(cap, 1) + ' L') + '</span>';
+}
+function mandosTorno(){
+  tira('tBarro', [24, 48, 96], () => torno.barro, v => { torno.barro = v; Ruido.barro(); pintaTorno2(); }, v => String(v));
+  tira('tGrosor', [2, 1, 0.5, 0.25], () => torno.grosor, v => { torno.grosor = v; Ruido.torno(); pintaTorno2(); });
+  tira('tForma', ['disco', 'vasija'], () => torno.forma, v => { torno.forma = v; Ruido.torno(); pintaTorno2(); }, v => v === 'disco' ? 'extendido' : 'levantado', 'n v');
+}
+function pintaTorno2(){ mandosTorno(); pintaTorno(); leeTorno(); revisa(); }
+
+/* ═══ SALA 3 · EL CÍRCULO DEL TORNO ═══════════════════════════════════
+   El disco cortado en sectores como una tarta y recolocado en zigzag.
+   Con pocos es una cosa abollada; con muchos, casi un rectángulo de base
+   media circunferencia y altura el radio. Se dice que es un límite.     */
+const circ = {r:3, n:8, colocado:false};
+function pintaCirculo(){
+  const g = $('svgCirculo'); g.innerHTML = '';
+  const esc = 22, R = circ.r * esc, n = circ.n;
+  const cx = 130, cy = 150;
+  /* el disco, con sus sectores */
+  el(g, 'circle', {cx, cy, r:R, fill:'var(--figura)', 'fill-opacity':circ.colocado ? .2 : .85, stroke:'var(--figuraO)', 'stroke-width':1.5});
+  for(let i = 0; i < n; i++){ const a = 2 * PI * i / n; el(g, 'line', {x1:cx, y1:cy, x2:cx + R * Math.cos(a), y2:cy + R * Math.sin(a), stroke:'var(--hueco)', 'stroke-width':.8, 'stroke-opacity':.7}); }
+  el(g, 'line', {x1:cx, y1:cy, x2:cx + R, y2:cy, stroke:'var(--oro)', 'stroke-width':1.8});
+  txt(g, cx + R/2, cy - 6, 'r = ' + circ.r, {'text-anchor':'middle', fill:'var(--oro)', 'font-size':11.5});
+  txt(g, cx, cy + R + 22, n + ' sectores', {'text-anchor':'middle', 'font-size':11.5});
+  if(circ.colocado){
+    /* el zigzag: cada sector es una cuña de ángulo 2π/n; se ponen en fila,
+       alternando punta arriba y punta abajo. La fila mide media
+       circunferencia de largo, y de alto el radio. */
+    const ang = 2 * PI / n, w = 2 * R * Math.sin(ang / 2);
+    const x0 = 270, yTop = cy - R/2 - 6, yBot = cy + R/2 - 6;
+    const maxW = 250, escala = Math.min(1, maxW / (w * n / 2 + w / 2));
+    for(let i = 0; i < n; i++){
+      const arriba = i % 2 === 0;
+      const bx = x0 + (i * w / 2) * escala;
+      const apex = arriba ? [bx + w/2 * escala, yBot] : [bx + w/2 * escala, yTop];
+      const p1 = arriba ? [bx, yTop] : [bx, yBot], p2 = arriba ? [bx + w * escala, yTop] : [bx + w * escala, yBot];
+      /* el arco del borde, para que se vea que no es recto */
+      const mid = arriba ? [bx + w/2 * escala, yTop - (R - R * Math.cos(ang/2)) * escala] : [bx + w/2 * escala, yBot + (R - R * Math.cos(ang/2)) * escala];
+      el(g, 'path', {d:`M${apex[0]} ${apex[1]} L${p1[0]} ${p1[1]} Q${mid[0]} ${mid[1]} ${p2[0]} ${p2[1]} Z`, fill:'var(--figura)', 'fill-opacity':.85, stroke:'var(--figuraO)', 'stroke-width':.9, class:'movida'});
+    }
+    const largo = w * n / 2 * escala + w / 2 * escala;
+    el(g, 'line', {x1:x0, y1:yBot + 14, x2:x0 + largo, y2:yBot + 14, stroke:'var(--oro)', 'stroke-width':1.5});
+    txt(g, x0 + largo/2, yBot + 30, 'base ≈ π · r = ' + cifra(PI * circ.r, 2), {'text-anchor':'middle', fill:'var(--oro)', 'font-size':11.5});
+    el(g, 'line', {x1:x0 + largo + 10, y1:yTop, x2:x0 + largo + 10, y2:yBot, stroke:'var(--oro)', 'stroke-width':1.5});
+    txt(g, x0 + largo + 16, cy - 2, 'r', {fill:'var(--oro)', 'font-size':11.5});
+    txt(g, x0 + largo/2, yTop - 16, n < 16 ? 'abollado' : n < 64 ? 'casi un rectángulo' : 'un rectángulo, casi del todo', {'text-anchor':'middle', 'font-size':11.5});
+  }else txt(g, 330, cy + 4, 'recolocar →', {'font-size':12, fill:'var(--tenue)'});
+  txt(g, 12, 22, 'área = π · ' + circ.r + '² = ' + cifra(PI * circ.r * circ.r, 2) + ' palmos²', {fill:'var(--barro)', 'font-size':14, 'font-family':"'Marcellus',serif"});
+}
+function leeCirculo(){
+  const A = PI * circ.r * circ.r, egipcio = (8/9 * 2 * circ.r) ** 2;
+  $('lecCirculo').innerHTML =
+    (circ.colocado
+      ? 'Los <b>' + circ.n + '</b> sectores, en fila y alternando punta arriba y punta abajo, hacen ' + (circ.n < 16 ? 'una cosa <b>abollada</b>' : circ.n < 64 ? '<b>casi un rectángulo</b>' : 'un rectángulo <b>casi del todo</b>')
+        + ': de base la mitad de la circunferencia, π·' + circ.r + ' = ' + cifra(PI * circ.r, 2) + ', y de alto el radio, ' + circ.r + '. Y como cortar y mover no cambia el área, el disco vale lo que ese rectángulo: '
+        + 'π · r · r = <b>π · r²</b> = ' + cifra(A, 2) + '. Con más sectores, los bordes se aplanan; pero <b>nunca son rectos</b>: esto es un límite, no una demostración, y se dice.'
+        + ' El escriba egipcio de la obra de al lado, con su regla de ocho novenos, sacaría ' + cifra(egipcio, 2) + ': se quedaba a un uno por ciento sin saber por qué. Esto es el porqué que él no tenía.'
+      : 'Un disco de radio <b>' + circ.r + '</b> cortado en <b>' + circ.n + '</b> sectores iguales, como una tarta. Recolóquelos en zigzag y mire a qué se parece.')
+    + '<span class="cuenta">π · ' + circ.r + '² = ' + cifra(A, 2) + ' palmos²   ·   base π·r = ' + cifra(PI * circ.r, 2) + ', alto r = ' + circ.r + '</span>';
+}
+function mandosCirculo(){
+  tira('cRadio', [2, 3, 4], () => circ.r, v => { circ.r = v; Ruido.barro(); pintaCirculo2(); }, v => String(v));
+  tira('cSect', [4, 8, 16, 32, 64], () => circ.n, v => { circ.n = v; Ruido.barro(); pintaCirculo2(); }, v => String(v));
+  $('cColoca').setAttribute('aria-pressed', String(circ.colocado));
+  $('cColoca').textContent = circ.colocado ? 'Volver al disco' : 'Recolocar en zigzag';
+}
+function pintaCirculo2(){ mandosCirculo(); pintaCirculo(); leeCirculo(); revisa(); }
+$('cColoca').addEventListener('click', () => { circ.colocado = !circ.colocado; Ruido.torno(); pintaCirculo2(); });
+
+/* ═══ SALA 4 · LA ALACENA ═════════════════════════════════════════════
+   Las vasijas con sus medidas de verdad. Se llena la grande con la pequeña
+   contando: la capacidad es cuántas veces cabe la unidad. Y el cubo de un
+   palmo, que es el litro, para pasar del taller a la cocina.            */
+const ala = {grande:'hidria', pequena:'kylix', vertidas:0, delfines:false};
+const cabenAla = a => VASIJAS[a.grande].kot / VASIJAS[a.pequena].kot;
+
+function siluetaVasija(g, tipo, cx, base, alto, lleno, extra = {}){
+  /* cada forma con su silueta; el llenado es un rectángulo recortado por la silueta */
+  const id = 'clip_' + tipo + '_' + Math.round(cx);
+  const w = alto * (tipo === 'kylix' ? 1.6 : tipo === 'cratera' ? .9 : tipo === 'cubo' ? .8 : .62);
+  let d;
+  if(tipo === 'kylix') d = `M${cx - w/2} ${base - alto*.8} H${cx + w/2} Q${cx + w/2 - 4} ${base - alto*.3} ${cx} ${base - alto*.25} Q${cx - w/2 + 4} ${base - alto*.3} ${cx - w/2} ${base - alto*.8} Z M${cx - 4} ${base - alto*.25} V${base - 6} H${cx + 4} V${base - alto*.25} M${cx - w*.28} ${base} H${cx + w*.28}`;
+  else if(tipo === 'cubo') d = `M${cx - w/2} ${base} V${base - w} H${cx + w/2} V${base} Z`;
+  else if(tipo === 'cratera') d = `M${cx - w/2} ${base - alto} H${cx + w/2} L${cx + w*.42} ${base - alto*.4} Q${cx + w*.4} ${base - 4} ${cx} ${base} Q${cx - w*.4} ${base - 4} ${cx - w*.42} ${base - alto*.4} Z`;
+  else d = `M${cx - w*.28} ${base - alto} H${cx + w*.28} L${cx + w*.24} ${base - alto*.86} Q${cx + w/2} ${base - alto*.7} ${cx + w*.46} ${base - alto*.35} Q${cx + w*.4} ${base - 6} ${cx} ${base} Q${cx - w*.4} ${base - 6} ${cx - w*.46} ${base - alto*.35} Q${cx - w/2} ${base - alto*.7} ${cx - w*.24} ${base - alto*.86} Z`;
+  const cp = el(g, 'clipPath', {id}); el(cp, 'path', {d});
+  el(g, 'path', {d, fill:'var(--figura)', 'fill-opacity':.3, stroke:'var(--figuraO)', 'stroke-width':1.5, 'stroke-linejoin':'round'});
+  if(lleno > 0) el(g, 'rect', {x:cx - w, y:base - alto * Math.min(1, lleno), width:2 * w, height:alto * Math.min(1, lleno), fill:'var(--cielo, #5C86A8)', 'fill-opacity':.55, 'clip-path':'url(#' + id + ')', class:extra.anima ? 'nueva' : ''});
+  el(g, 'path', {d, fill:'none', stroke:'var(--figuraO)', 'stroke-width':1.5, 'stroke-linejoin':'round'});
+  if(tipo !== 'cubo' && tipo !== 'kylix'){
+    el(g, 'path', {d:`M${cx - w*.28} ${base - alto*.9} Q${cx - w*.6} ${base - alto*.75} ${cx - w*.44} ${base - alto*.5}`, fill:'none', stroke:'var(--figuraO)', 'stroke-width':2.5, 'stroke-linecap':'round'});
+    el(g, 'path', {d:`M${cx + w*.28} ${base - alto*.9} Q${cx + w*.6} ${base - alto*.75} ${cx + w*.44} ${base - alto*.5}`, fill:'none', stroke:'var(--figuraO)', 'stroke-width':2.5, 'stroke-linecap':'round'});
+  }
+  if(tipo === 'kylix'){
+    el(g, 'path', {d:`M${cx - w/2} ${base - alto*.7} Q${cx - w/2 - 14} ${base - alto*.72} ${cx - w/2 - 6} ${base - alto*.55}`, fill:'none', stroke:'var(--figuraO)', 'stroke-width':2.2, 'stroke-linecap':'round'});
+    el(g, 'path', {d:`M${cx + w/2} ${base - alto*.7} Q${cx + w/2 + 14} ${base - alto*.72} ${cx + w/2 + 6} ${base - alto*.55}`, fill:'none', stroke:'var(--figuraO)', 'stroke-width':2.2, 'stroke-linecap':'round'});
+  }
+  if(tipo === 'anfora'){
+    /* la firma del ánfora: se puede tocar */
+    const f = txt(g, cx, base - alto*.6, 'ΕΧΣΕΚΙΑΣ', {'text-anchor':'middle', 'font-size':8, fill:'var(--oro)', 'font-family':"'Marcellus',serif", 'letter-spacing':1, style:'cursor:pointer', class:'firmaAnfora'});
+    f.setAttribute('role', 'button'); f.setAttribute('aria-label', 'La firma de Exequias');
+  }
+  return w;
+}
+function pintaAlacena(){
+  const g = $('svgAlacena'); g.innerHTML = '';
+  const G = VASIJAS[ala.grande], P = VASIJAS[ala.pequena], caben = cabenAla(ala);
+  const lleno = Math.min(1, ala.vertidas / caben);
+  siluetaVasija(g, ala.grande, 150, 262, 190, lleno, {anima:true});
+  txt(g, 150, 284, G.nom + ' · ' + G.kot + (G.kot === 1 ? ' kotyle' : ' kotylai') + ' · ' + cifra(litros(G.kot), 1) + ' L', {'text-anchor':'middle', 'font-size':11});
+  siluetaVasija(g, ala.pequena, 400, 200, 70, 1);
+  txt(g, 400, 222, P.nom + ' · ' + (P.kot === 1 ? 'una kotyle' : cifra(P.kot, 2) + ' kotylai') + ' · ' + cifra(litros(P.kot), 2) + ' L', {'text-anchor':'middle', 'font-size':11});
+  el(g, 'path', {d:'M348 150 Q300 120 262 138', fill:'none', stroke:'var(--tenue)', 'stroke-width':1.4, 'stroke-dasharray':'4 3'});
+  el(g, 'path', {d:'M268 130 L260 139 L270 143', fill:'none', stroke:'var(--tenue)', 'stroke-width':1.4});
+  txt(g, 300, 118, 'vertidas: ' + ala.vertidas, {'text-anchor':'middle', 'font-size':12, fill:'var(--tinta)'});
+  txt(g, 12, 22, ala.vertidas >= caben ? 'llena: caben ' + cifra(caben, 2) + ' ' + (P.pl) : cifra(ala.vertidas, 0) + ' de ' + cifra(caben, 2) + ' · ' + cifra(lleno * 100, 0) + ' %',
+      {fill:'var(--barro)', 'font-size':14, 'font-family':"'Marcellus',serif"});
+  txt(g, 528, 22, '1 kotyle = ' + KOTYLE + ' L', {'text-anchor':'end', 'font-size':10.5});
+  /* EL FONDO DE LA COPA: la kylix de Dioniso, con el barco, la vid y los
+     delfines. Solo la ve quien vacía una kylix del todo. */
+  if(ala.delfines){
+    const cx = 452, cy = 74, r = 42;
+    el(g, 'circle', {cx, cy, r, fill:'var(--figura)', 'fill-opacity':.9, stroke:'var(--figuraO)', 'stroke-width':2, class:'nueva'});
+    el(g, 'path', {d:`M${cx - 22} ${cy + 6} Q${cx} ${cy + 18} ${cx + 24} ${cy + 4} L${cx + 19} ${cy} H${cx - 20} Z`, fill:'var(--hueco)'});
+    el(g, 'path', {d:`M${cx} ${cy} V${cy - 26} M${cx - 9} ${cy - 23} Q${cx} ${cy - 34} ${cx + 9} ${cy - 23}`, stroke:'var(--hueco)', 'stroke-width':2, fill:'none'});
+    for(let i = 0; i < 7; i++){ const a = -PI/2 + i * 2*PI/7; el(g, 'path', {d:`M${cx + 33*Math.cos(a)} ${cy + 33*Math.sin(a)} q5 -5 8 2`, stroke:'var(--hueco)', 'stroke-width':2, fill:'none', 'stroke-linecap':'round'}); }
+    txt(g, 526, cy + r + 14, 'el fondo de la copa de Dioniso', {'text-anchor':'end', 'font-size':10, fill:'var(--oro)'});
+  }
+  const f = g.querySelector('.firmaAnfora'); if(f) f.addEventListener('click', () => abreFirma('la firma del ánfora'));
+}
+function leeAlacena(){
+  const G = VASIJAS[ala.grande], P = VASIJAS[ala.pequena], caben = cabenAla(ala), entero = Number.isInteger(redondo(caben, 6));
+  $('lecAlacena').innerHTML =
+    '<span class="def">La capacidad de una vasija es cuántas veces cabe dentro la vasija que se toma por unidad. Se mide llenando.</span>'
+    + (ala.vertidas === 0 ? 'La ' + G.nom + ' está vacía. Viértale ' + P.pl + ' y cuente.'
+      : ala.vertidas < caben ? 'Van <b>' + ala.vertidas + '</b> ' + P.pl + ' y aún no rebosa. Siga.'
+      : 'Llena con <b>' + cifra(caben, 2) + '</b> ' + P.pl + (entero ? ': cabe justo, sin sobrar ni faltar. ' : ': ' + Math.floor(caben) + ' enteras y ' + (caben - Math.floor(caben) > .5 ? 'casi otra' : 'un poco más') + '. ')
+        + 'Eso es lo que <b>mide</b> la ' + G.nom + ' en ' + P.pl + '. '
+        + (ala.pequena === 'cubo' ? 'Y como el cubo de un palmo es un litro, la ' + G.nom + ' hace <b>' + cifra(litros(G.kot), 1) + ' litros</b>: el taller y la cocina, unidos por un cubo.'
+          : 'En Grecia se contaba en docenas: ' + (G.kot >= 12 ? G.kot / 12 + ' choes' : '') + (G.kot >= 144 ? ', un metretes' : '') + '. Doce por doce, contra el diez por diez de la estepa.'))
+    + '<span class="cuenta">' + G.kot + ' ÷ ' + cifra(P.kot, 2) + ' = ' + cifra(caben, 2) + ' ' + P.pl + '   ·   ' + cifra(litros(G.kot), 2) + ' L</span>';
+}
+function mandosAlacena(){
+  tira('aGrande', ['hidria', 'cratera', 'anfora'], () => ala.grande, v => { ala.grande = v; ala.vertidas = 0; ala.delfines = false; Ruido.barro(); pintaAlacena2(); }, v => VASIJAS[v].nom, 'n v');
+  tira('aPeq', ['kylix', 'oinocoe', 'cubo'], () => ala.pequena, v => { ala.pequena = v; ala.vertidas = 0; ala.delfines = false; Ruido.barro(); pintaAlacena2(); }, v => VASIJAS[v].nom, 'n v');
+  $('aUna').disabled = ala.vertidas >= cabenAla(ala);
+}
+function pintaAlacena2(){ mandosAlacena(); pintaAlacena(); leeAlacena(); revisa(); }
+$('aUna').addEventListener('click', () => { if(ala.vertidas < cabenAla(ala)){ ala.vertidas++; ala.delfines = false; Ruido.barro(); pintaAlacena2(); } });
+$('aTodas').addEventListener('click', () => { ala.vertidas = Math.ceil(cabenAla(ala) - 1e-9); ala.delfines = false; Ruido.torno(); pintaAlacena2(); });
+$('aVaciar').addEventListener('click', () => {
+  const eraKylix = ala.pequena === 'kylix' && ala.vertidas > 0;
+  ala.vertidas = 0; ala.delfines = eraKylix;   // vaciar una kylix del todo enseña su fondo
+  Ruido.barro(); pintaAlacena2();
+  if(eraKylix) huevo('delfines');
+});
+
+const SALAS = {mesa:'pMesa', torno:'pTorno', circulo:'pCirculo', alacena:'pAlacena'};
+const LEMAS = {
+  mesa:   ['La mesa de estirar', 'cortar y mover, y luego contar'],
+  torno:  ['El torno', 'el mismo barro, extendido o levantado'],
+  circulo:['El círculo del torno', 'los sectores en zigzag, hacia π·r²'],
+  alacena:['La alacena', 'la capacidad se mide llenando']
+};
+const PINTA = {mesa:pintaMesa2, torno:pintaTorno2, circulo:pintaCirculo2, alacena:pintaAlacena2};
+function muestraSala(cual){ for(const k in SALAS) $(SALAS[k]).hidden = (k !== cual); PINTA[cual](); }
+
+/* ═══ LOS ENCARGOS ════════════════════════════════════════════════════
+   Doce, el arco de una misión secundaria. Cuatro en la mesa, dos en el
+   torno, tres en el círculo y tres en la alacena. Los de manipular traen
+   pre (cómo se deja la sala), ok (qué se pide), bien y mal; el mal mira
+   qué falta y lo dice. Los de opciones traen ops con UNA correcta.      */
+const ENCARGOS = [
+  /* 1 · la mesa: la definición */
+  {sala:'mesa', pre(){ Object.assign(mesa, {fig:'rect', b:5, h:3, corte:false}); },
+   t:'Empecemos por el suelo. <b>Extiende un rectángulo de seis palmos por cuatro</b> sobre la malla y dime cuántos cuadrados de un palmo lo cubren. Cuéntalos si hace falta: para eso está la malla.',
+   ok: () => mesa.fig === 'rect' && mesa.b === 6 && mesa.h === 4,
+   bien:'Seis por fila, cuatro filas: <b>veinticuatro</b> cuadrados de un palmo. Eso, y no otra cosa, es el área: cuántos cuadrados de la unidad hacen falta para cubrirme. Lo demás son maneras de contar más rápido.',
+   mal(){ if(mesa.fig !== 'rect') return 'Pide un rectángulo, y eso es un ' + FIGS[mesa.fig] + '. Cambia la figura.';
+          return 'Es un rectángulo, pero de ' + mesa.b + ' por ' + mesa.h + '. Pedía seis por cuatro.'; }},
+  /* 2 · la mesa: el triángulo es medio rectángulo */
+  {sala:'mesa', pre(){ Object.assign(mesa, {fig:'tri', b:6, h:4, corte:false}); },
+   t:'Ahora un <b>triángulo</b> de la misma base y el mismo alto, seis por cuatro. No se deja contar: hay medios cuadrados por la diagonal. <b>Córtalo</b> y mira qué le falta para ser el rectángulo de antes.',
+   ok: () => mesa.fig === 'tri' && mesa.b === 6 && mesa.h === 4 && mesa.corte,
+   bien:'Le falta <b>otro igual</b>, girado. Los dos juntos son el rectángulo de veinticuatro, así que yo valgo la mitad: <b>doce</b>. Fíjate en que no hemos usado ninguna fórmula: hemos usado un corte. La fórmula es la manera de acordarse del corte.',
+   mal(){ if(mesa.fig !== 'tri') return 'Pide un triángulo. Cambia la figura.';
+          if(mesa.b !== 6 || mesa.h !== 4) return 'Un triángulo, sí, pero de ' + mesa.b + ' por ' + mesa.h + '. Pedía seis por cuatro, como el rectángulo.';
+          return 'Está entero. Pulsa <b>Cortar y mover</b> y mira la otra mitad.'; }},
+  /* 3 · la mesa: cortar y mover no cambia el área */
+  {sala:'mesa', pre(){ Object.assign(mesa, {fig:'para', b:6, h:4, corte:false}); },
+   t:'Este <b>paralelogramo</b> torcido tiene base seis y alto cuatro, como el rectángulo. Mírale bien la inclinación y contéstame: ¿vale más, menos o lo mismo que el rectángulo? Si no lo ves, córtalo antes de contestar.',
+   ops:[
+     {t:'Más: está estirado hacia un lado, así que abarca más.', ok:false, r:'No. Lo que está estirado hacia un lado es la <b>pinta</b>, no el barro. Córtalo en vertical por el pico y pasa el triángulo al otro lado: sale el rectángulo de seis por cuatro, ni un cuadrado más.'},
+     {t:'Menos: está aplastado, y lo aplastado ocupa menos.', ok:false, r:'No. El alto sigue siendo cuatro, no está aplastado. Córtalo por el pico y pasa el trozo al otro lado: sale el rectángulo de seis por cuatro, exactamente.'},
+     {t:'Lo mismo: se corta un triángulo y, cambiado de lado, sale el rectángulo.', ok:true, r:'Eso. Cambiar un trozo de sitio <b>no cambia el área</b>, y juntar los trozos la suma: con esas dos cosas se hace toda la mesa. Veinticuatro, como el rectángulo. Por eso la fórmula del paralelogramo es la del rectángulo, base por alto.'}
+   ]},
+  /* 4 · la mesa: el trapecio y su gemelo */
+  {sala:'mesa', pre(){ Object.assign(mesa, {fig:'trap', b:6, b2:3, h:4, corte:true}); },
+   t:'El <b>trapecio</b> de bases seis y tres, alto cuatro, ya está con su gemelo pegado. En el pergamino del escriba pone que vale (6 + 3) · 4 ÷ 2. Yo quiero saber <b>por qué</b>.',
+   ops:[
+     {t:'Porque se mide con la malla y sale eso.', ok:false, r:'Con la malla salen medios cuadrados por los lados y no se cuenta bien. Mira el gemelo: los dos juntos hacen un paralelogramo de base 6 + 3 y alto 4, y el trapecio es su mitad. Ése es el porqué.'},
+     {t:'Porque el trapecio con su gemelo boca abajo hace un paralelogramo de base 6 + 3 y alto 4, y el trapecio es la mitad.', ok:true, r:'Eso es. El gemelo boca abajo completa un paralelogramo de base <b>9</b> y alto 4, que vale 36; y como los dos gemelos son iguales, cada uno vale <b>18</b>. La fórmula es la mitad de «suma de bases por alto», y ahora sabes de dónde sale.'},
+     {t:'Porque las fórmulas de las figuras con cuatro lados llevan siempre la mitad.', ok:false, r:'El rectángulo tiene cuatro lados y no lleva mitad. La mitad viene de que el trapecio es <b>la mitad de algo</b>: del paralelogramo que hace con su gemelo. Míralo en la mesa.'}
+   ]},
+  /* 5 · el torno: área no es barro */
+  {sala:'torno', pre(){ Object.assign(torno, {barro:48, grosor:2, forma:'disco'}); },
+   t:'Al torno. Un pegote de <b>cuarenta y ocho palmos cúbicos</b> de barro, extendido a dos palmos de grosor. <b>Estíralo hasta medio palmo</b> y dime qué ha cambiado y qué no.',
+   ok: () => torno.forma === 'disco' && torno.grosor === 0.5,
+   bien:'El disco ha pasado de 24 a <b>96 palmos cuadrados</b>: cuatro veces más área, porque es cuatro veces más fino. Y el barro sigue siendo <b>48</b>: estirar no crea barro. El área es lo que <b>cubro</b>; el volumen es lo que <b>soy</b>. No confundas lo uno con lo otro, que es lo que hacen todos.',
+   mal(){ if(torno.forma !== 'disco') return 'Pide el barro extendido, no levantado. Vuelve a extenderlo.';
+          return 'Está a ' + cifra(torno.grosor, 2) + ' de grosor. Pedía medio palmo: 0,5.'; }},
+  /* 6 · el torno: capacidad no es barro */
+  {sala:'torno', pre(){ Object.assign(torno, {barro:48, grosor:0.5, forma:'disco'}); },
+   t:'El mismo barro, el mismo grosor de medio palmo. Ahora <b>levántalo</b> en vasija con esa pared, y mírala por dentro. ¿Lo que cabe es lo mismo que el barro que hay?',
+   ok: () => torno.forma === 'vasija' && torno.grosor === 0.5,
+   bien:'No, y ni de lejos: con 48 palmos cúbicos de barro sale una vasija en la que caben <b>más de cien litros</b>. Lo que cabe es el <b>hueco</b>, y el hueco no es barro: es donde no hay barro. Con la pared más fina hay más hueco y el mismo barro. Tres cosas: el área que cubro extendido, el barro que soy, el hueco que dejo. Tres.',
+   mal(){ if(torno.forma !== 'vasija') return 'Sigue extendido. Pulsa <b>levantado</b>.';
+          return 'Levantado, sí, pero con pared de ' + cifra(torno.grosor, 2) + '. Pedía la de medio palmo, para comparar con lo de antes.'; }},
+  /* 7 · el círculo: el zigzag */
+  {sala:'circulo', pre(){ Object.assign(circ, {r:3, n:4, colocado:false}); },
+   t:'El disco del torno, de radio tres. No hay malla que lo cuente: los bordes son curvos. <b>Córtalo en ocho</b> sectores como una tarta y <b>recolócalos</b> en zigzag. ¿A qué se parece?',
+   ok: () => circ.n === 8 && circ.colocado,
+   bien:'A una cosa <b>abollada</b> que quiere ser un rectángulo y no le sale. Fíjate en que de largo mide media circunferencia, porque la mitad de los arcos va arriba y la otra mitad abajo; y de alto mide el radio. Ahora corta más fino.',
+   mal(){ if(circ.n !== 8) return 'Son ' + circ.n + ' sectores. Pedía ocho.';
+          return 'Ocho, sí. Ahora <b>recolócalos</b> en zigzag.'; }},
+  /* 8 · el círculo: π·r y r */
+  {sala:'circulo', pre(){ Object.assign(circ, {r:3, n:8, colocado:true}); },
+   t:'<b>Súbelo a treinta y dos</b> sectores, o a más, y mira la fila. Ahora dime la base y la altura de eso, en palmos.',
+   ok: () => circ.n >= 32 && circ.colocado,
+   bien:'Casi un rectángulo: de base <b>π · 3 ≈ 9,42</b>, que es media circunferencia, y de alto <b>3</b>, el radio. Base por alto: π · 3 · 3 = <b>π · 3²</b> ≈ 28,27 palmos cuadrados. De ahí sale π·r², de la mitad de la circunferencia por el radio, y no del cielo.',
+   mal(){ if(!circ.colocado) return 'Están en el disco. Recolócalos.';
+          return 'Van ' + circ.n + '. Pedía treinta y dos o más, para que se aplane.'; }},
+  /* 9 · el círculo: qué se demuestra */
+  {sala:'circulo', pre(){ Object.assign(circ, {r:3, n:64, colocado:true}); },
+   t:'Con sesenta y cuatro es un rectángulo casi del todo. El escriba de la obra de al lado pregunta, con razón: ¿esto <b>demuestra</b> que el área del círculo es π·r²?',
+   ops:[
+     {t:'Sí: con sesenta y cuatro ya se ve que es un rectángulo.', ok:false, r:'Se ve que <b>se parece</b>, que no es lo mismo. Los bordes de arriba y de abajo son arcos, y con mil sectores siguen siendo arcos. Lo que hay aquí es un límite: la figura se acerca al rectángulo tanto como se quiera. Demostrar eso del todo pide límites, y lo hizo Arquímedes dos siglos después.'},
+     {t:'No: es un límite. Se acerca al rectángulo tanto como se quiera, pero los bordes nunca son rectos. La demostración entera es de Arquímedes.', ok:true, r:'Exacto, y es lo honesto. La fórmula es exacta, la razón se <b>ve</b> aquí, y la demostración con todas las letras está en las deudas y en Siracusa, dos siglos más tarde. El escriba egipcio tenía la regla de ocho novenos sin saber por qué; tú tienes el porqué sin la demostración. Es un paso.'},
+     {t:'No: las fórmulas del círculo no se demuestran, se aprenden de memoria.', ok:false, r:'Todas las fórmulas se demuestran, o no son fórmulas sino conjuros. Ésta se demuestra; lo que pasa es que la demostración entera pide límites, que no son de segundo. Lo que sí es de segundo es ver de dónde sale, y eso es el zigzag.'}
+   ]},
+  /* 10 · la alacena: llenar y contar */
+  {sala:'alacena', pre(){ Object.assign(ala, {grande:'hidria', pequena:'kylix', vertidas:0, delfines:false}); },
+   t:'A la alacena. La <b>hidria</b> es la de ir a la fuente, con tres asas. <b>Llénala con la kylix</b>, la copa de beber, y cuenta cuántas caben. No lo calcules: viértelas.',
+   ok: () => ala.grande === 'hidria' && ala.pequena === 'kylix' && ala.vertidas >= 48,
+   bien:'<b>Cuarenta y ocho</b> kylikes, justas. Eso es lo que mido: la capacidad es cuántas veces cabe dentro la unidad, y se sabe llenando. En Grecia lo decían en docenas: cuarenta y ocho kotylai son <b>cuatro choes</b>, cuatro jarras de servir.',
+   mal(){ if(ala.grande !== 'hidria' || ala.pequena !== 'kylix') return 'Pide la hidria llenada con la kylix. Elige esas dos.';
+          if(ala.vertidas === 0) return 'Está vacía. Vierte.';
+          return 'Van ' + ala.vertidas + ' y aún no rebosa. Sigue, o pulsa «hasta llenar».'; }},
+  /* 11 · la alacena: las docenas */
+  {sala:'alacena', pre(){ Object.assign(ala, {grande:'anfora', pequena:'oinocoe', vertidas:0, delfines:false}); },
+   t:'El <b>ánfora</b> es la medida grande, el metretes. La jarra de servir, el <b>oinocoe</b>, es un chous. Llénala si quieres, y contesta: ¿cuántos choes hace un ánfora, y cuántas kotylai?',
+   ops:[
+     {t:'Diez choes y cien kotylai: de diez en diez, como todo.', ok:false, r:'Como todo en la estepa de Jefén, que cuenta de diez en diez. Aquí no: un chous son <b>doce</b> kotylai, y un metretes, <b>doce</b> choes. Llena el ánfora con la jarra y cuéntalas: doce.'},
+     {t:'Doce choes y ciento cuarenta y cuatro kotylai: doce por doce.', ok:true, r:'Doce jarras llenan el ánfora, y cada jarra son doce copas: doce por doce, <b>ciento cuarenta y cuatro</b>. Grecia contaba en docenas porque doce se parte en mitades, tercios y cuartos sin romper nada. Diez solo se parte en mitades. Cada sitio elige su unidad, y la elección tiene razones.'},
+     {t:'Doce choes y veinticuatro kotylai: el doble.', ok:false, r:'El doble no: doce por doce. Cada chous son doce kotylai, y hay doce choes, así que hay doce veces doce kotylai: ciento cuarenta y cuatro. Es como los cuadrados de la mesa: filas por columnas.'}
+   ]},
+  /* 12 · la alacena: el litro */
+  {sala:'alacena', pre(){ Object.assign(ala, {grande:'anfora', pequena:'cubo', vertidas:0, delfines:false}); },
+   t:'Última. Un <b>cubo de un palmo de lado</b>, lleno de agua. Eso, dentro de dos mil trescientos años, se llamará litro. <b>Llena el ánfora con él</b> y dime cuántos caben.',
+   ok: () => ala.grande === 'anfora' && ala.pequena === 'cubo' && ala.vertidas >= Math.ceil(cabenAla(ala) - 1e-9),
+   bien:'Treinta y ocho enteros y casi otro: unos <b>treinta y nueve litros</b>. El cubo de un palmo es el puente entre este taller y tu cocina: un palmo es un decímetro, y un decímetro cúbico es un litro porque en 1795 alguien lo <b>decidió</b> así, para que el agua pesara un kilo. Cerrado el taller: ya puedes firmar.',
+   mal(){ if(ala.grande !== 'anfora' || ala.pequena !== 'cubo') return 'Pide el ánfora llenada con el cubo de un palmo. Elige esos dos.';
+          if(ala.vertidas === 0) return 'Vacía. Vierte cubos.';
+          return 'Van ' + ala.vertidas + ' cubos y aún cabe. Sigue.'; }}
+];
+
+/* ── LOS RANGOS Y EL HORNO ────────────────────────────────────────────── */
+const RANGOS = [
+  {n:'Aprendiz de barro',  s:'la mesa',          hasta:3},
+  {n:'Tornero',            s:'el torno',         hasta:6},
+  {n:'Pintor',             s:'el círculo',       hasta:9},
+  {n:'Maestro del taller', s:'la alacena',       hasta:12},
+  {n:'Firmante',           s:'firma la vasija',  hasta:99}
+];
+function rangoDe(n){ return RANGOS.find(r => n < r.hasta) || RANGOS[RANGOS.length - 1]; }
+const gradosHorno = n => Math.round(20 + 930 * Math.min(1, n / ENCARGOS.length));
+function pintaRango(){
+  const n = hechos.size, r = rangoDe(n), i = RANGOS.indexOf(r);
+  const desde = i ? RANGOS[i - 1].hasta : 0, tramo = Math.min(r.hasta, ENCARGOS.length) - desde;
+  $('rangoNom').textContent = r.n;
+  $('rangoSig').textContent = r.s;
+  $('rangoCuenta').textContent = n >= ENCARGOS.length ? 'taller cerrado · ' + n + ' de ' + ENCARGOS.length
+    : (n - desde) + ' de ' + tramo + ' para ' + (RANGOS[i + 1] ? RANGOS[i + 1].n.toLowerCase() : '');
+  $('rangoBarra').style.width = (n >= ENCARGOS.length ? 100 : Math.round((n - desde) / tramo * 100)) + '%';
+  $('hornoT').textContent = cifra(gradosHorno(n), 0) + ' °C';
+}
+
+/* ── EL MOTOR DEL ENCARGO ─────────────────────────────────────────────── */
+let enc = 0, elegida = null;
+const hechos = new Set();
+const huevos = new Set();
+const HUEVOS = ['firma', 'tesara', 'delfines', 'malabares', 'vecino', 'andocides', 'horno'];
+let ultimoRango = 'Aprendiz de barro';
+
+const GUARDADO = 'exequias.turno.v1';
+const CADUCA = 4*60*60*1000;
+let t0 = Date.now();
+function guardaTurno(){
+  try{
+    localStorage.setItem(GUARDADO, JSON.stringify({
+      v:1, ts:Date.now(), t0, enc, hechos:[...hechos], huevos:[...huevos], nombre:$('selloNombre').value || '',
+      taller:{ac:taller.ac, racha:taller.racha, mejor:taller.mejor}, aj:AJ
+    }));
+  }catch(e){}
+}
+function leeTurno(){
+  try{
+    const d = JSON.parse(localStorage.getItem(GUARDADO) || 'null');
+    if(!d || d.v !== 1 || !Array.isArray(d.hechos)) return null;
+    if(!(d.enc >= 0 && d.enc < ENCARGOS.length)) return null;
+    if(Date.now() - d.ts > CADUCA){ borraTurno(); return null; }
+    return d;
+  }catch(e){ return null; }
+}
+function borraTurno(){ try{ localStorage.removeItem(GUARDADO); }catch(e){} }
+
+function pintaOpciones(){
+  const e = ENCARGOS[enc], caja = $('ops');
+  caja.innerHTML = ''; caja.hidden = !e.ops;
+  if(!e.ops) return;
+  e.ops.forEach((o, i) => {
+    const b = document.createElement('button');
+    b.className = 'op'; b.textContent = o.t;
+    b.setAttribute('aria-pressed', String(elegida === i));
+    b.addEventListener('click', () => { if(hechos.has(enc)) return; elegida = i; pintaOpciones(); });
+    caja.appendChild(b);
+  });
+}
+const CIERRE = '<b>Taller cerrado, y el horno a 950 grados.</b> Tres preguntas sobre el mismo barro, y ninguna es la otra: lo que cubro extendido se cuenta '
+  + 'con cuadrados y se llama área; lo que soy es el barro, que no cambia por estirarlo; lo que dejo hueco se mide llenando y se llama capacidad. '
+  + 'Las áreas se hacen cortando y moviendo; el círculo, casi; y el cubo de un palmo es el litro que une este taller con tu cocina. Ya puedes firmar la vasija: «Exequias me hizo, tú me pintaste».';
+function pintaEncargo(){
+  const e = ENCARGOS[enc], ultimo = enc === ENCARGOS.length - 1, hecho = hechos.has(enc);
+  if(e.pre) e.pre();
+  muestraSala(e.sala);
+  elegida = hecho && e.ops ? e.ops.findIndex(o => o.ok) : null;
+  pintaOpciones();
+  $('encTxt').innerHTML = (ultimo && hecho) ? CIERRE : e.t;
+  $('cual').textContent = (ultimo && hecho) ? 'taller cerrado' : 'encargo ' + (enc + 1) + ' de ' + ENCARGOS.length;
+  $('atras').disabled = enc === 0;
+  $('comprobar').textContent = !hecho ? 'Comprobar' : (ultimo ? 'Empezar de nuevo' : 'Siguiente encargo →');
+  const inf = $('informe');
+  inf.hidden = !hecho;
+  if(hecho){ inf.className = 'panel informe encargo'; $('infTxt').innerHTML = e.ops ? e.ops.find(o => o.ok).r : e.bien; }
+  pintaIndice(); pintaRango();
+}
+function revisa(){
+  const e = ENCARGOS[enc];
+  if(mesa.b === 4 && mesa.h === 3 && !$('pMesa').hidden) huevo('tesara');
+  if(!e || e.ops || !hechos.has(enc)) return;
+  $('informe').hidden = false;
+}
+
+/* ═══ LOS ASOMOS ══════════════════════════════════════════════════════
+   Un personaje asoma por un borde y se esconde solo. Cinco motivos:
+   acierto y fallo (Exequias por encima del informe, con un brazo de más),
+   espera (Jeferión por el lado, tras un minuto quieto), ascenso (Exequias
+   de cuerpo entero con la vasija en alto) y huevo (los malabares). Los
+   retratos son los de la línea; solo se les añade un brazo o un objeto. */
+const dentroDe = svg => svg.replace(/^[\s\S]*?<svg[^>]*>/, '').replace(/<\/svg>\s*$/, '');
+const BRAZO = (d, sup) => '<g fill="none" stroke-linecap="round"><path d="' + d + '" stroke="#241C36" stroke-width="5.4"/><path d="' + d + '" stroke="#A8553F" stroke-width="3.6"/></g>'
+  + '<g fill="#C4705A">' + sup.map(([x, y]) => '<circle cx="' + x + '" cy="' + y + '" r="1"/>').join('') + '</g>';
+const EXEQUIAS_BIEN = '<svg viewBox="0 -8 46 56" aria-hidden="true">' + dentroDe(CARA_EXEQUIAS)
+  + BRAZO('M34 30 Q46 24 43 4', [[42.2, 8], [43, 12], [42.6, 16]]) + '</svg>';
+const EXEQUIAS_MAL = '<svg viewBox="0 -8 46 56" aria-hidden="true">' + dentroDe(CARA_EXEQUIAS)
+  + BRAZO('M12 30 Q2 20 12 16 Q18 14 19 19', [[7, 19], [11, 16.5], [15, 16]]) + '</svg>';
+const EXEQUIAS_VASIJA = '<svg viewBox="0 -12 46 60" aria-hidden="true">' + dentroDe(CARA_EXEQUIAS)
+  + BRAZO('M34 30 Q46 22 40 2', [[43, 8], [42.6, 12]])
+  + '<g transform="translate(31 -12) scale(.42)">' + dentroDe(CARA_VASIJA) + '</g></svg>';
+$('asomoLado').innerHTML = CARA_JEFERION;
+$('asomoEntero').innerHTML = EXEQUIAS_VASIJA;
+
+const asomoReloj = {};
+function asoma(id, clase, contenido, ms){
+  const a = $(id); clearTimeout(asomoReloj[id]);
+  if(contenido) a.innerHTML = contenido;
+  const base = a.className.replace(/\s*\b(mira|falla)\b/g, '');
+  a.className = base; void a.offsetWidth;
+  a.className = base + ' ' + clase;
+  asomoReloj[id] = setTimeout(() => { a.className = base; }, ms);
+}
+function asomate(bien){ asoma('asomoArriba', bien ? 'mira' : 'mira falla', bien ? EXEQUIAS_BIEN : EXEQUIAS_MAL, 2400); }
+function asciende(){ asoma('asomoEntero', 'mira', null, 2600); }
+
+/* el vecino: Jeferión, de la palestra de al lado, tras un minuto quieto */
+const VECINO = [
+  '¿Todo bien por aquí? He oído un ruido.',
+  'En la palestra ya hemos acabado. ¿Os falta mucho?',
+  'Exequias, ¿te ayudo? Tengo dos brazos, que son menos, pero están frescos.',
+  '¿Ese barro es de comer? Perdón. Sigo a lo mío.',
+  'Listillón dice que os ha pintado una fórmula en el muro. Yo no he sido.'
+];
+let quieto = null, vecinoReloj = null;
+function vecinoFuera(){ clearTimeout(vecinoReloj); $('asomoLado').classList.remove('mira'); $('globoLado').classList.remove('mira'); }
+function vecinoAsoma(){
+  if(taller.enTaller || $('pEncargo').hidden || !$('tourCapa').hidden || !$('mAjustes').hidden || !$('mSello').hidden || document.hidden) return;
+  $('globoLado').textContent = VECINO[Math.floor(Math.random() * VECINO.length)];
+  $('asomoLado').classList.add('mira'); $('globoLado').classList.add('mira');
+  huevo('vecino');
+  vecinoReloj = setTimeout(vecinoFuera, 6000);
+}
+function armaQuieto(){ clearTimeout(quieto); vecinoFuera(); quieto = setTimeout(vecinoAsoma, 60000); }
+['pointerdown', 'keydown', 'scroll'].forEach(ev => addEventListener(ev, armaQuieto, {passive:true}));
+
+/* los malabares: ocho vasijas, una por brazo, y una se cae */
+function malabares(){
+  const m = $('malabar'); m.hidden = false; m.innerHTML = '<div style="position:absolute;left:50%;top:50%;width:58px;margin:-29px 0 0 -29px">' + CARA_EXEQUIAS + '</div>';
+  const cae = Math.floor(Math.random() * 8);
+  for(let i = 0; i < 8; i++){ const v = document.createElement('i'); v.style.animationDelay = (-i * .3) + 's' + (i === cae ? ', 1.6s' : ''); if(i === cae) v.className = 'cae'; m.appendChild(v); }
+  setTimeout(() => { m.hidden = true; m.innerHTML = ''; }, 4200);
+}
+const HUEVO_DICE = {
+  firma:'has encontrado la firma',
+  tesara:'tesara… tria',
+  delfines:'el fondo de la copa',
+  malabares:'ocho brazos, ocho vasijas',
+  vecino:'el vecino de la palestra',
+  andocides:'Andócides, el que dio la vuelta',
+  horno:'cocido a 950 grados'
+};
+function huevo(nombre){
+  if(!HUEVO_DICE[nombre] || huevos.has(nombre)) return;
+  huevos.add(nombre); guardaTurno();
+}
+
+$('comprobar').addEventListener('click', () => {
+  const e = ENCARGOS[enc], inf = $('informe');
+  Ruido.despierta();
+  if(hechos.has(enc)){
+    if(enc < ENCARGOS.length - 1){ enc++; pintaEncargo(); }
+    else { hechos.clear(); enc = 0; ultimoRango = 'Aprendiz de barro'; pintaEncargo(); }
+    guardaTurno(); return;
+  }
+  let bien, dice;
+  if(e.ops){
+    if(elegida === null){ bien = false; dice = 'Elige una. «Ninguna» no se puede cocer.'; }
+    else { bien = e.ops[elegida].ok; dice = e.ops[elegida].r;
+           if(!bien) document.querySelectorAll('.op')[elegida].classList.add('fallada'); }
+  }else{ bien = e.ok(); dice = bien ? e.bien : (typeof e.mal === 'function' ? e.mal() : e.mal); }
+  inf.hidden = false;
+  inf.className = 'panel informe encargo' + (bien ? '' : ' mal');
+  $('infTxt').innerHTML = dice;
+  asomate(bien);
+  if(bien){
+    hechos.add(enc);
+    const r = rangoDe(hechos.size).n, sube = r !== ultimoRango;
+    if(sube){ ultimoRango = r; Ruido.asciende(); asciende(); } else Ruido.bien();
+    pintaEncargo(); inf.hidden = false;
+    $('infTxt').innerHTML = dice + (sube ? '<br><b>Asciende a ' + r.toLowerCase() + '.</b>' : '');
+    if(hechos.size >= ENCARGOS.length){ $('horno').classList.add('brasa'); Ruido.horno(); huevo('horno'); setTimeout(() => $('horno').classList.remove('brasa'), 1800); }
+    guardaTurno();
+  } else Ruido.mal();
+});
+$('atras').addEventListener('click', () => { if(enc > 0){ enc--; pintaEncargo(); guardaTurno(); } });
+
+/* ── EL ÍNDICE DE SALAS, EL GLOSARIO, LAS DEUDAS Y LA FIRMA ────────────── */
+function pintaIndice(){
+  const s = $('ixSalas');
+  if(!s.dataset.puesto){
+    s.dataset.puesto = '1';
+    Object.keys(SALAS).forEach(k => {
+      const b = document.createElement('button'); b.className = 'b'; b.textContent = LEMAS[k][0];
+      b.addEventListener('click', () => { muestraSala(k); cierraPaneles(); $(SALAS[k]).scrollIntoView({behavior:'smooth', block:'start'}); });
+      s.appendChild(b);
+    });
+  }
+  const l = $('ixLista'); l.innerHTML = '';
+  ENCARGOS.forEach((e, i) => {
+    const b = document.createElement('button');
+    b.className = (hechos.has(i) ? 'hecho ' : '') + (i === enc ? 'actual' : '');
+    b.innerHTML = '<b>' + String(i + 1).padStart(2, '0') + '</b>' + LEMAS[e.sala][0] + ' · ' + e.t.replace(/<[^>]*>/g, '').slice(0, 52) + '…';
+    b.addEventListener('click', () => { enc = i; pintaEncargo(); cierraPaneles(); guardaTurno(); scrollTo({top:0, behavior:'smooth'}); });
+    l.appendChild(b);
+  });
+}
+const PANELES = {bIndice:'pIndice', bGlosario:'pGlosario', bDeudas:'pDeudas'};
+function cierraPaneles(){
+  Object.entries(PANELES).forEach(([b, p]) => { $(p).hidden = true; $(b).setAttribute('aria-pressed', 'false'); });
+  $('pFirma').hidden = true;
+}
+Object.entries(PANELES).forEach(([b, p]) => $(b).addEventListener('click', () => {
+  const abre = $(p).hidden; cierraPaneles();
+  if(abre){ $(p).hidden = false; $(b).setAttribute('aria-pressed', 'true'); if(p === 'pIndice') pintaIndice();
+            $(p).scrollIntoView({behavior:'smooth', block:'start'}); }
+}));
+$('ixCerrar').addEventListener('click', () => { cierraPaneles(); pintaEncargo(); scrollTo({top:0, behavior:'smooth'}); });
+$('ixTodo').addEventListener('click', () => { ENCARGOS.forEach((_, i) => hechos.add(i)); enc = ENCARGOS.length - 1; ultimoRango = rangoDe(hechos.size).n; pintaEncargo(); guardaTurno(); });
+{
+  let armado = false, reloj = 0;
+  const desarma = () => { armado = false; clearTimeout(reloj); $('ixCero').classList.remove('armado'); $('ixCero').textContent = 'Empezar de cero'; };
+  $('ixCero').addEventListener('click', () => {
+    if(!armado){ armado = true; $('ixCero').classList.add('armado'); $('ixCero').textContent = 'Pulsa otra vez para borrarlo';
+      clearTimeout(reloj); reloj = setTimeout(desarma, 5000); return; }
+    desarma(); borraTurno(); hechos.clear(); huevos.clear(); enc = 0; taller.ac = 0; taller.racha = 0; taller.mejor = 0; ultimoRango = 'Aprendiz de barro'; t0 = Date.now();
+    pintaEncargo();
+  });
+}
+
+const GLOSARIO = [
+  ['área', 'medir con cuadrados', 'Cuántos cuadrados de la unidad de lado hacen falta para cubrir una figura. Dos propiedades la definen: lo que se mueve no cambia, lo que se junta se suma.'],
+  ['volumen', 'cuánto barro hay', 'Cuántos cubos de la unidad de lado ocupa un cuerpo. El barro tiene el mismo volumen extendido que levantado.'],
+  ['capacidad', 'cuánto cabe', 'Cuántas veces cabe dentro de un recipiente la vasija que se toma por unidad. Se mide llenando. Es el hueco, no el barro.'],
+  ['palmo', 'la unidad', 'Unos diez centímetros: un decímetro. El cuadrado de un palmo mide las áreas; el cubo de un palmo, hoy, es un litro.'],
+  ['kotyle', 'unos 0,27 litros', 'La medida griega pequeña: lo que cabe en una copa de beber. Doce kotylai hacen un chous.'],
+  ['chous', 'doce kotylai · 3,2 L', 'La jarra de servir. Doce choes hacen un metretes. Grecia contaba en docenas.'],
+  ['metretes', 'doce choes · 39 L', 'La medida grande: un ánfora. Ciento cuarenta y cuatro kotylai.'],
+  ['kylix', 'la copa', 'Copa baja y ancha de beber, con dos asas y un pie. Cabe una kotyle. La de Dioniso, de Exequias, lleva el barco y los delfines por dentro.'],
+  ['oinocoe', 'la jarra', 'La jarra de servir el vino: un chous. Boca de trébol, un asa.'],
+  ['hidria', 'la de la fuente', 'La de ir a por agua, con tres asas: dos para levantarla y una para verter. Cuatro choes.'],
+  ['crátera', 'la de mezclar', 'Donde se mezclaba el vino con agua antes de servir. Ocho choes. La grande de la mesa.'],
+  ['ánfora', 'la de guardar', 'Dos asas y el cuerpo alto: para guardar y transportar vino, aceite, grano. Un metretes: unos treinta y nueve litros.'],
+  ['barniz', 'el negro', 'El negro de la cerámica ática no es pintura: es la misma arcilla, muy fina, que se vuelve negra en el horno a unos 950 grados con el aire cerrado.'],
+  ['figuras negras', 'la técnica de Exequias', 'Las figuras en barniz negro sobre el fondo de barro rojo, con los detalles rascados con punta y añadidos en blanco y púrpura. Es el tema por defecto de la app, con el fondo y la figura intercambiados.'],
+  ['figuras rojas', 'la técnica de después', 'Lo contrario: el fondo en negro y las figuras del color del barro, con los detalles pintados a pincel. Permite dibujar mejor los cuerpos. Es el tema oscuro de esta app.'],
+  ['Andócides', 'hacia el 530 a.C.', 'El alfarero en cuyo taller alguien dio la vuelta a la técnica: negro el fondo, rojas las figuras. Trabajó justo después de Exequias, y algunas vasijas suyas llevan las dos técnicas, una en cada cara, como si dudara. Cambiar de tema en los ajustes es hacer lo que hizo él.', 'andocides'],
+  ['firma', 'ΕΧΣΕΚΙΑΣ ΕΓΡΑΦΣΕ ΚΑΠΟΙΕΣΕ ΜΕ', '«Exequias me pintó y me hizo». Las vasijas hablaban en primera persona. Se conservan una docena de firmas suyas.'],
+  ['límite', 'acercarse tanto como se quiera', 'Cuando una figura se acerca a otra más y más sin llegar nunca, y aun así el número al que se acerca es exacto. El zigzag del círculo es uno.'],
+  ['litro', 'un decímetro cúbico', 'Definido en 1795 como el volumen de un cubo de un decímetro de lado. El cubo de un palmo de este taller.']
+];
+$('glosas').innerHTML = GLOSARIO.map(([p, n, d, id]) => '<div class="glosa"' + (id ? ' id="glosa_' + id + '"' : '') + '><span><b>' + p + '</b><i>' + n + '</i></span><p>' + d + '</p></div>').join('');
+
+/* Andócides: la primera vez que se cambia de técnica, el glosario lo cuenta */
+function andocides(){
+  if(AJ.andocides) return;
+  AJ.andocides = true; huevo('andocides'); guardaTurno();
+  $('mAjustes').hidden = true;
+  cierraPaneles(); entraTaller(false);
+  $('pGlosario').hidden = false; $('bGlosario').setAttribute('aria-pressed', 'true');
+  document.querySelectorAll('.glosa.marca').forEach(g => g.classList.remove('marca'));
+  const g = $('glosa_andocides'); g.classList.add('marca');
+  setTimeout(() => g.scrollIntoView({behavior:'smooth', block:'center'}), 80);
+}
+
+/* La firma: la sala que no está en el índice. Áyax y Aquiles a los dados. */
+function pintaFirma(){
+  const g = $('svgFirma'); g.innerHTML = '';
+  const F = 'var(--figura)', O = 'var(--figuraO)';
+  /* el suelo y la mesa baja entre los dos */
+  el(g, 'line', {x1:20, y1:200, x2:520, y2:200, stroke:O, 'stroke-width':1.5});
+  el(g, 'rect', {x:236, y:158, width:68, height:8, fill:F}); el(g, 'path', {d:'M242 166 V200 M298 166 V200', stroke:F, 'stroke-width':4});
+  /* los dados sobre la mesa, con sus puntos rascados */
+  [[254, 146], [272, 147]].forEach(([x, y]) => { el(g, 'rect', {x, y, width:12, height:12, fill:F, stroke:O, 'stroke-width':1}); el(g, 'circle', {cx:x + 6, cy:y + 6, r:1.4, fill:'var(--hueco)'}); });
+  /* los dos guerreros, sentados, inclinados sobre la mesa; el de la izquierda con casco */
+  const guerrero = (x, dir, casco) => {
+    const s = dir;   // 1 mira a la derecha, -1 a la izquierda
+    const gg = el(g, 'g', {transform:'translate(' + x + ' 0) scale(' + s + ' 1)'});
+    el(gg, 'path', {d:'M0 200 L0 140 Q0 120 22 108 L54 122 Q66 130 62 150 L56 200 Z', fill:F});          // el cuerpo sentado, con el manto
+    el(gg, 'path', {d:'M54 122 Q88 128 100 146', fill:'none', stroke:F, 'stroke-width':9, 'stroke-linecap':'round'});  // el brazo hacia la mesa
+    el(gg, 'ellipse', {cx:30, cy:92, rx:14, ry:16, fill:F});                                              // la cabeza, inclinada
+    el(gg, 'path', {d:'M22 84 Q30 78 42 82', stroke:'var(--hueco)', 'stroke-width':1.2, fill:'none'});     // el pelo, rascado
+    el(gg, 'circle', {cx:37, cy:92, r:1.6, fill:'var(--hueco)'});                                          // el ojo, de perfil
+    if(casco){ el(gg, 'path', {d:'M14 84 Q30 60 48 84 L48 90 Q30 74 14 90 Z', fill:F}); el(gg, 'path', {d:'M20 66 Q32 48 60 58 L52 70 Q40 62 26 74 Z', fill:'var(--purpura)'}); }
+    el(gg, 'path', {d:'M4 200 L-4 60', stroke:F, 'stroke-width':3.5});                                     // la lanza apoyada en el hombro
+    el(gg, 'path', {d:'M-4 60 L-8 44 L0 46 Z', fill:F});
+    el(gg, 'ellipse', {cx:-16, cy:150, rx:12, ry:46, fill:F, stroke:O, 'stroke-width':1});                // el escudo, detrás
+  };
+  guerrero(118, 1, true);   // Aquiles, con casco
+  guerrero(422, -1, false); // Áyax, sin él
+  /* lo que gritan, escrito a la manera de la vasija: de la boca hacia fuera */
+  txt(g, 270, 92, 'ΤΕΣΑΡΑ', {fill:'var(--oro)', 'font-family':"'Marcellus',serif", 'font-size':14, 'letter-spacing':2, 'text-anchor':'middle'});
+  txt(g, 270, 105, 'cuatro, dice Aquiles', {'font-size':10, 'text-anchor':'middle'});
+  txt(g, 270, 122, 'ΤΡΙΑ', {fill:'var(--oro)', 'font-family':"'Marcellus',serif", 'font-size':14, 'letter-spacing':2, 'text-anchor':'middle'});
+  txt(g, 270, 135, 'tres, dice Áyax', {'font-size':10, 'text-anchor':'middle'});
+  txt(g, 270, 30, 'ΕΧΣΕΚΙΑΣ ΕΓΡΑΦΣΕ ΚΑΠΟΙΕΣΕ ΜΕ', {fill:'var(--oro)', 'font-family':"'Marcellus',serif", 'font-size':11, 'letter-spacing':3, 'text-anchor':'middle'});
+  txt(g, 270, 214, 'ánfora de Exequias · Museos Vaticanos · hacia 540 a.C.', {'font-size':10, 'text-anchor':'middle'});
+}
+function abreFirma(por){
+  huevo('firma');
+  cierraPaneles(); entraTaller(false); $('mAjustes').hidden = true; $('mSello').hidden = true;
+  pintaFirma();
+  const p = $('pFirma'); p.hidden = false;
+  p.querySelector('.aviso').textContent = 'Esta sala se ha abierto por ' + por + '. No sale en el índice.';
+  p.scrollIntoView({behavior:'smooth', block:'start'});
+}
+{ /* escribir el nombre, en cualquier sitio que no sea una casilla */
+  let tecleado = '';
+  addEventListener('keydown', e => {
+    if(/^(INPUT|TEXTAREA)$/.test(document.activeElement.tagName) || e.key.length !== 1) return;
+    tecleado = (tecleado + e.key.toLowerCase()).slice(-8);
+    if(/exekias|exequias/.test(tecleado)){ tecleado = ''; abreFirma('el nombre, escrito'); }
+  });
+}
+
+/* ═══ EL TALLER DE PRÁCTICA ═══════════════════════════════════════════ */
+const al = (a, b) => a + Math.floor(Math.random() * (b - a + 1));
+const elige = arr => arr[al(0, arr.length - 1)];
+const numeroLibre = v => { const s = String(v).trim(); const n = parseFloat(s.includes(',') ? s.replace(/\./g, '').replace(',', '.') : s); return isNaN(n) ? null : n; };
+const casi = (v, sol, tol = 1e-9) => { const n = numeroLibre(v); return n !== null && Math.abs(n - sol) <= tol; };
+const solTxt = e => typeof e.sol === 'number' ? cifra(e.sol, 2) : e.sol;
+
+const una = k => (VASIJAS[k].nom === 'ánfora' ? 'un ' : 'una ') + VASIJAS[k].nom;
+const TIPOS = {
+  mesa: {n:'La mesa', sala:'mesa', gen(){
+    const fig = elige(['rect', 'tri', 'para', 'trap']), b = al(3, 8), h = al(2, 6), b2 = al(1, b - 1);
+    const m = {fig, b, h, b2}, sol = areaMesa(m);
+    const como = fig === 'rect' ? 'un rectángulo de ' + b + ' × ' + h : fig === 'tri' ? 'un triángulo de base ' + b + ' y alto ' + h
+      : fig === 'para' ? 'un paralelogramo de base ' + b + ' y alto ' + h : 'un trapecio de bases ' + b + ' y ' + b2 + ' y alto ' + h;
+    const exp = fig === 'rect' ? b + ' por fila y ' + h + ' filas: ' + cifra(sol, 0) + '.' : fig === 'tri' ? 'La mitad del rectángulo de ' + b + ' × ' + h + ' = ' + (b*h) + ': ' + cifra(sol, 1) + '.'
+      : fig === 'para' ? 'Se corta y se mueve: el rectángulo de ' + b + ' × ' + h + ' = ' + cifra(sol, 0) + '.' : 'Con su gemelo, paralelogramo de base ' + (b + b2) + ' y alto ' + h + ' = ' + (b + b2) * h + '; la mitad, ' + cifra(sol, 1) + '.';
+    return {t:'Sobre la malla, <b>' + como + '</b> palmos. ¿Cuál es su área, en palmos cuadrados?', sol, ok:v => casi(v, sol, .01), exp,
+            pon(){ Object.assign(mesa, {fig, b, h, b2, corte: fig !== 'rect'}); }};
+  }},
+  torno: {n:'El torno', sala:'torno', gen(){
+    const barro = elige([24, 48, 96]), grosor = elige([2, 1, 0.5, 0.25]), sol = barro / grosor;
+    return {t:'Un pegote de <b>' + barro + ' palmos cúbicos</b> de barro se extiende a <b>' + cifra(grosor, 2) + '</b> palmos de grosor. ¿Cuántos palmos cuadrados cubre el disco?',
+            sol, ok:v => casi(v, sol, .01), exp:'Área = barro ÷ grosor = ' + barro + ' ÷ ' + cifra(grosor, 2) + ' = ' + cifra(sol, 0) + '. El barro sigue siendo ' + barro + '.',
+            pon(){ Object.assign(torno, {barro, grosor, forma:'disco'}); }};
+  }},
+  circulo: {n:'El círculo', sala:'circulo', gen(){
+    const r = al(1, 6), pide = elige(['area', 'base']);
+    if(pide === 'base'){ const sol = redondo(PI * r, 2);
+      return {t:'Un disco de radio <b>' + r + '</b> cortado en muchos sectores y recolocado en zigzag. ¿Cuánto mide la <b>base</b> de esa fila? Con dos decimales y π ≈ 3,1416.',
+              sol, ok:v => casi(v, sol, .02), exp:'La base es media circunferencia: π · r = π · ' + r + ' ≈ ' + cifra(sol, 2) + '. El alto es el radio.',
+              pon(){ Object.assign(circ, {r:Math.min(4, Math.max(2, r)), n:64, colocado:true}); }}; }
+    const sol = redondo(PI * r * r, 2);
+    return {t:'El área de un disco de radio <b>' + r + '</b> palmos, con dos decimales y π ≈ 3,1416.',
+            sol, ok:v => casi(v, sol, .02), exp:'π · r² = π · ' + r + '² = π · ' + (r*r) + ' ≈ ' + cifra(sol, 2) + '. Base π·r por alto r.',
+            pon(){ Object.assign(circ, {r:Math.min(4, Math.max(2, r)), n:64, colocado:true}); }};
+  }},
+  alacena: {n:'La alacena', sala:'alacena', gen(){
+    const G = elige(['hidria', 'cratera', 'anfora']), P = elige(['kylix', 'oinocoe']), sol = VASIJAS[G].kot / VASIJAS[P].kot;
+    return {t:'¿Cuántas <b>' + VASIJAS[P].pl + '</b> caben en <b>' + una(G) + '</b>? (' + VASIJAS[G].nom + ': ' + VASIJAS[G].kot + ' kotylai; ' + VASIJAS[P].nom + ': ' + VASIJAS[P].kot + (VASIJAS[P].kot === 1 ? ' kotyle' : ' kotylai') + ')',
+            sol, ok:v => casi(v, sol, .01), exp:VASIJAS[G].kot + ' ÷ ' + VASIJAS[P].kot + ' = ' + cifra(sol, 0) + '. Se mide llenando.',
+            pon(){ Object.assign(ala, {grande:G, pequena:P, vertidas:0, delfines:false}); }};
+  }},
+  litros: {n:'Los litros', sala:'alacena', gen(){
+    const modo = elige(['kot', 'chous', 'vasija']);
+    if(modo === 'chous'){ const n = al(1, 12), sol = redondo(n * 12 * KOTYLE, 2);
+      return {t:'<b>' + n + (n === 1 ? ' chous' : ' choes') + '</b> de vino, a doce kotylai el chous y 0,27 litros la kotyle. ¿Cuántos litros son?',
+              sol, ok:v => casi(v, sol, .01), exp:n + ' × 12 = ' + (n*12) + ' kotylai; × 0,27 = ' + cifra(sol, 2) + ' L.', pon:null}; }
+    if(modo === 'vasija'){ const k = elige(['hidria', 'cratera', 'anfora']), sol = redondo(litros(VASIJAS[k].kot), 2);
+      return {t:'<b>' + una(k).replace(/^u/, 'U') + '</b> hace ' + VASIJAS[k].kot + ' kotylai. A 0,27 litros la kotyle, ¿cuántos litros caben?',
+              sol, ok:v => casi(v, sol, .01), exp:VASIJAS[k].kot + ' × 0,27 = ' + cifra(sol, 2) + ' litros: unos ' + cifra(Math.round(sol), 0) + ' cubos de un palmo.',
+              pon(){ Object.assign(ala, {grande:k, pequena:'cubo', vertidas:0, delfines:false}); }}; }
+    const n = elige([10, 20, 30, 40, 50, 100]), sol = redondo(n * KOTYLE, 2);
+    return {t:'<b>' + n + ' kotylai</b>, a 0,27 litros cada una. ¿Cuántos litros?', sol, ok:v => casi(v, sol, .01), exp:n + ' × 0,27 = ' + cifra(sol, 2) + ' L.', pon:null};
+  }},
+  sino: {n:'Sí o no', sala:'torno', bool:true, gen(){
+    const b = al(3, 8), h = al(2, 6);
+    const q = elige([
+      {t:'Un triángulo de base ' + b + ' y alto ' + h + ' vale <b>la mitad</b> del rectángulo de ' + b + ' × ' + h + '.', sol:'sí', exp:'La diagonal lo parte en dos mitades iguales.', pon(){ Object.assign(mesa, {fig:'tri', b, h, b2:Math.min(mesa.b2, b - 1), corte:true}); }, sala:'mesa'},
+      {t:'Un paralelogramo de base ' + b + ' y alto ' + h + ' vale <b>menos</b> que el rectángulo de ' + b + ' × ' + h + ' porque está torcido.', sol:'no', exp:'Vale lo mismo: se corta el triángulo del pico y se pasa al otro lado.', pon(){ Object.assign(mesa, {fig:'para', b, h, b2:Math.min(mesa.b2, b - 1), corte:true}); }, sala:'mesa'},
+      {t:'Si se estira el barro más fino, <b>hay más barro</b>.', sol:'no', exp:'Hay más área y el mismo barro. Estirar no crea barro.', pon(){ Object.assign(torno, {barro:48, grosor:0.25, forma:'disco'}); }, sala:'torno'},
+      {t:'Si se estira el barro más fino, el disco <b>cubre más</b>.', sol:'sí', exp:'El área es barro ÷ grosor: a la mitad de grosor, el doble de área.', pon(){ Object.assign(torno, {barro:48, grosor:0.25, forma:'disco'}); }, sala:'torno'},
+      {t:'Lo que <b>cabe</b> en una vasija es lo mismo que el <b>barro</b> que tiene.', sol:'no', exp:'Lo que cabe es el hueco, y el hueco es donde no hay barro.', pon(){ Object.assign(torno, {barro:48, grosor:0.5, forma:'vasija'}); }, sala:'torno'},
+      {t:'Un chous son <b>doce</b> kotylai.', sol:'sí', exp:'Y un metretes, doce choes. Grecia contaba en docenas.', pon(){ Object.assign(ala, {grande:'hidria', pequena:'kylix', vertidas:0, delfines:false}); }, sala:'alacena'},
+      {t:'Un ánfora hace <b>cien</b> kotylai.', sol:'no', exp:'Ciento cuarenta y cuatro: doce choes de doce kotylai.', pon(){ Object.assign(ala, {grande:'anfora', pequena:'oinocoe', vertidas:0, delfines:false}); }, sala:'alacena'},
+      {t:'El zigzag de sectores <b>demuestra</b> que el área del círculo es π·r².', sol:'no', exp:'Lo enseña, y es un límite. La demostración entera es de Arquímedes.', pon(){ Object.assign(circ, {r:3, n:64, colocado:true}); }, sala:'circulo'},
+      {t:'La base del zigzag es <b>media circunferencia</b>, π·r.', sol:'sí', exp:'La mitad de los arcos va arriba y la otra mitad abajo.', pon(){ Object.assign(circ, {r:3, n:32, colocado:true}); }, sala:'circulo'},
+      {t:'Un cubo de un palmo de lado, lleno de agua, es <b>un litro</b>.', sol:'sí', exp:'Un palmo es un decímetro, y el litro se definió en 1795 como un decímetro cúbico.', pon(){ Object.assign(ala, {grande:'anfora', pequena:'cubo', vertidas:0, delfines:false}); }, sala:'alacena'}
+    ]);
+    return {t:q.t, sol:q.sol, ok:v => String(v).trim().toLowerCase().replace('si', 'sí') === q.sol, exp:q.exp, pon:q.pon, sala:q.sala};
+  }}
+};
+
+const taller = {tipo:'mesa', ej:null, ac:0, racha:0, mejor:0, enTaller:false, corregido:false};
+function pintaTipos(){
+  const c = $('tipos'); c.innerHTML = '';
+  Object.keys(TIPOS).forEach(k => {
+    const b = document.createElement('button'); b.className = 'b'; b.textContent = TIPOS[k].n;
+    b.setAttribute('aria-pressed', String(taller.tipo === k));
+    b.addEventListener('click', () => { taller.tipo = k; pintaTipos(); nuevoEjercicio(); });
+    c.appendChild(b);
+  });
+  $('tAc').textContent = taller.ac; $('tRacha').textContent = taller.racha; $('tMejor').textContent = taller.mejor;
+}
+function nuevoEjercicio(){
+  const T = TIPOS[taller.tipo];
+  taller.ej = T.gen(); taller.corregido = false;
+  $('ejer').innerHTML = taller.ej.t;
+  $('verTaller').hidden = true; $('verlo').hidden = true;
+  $('filaSiNo').hidden = !T.bool; $('filaResp').hidden = !!T.bool;
+  if(!T.bool){ const r = $('resp'); r.value = ''; r.focus(); }
+}
+function corrige(dado){
+  const v = dado !== undefined ? dado : $('resp').value;
+  if(!String(v).trim() || taller.corregido) return;
+  const bien = taller.ej.ok(v);
+  const ver = $('verTaller'); ver.hidden = false;
+  ver.className = 'veredicto' + (bien ? ' bien' : '');
+  if(bien){ taller.ac++; taller.racha++; taller.mejor = Math.max(taller.mejor, taller.racha); ver.innerHTML = '<b>Bien.</b> ' + taller.ej.exp; Ruido.bien();
+            if(taller.racha === 8){ malabares(); huevo('malabares'); ver.innerHTML += ' <i>Ocho seguidos: Exequias hace malabares con ocho vasijas, una por brazo. Se le cae una. Siempre se le cae una.</i>'; } }
+  else { taller.racha = 0; ver.innerHTML = 'No. La respuesta era <b>' + solTxt(taller.ej) + '</b>. ' + taller.ej.exp; Ruido.mal(); }
+  taller.corregido = true; $('verlo').hidden = !taller.ej.pon; pintaTipos(); guardaTurno();
+}
+function verEnSala(){ const e = taller.ej; if(!e || !e.pon) return; e.pon(); const s = e.sala || TIPOS[taller.tipo].sala; muestraSala(s); $(SALAS[s]).scrollIntoView({behavior:'smooth', block:'start'}); }
+function entraTaller(dentro){
+  taller.enTaller = dentro; $('bTaller').setAttribute('aria-pressed', String(dentro));
+  $('pTaller').hidden = !dentro; $('pEncargo').hidden = dentro; $('informe').hidden = dentro || !hechos.has(enc);
+  cierraPaneles();
+  if(dentro){ pintaTipos(); nuevoEjercicio(); for(const k in SALAS) $(SALAS[k]).hidden = true; } else pintaEncargo();
+}
+$('bTaller').addEventListener('click', () => entraTaller(!taller.enTaller));
+$('corrige').addEventListener('click', () => corrige());
+$('bSi').addEventListener('click', () => corrige('sí'));
+$('bNo').addEventListener('click', () => corrige('no'));
+$('resp').addEventListener('keydown', e => { if(e.key === 'Enter'){ taller.corregido ? nuevoEjercicio() : corrige(); } });
+$('otro').addEventListener('click', nuevoEjercicio);
+$('verlo').addEventListener('click', verEnSala);
+$('hojaDiez').addEventListener('click', () => {
+  const claves = Object.keys(TIPOS); const lista = [];
+  for(let i = 0; i < 10; i++) lista.push(TIPOS[claves[i % claves.length]].gen());
+  const limpia = h => h.replace(/<[^>]+>/g, '');
+  $('hoja').innerHTML = '<h2>El taller de Exequias · hoja de práctica</h2>'
+    + '<div class="cab">Áreas y capacidad · un palmo es un decímetro; una kotyle, 0,27 litros; π ≈ 3,1416 · Nombre: ____________________ · Fecha: __________</div>'
+    + '<ol>' + lista.map(e => '<li>' + limpia(e.t) + '</li>').join('') + '</ol>'
+    + '<div class="clave"><h2>Clave del profesor</h2><ol>' + lista.map(e => '<li><b>' + solTxt(e) + '</b> — ' + limpia(e.exp) + '</li>').join('') + '</ol></div>';
+  document.body.classList.add('imprimiendo');
+  const fuera = () => { document.body.classList.remove('imprimiendo'); removeEventListener('afterprint', fuera); };
+  addEventListener('afterprint', fuera);
+  setTimeout(() => { print(); setTimeout(fuera, 800); }, 60);
+});
+
+/* ═══ LOS AJUSTES Y EL SELLO ══════════════════════════════════════════ */
+$('bAjustes').addEventListener('click', () => { pintaAjustes(); $('mAjustes').hidden = false; });
+$('ajCerrar').addEventListener('click', () => { $('mAjustes').hidden = true; });
+$('mAjustes').addEventListener('click', e => { if(e.target.id === 'mAjustes') $('mAjustes').hidden = true; });
+
+function textoSello(){
+  const n = hechos.size, r = rangoDe(n), min = Math.max(1, Math.round((Date.now() - t0) / 60000));
+  const f = new Date(), fecha = f.toLocaleDateString('es-ES') + ' ' + f.toLocaleTimeString('es-ES', {hour:'2-digit', minute:'2-digit'});
+  const estado = {v:1, h:[...hechos], t:[taller.ac, taller.racha, taller.mejor], e:[...huevos], min};
+  const sello = 'TEX1.' + btoa(unescape(encodeURIComponent(JSON.stringify(estado)))).replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, '');
+  const nombre = $('selloNombre').value.trim() || '(sin nombre)';
+  return 'EL TALLER DE EXEQUIAS · sello\n'
+    + 'Exequias me hizo · ' + nombre + ' me pintó\n'
+    + 'Fecha: ' + fecha + '\n'
+    + 'Rango: ' + r.n + ' · ' + r.s + '\n'
+    + 'Encargos: ' + n + ' de ' + ENCARGOS.length + (n ? ' · ' + [...hechos].sort((a, b) => a - b).map(i => i + 1).join(' ') : '') + '\n'
+    + 'Taller: ' + taller.ac + ' aciertos · racha ' + taller.racha + ' · mejor ' + taller.mejor + '\n'
+    + 'Hallazgos: ' + huevos.size + ' de ' + HUEVOS.length + (huevos.size ? ' · ' + [...huevos].map(h => HUEVO_DICE[h]).join(' · ') : '') + '\n'
+    + 'Horno: cocido a ' + gradosHorno(n) + ' °C\n'
+    + 'Tiempo en el taller: ' + min + ' min\n'
+    + 'Sello: ' + sello;
+}
+function pintaSello(){ $('selloTexto').innerHTML = textoSello().replace(/</g, '&lt;').replace(/(Sello: .*)/, '<span class="sello">$1</span>'); }
+$('bSello').addEventListener('click', () => { pintaSello(); $('mSello').hidden = false; $('selloAviso').textContent = ''; });
+$('selloCerrar').addEventListener('click', () => { $('mSello').hidden = true; });
+$('mSello').addEventListener('click', e => { if(e.target.id === 'mSello') $('mSello').hidden = true; });
+$('selloNombre').addEventListener('input', () => { pintaSello(); guardaTurno(); });
+$('selloCopiar').addEventListener('click', async () => {
+  const t = textoSello();
+  try{
+    if(navigator.clipboard && navigator.clipboard.writeText){ await navigator.clipboard.writeText(t); $('selloAviso').textContent = 'copiado'; return; }
+  }catch(e){}
+  const r = document.createRange(); r.selectNodeContents($('selloTexto'));
+  const s = getSelection(); s.removeAllRanges(); s.addRange(r);
+  $('selloAviso').textContent = 'seleccionado: copie con el sistema';
+});
+
+/* ═══ LA GUÍA VISUAL ═════════════════════════════════════════════════ */
+const PASOS = [
+  {id:'franja',   t:'Tu rango', d:'Empiezas como aprendiz de barro. Cada tres encargos asciendes: tornero, pintor, maestro del taller. Al cerrar los doce, firmante: el que puede firmar la vasija.'},
+  {id:'horno',    t:'El horno', d:'Sube con cada encargo hecho. Al cerrar el taller llega a 950 grados, que es a la temperatura a la que el barniz se vuelve negro.'},
+  {id:'pEncargo', t:'El encargo', d:'Exequias pide. Se hace en la sala de abajo y se pulsa Comprobar. La vasija contesta: en Grecia hablaban en primera persona.'},
+  {sel:'.fila',   t:'Los mandos', d:'Lo que se puede tocar: la figura y sus medidas, el grosor del barro, los sectores, las vasijas. Y el gesto: cortar y mover, recolocar, verter.'},
+  {sel:'.escena', t:'La escena', d:'El barro sobre la malla de palmos. Cambia con los mandos: es donde se ve lo que la cuenta dice.'},
+  {sel:'.lectura',t:'La lectura', d:'La definición primero, en cursiva, y luego la cuenta contada. Nunca una fórmula sin su corte.'},
+  {id:'barra',    t:'La barra', d:'Taller para practicar libre, Salas para abrir cualquiera suelta, Glosario con las medidas griegas, Deudas con lo que se dice sin demostrar, Sello para llevarse la sesión y Ajustes para elegir figuras rojas o negras.'}
+];
+let paso = 0;
+function elDe(p){
+  if(p.id) return $(p.id);
+  const sala = document.querySelector('#pMesa:not([hidden]), #pTorno:not([hidden]), #pCirculo:not([hidden]), #pAlacena:not([hidden])');
+  return sala ? sala.querySelector(p.sel) : null;
+}
+function pintaPaso(){
+  const p = PASOS[paso], e = elDe(p);
+  if(!e){ paso++; if(paso >= PASOS.length){ cierraGuia(); return; } pintaPaso(); return; }
+  e.scrollIntoView({behavior:'smooth', block:'center'});
+  setTimeout(() => {
+    const r = e.getBoundingClientRect(), f = $('tourFoco');
+    f.style.top = (r.top - 6) + 'px'; f.style.left = (r.left - 6) + 'px'; f.style.width = (r.width + 12) + 'px'; f.style.height = (r.height + 12) + 'px';
+    const g = $('tourGlobo'); $('tourTit').textContent = p.t; $('tourTxt').textContent = p.d;
+    $('tourNum').textContent = (paso + 1) + ' de ' + PASOS.length;
+    $('tourSig').textContent = paso === PASOS.length - 1 ? 'Terminar' : 'Siguiente';
+    const abajo = r.bottom + 12, alto = g.offsetHeight || 140;
+    g.style.top = (abajo + alto < innerHeight - 8 ? abajo : Math.max(8, r.top - alto - 12)) + 'px';
+    g.style.left = Math.min(Math.max(12, r.left), innerWidth - (g.offsetWidth || 320) - 12) + 'px';
+    g.focus();
+  }, 320);
+}
+function abreGuia(){ entraTaller(false); cierraPaneles(); paso = 0; $('tourCapa').hidden = false; pintaPaso(); }
+function cierraGuia(){ $('tourCapa').hidden = true; }
+$('bGuia').addEventListener('click', abreGuia);
+$('tourSig').addEventListener('click', e => { e.stopPropagation(); paso++; if(paso >= PASOS.length) cierraGuia(); else pintaPaso(); });
+$('tourSalir').addEventListener('click', e => { e.stopPropagation(); cierraGuia(); });
+$('tourCapa').addEventListener('click', e => { if(e.target.id === 'tourCapa') cierraGuia(); });
+addEventListener('keydown', e => { if(e.key === 'Escape'){ cierraGuia(); $('mAjustes').hidden = true; $('mSello').hidden = true; } });
+
+/* ═══ EL ARRANQUE ════════════════════════════════════════════════════ */
+{
+  const lineas = ['barro', 'torno', 'horno', 'firma'];
+  const rapido = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  $('bootLista').innerHTML = lineas.map((l, i) => '<span style="animation-delay:' + (rapido ? 0 : .3 + i * .45) + 's">' + l + '</span>').join('');
+  const fuera = () => { const b = $('boot'); if(!b || b.classList.contains('fuera')) return; b.classList.add('fuera'); setTimeout(() => b.remove(), 600); };
+  $('boot').addEventListener('click', fuera);
+  setTimeout(fuera, rapido ? 300 : 2700);
+}
+
+/* ═══ EL AUTODIAGNÓSTICO ═════════════════════════════════════════════ */
+$('ixDiag').addEventListener('click', () => {
+  const d = $('diag'); d.hidden = false; const li = [];
+  const di = (t, ok) => li.push('<div class="' + (ok ? 'ok' : 'ko') + '">' + (ok ? '✓ ' : '✗ ') + t + '</div>');
+  // 1 · la mesa: el rectángulo se cuenta, y las demás se cortan
+  let ok1 = true; for(let b = 2; b <= 8; b++) for(let h = 1; h <= 6; h++){
+    if(areaMesa({fig:'rect', b, h}) !== b * h || Math.abs(areaMesa({fig:'tri', b, h}) - b * h / 2) > 1e-9 || areaMesa({fig:'para', b, h}) !== b * h) ok1 = false;
+    for(let b2 = 1; b2 < b; b2++) if(Math.abs(areaMesa({fig:'trap', b, h, b2}) - (b + b2) * h / 2) > 1e-9) ok1 = false; }
+  di('rectángulo b·h, triángulo la mitad, paralelogramo lo mismo, trapecio la mitad de (B + b)·h (todas las medidas)', ok1);
+  di('el trapecio con su gemelo hace un paralelogramo: (B + b)·h = 2 · trapecio', [[6,3,4],[8,2,5],[5,4,1]].every(([b, b2, h]) => Math.abs((b + b2) * h - 2 * areaMesa({fig:'trap', b, b2, h})) < 1e-9));
+  // 2 · el torno: área × grosor = barro, y el barro no cambia
+  let ok2 = true; [24, 48, 96].forEach(barro => [2, 1, 0.5, 0.25].forEach(grosor => { const c = cuentasTorno({barro, grosor}); if(Math.abs(c.A * grosor - barro) > 1e-9 || Math.abs(PI * c.R * c.R - c.A) > 1e-9) ok2 = false; }));
+  di('área del disco × grosor = barro, y π·R² = área (12 combinaciones)', ok2);
+  let ok3 = true; [24, 48, 96].forEach(barro => [1, 0.5, 0.25].forEach(grosor => { const c = cuentasTorno({barro, grosor}); const paredes = PI * R_INT * R_INT * grosor + 2 * PI * R_INT * grosor * c.h; if(c.h > 0 && Math.abs(paredes - barro) > 1e-6) ok3 = false; }));
+  di('en la vasija, fondo + paredes = el mismo barro (9 combinaciones)', ok3);
+  di('con pared fina cabe más y el barro es el mismo', cuentasTorno({barro:48, grosor:0.25}).cap > cuentasTorno({barro:48, grosor:0.5}).cap && cuentasTorno({barro:48, grosor:2}).h === 0);
+  // 3 · el círculo: el zigzag tiende a π·r
+  let ok4 = true; [2, 3, 4].forEach(r => { let prev = Infinity; [8, 16, 32, 64, 128].forEach(n => { const ang = 2 * PI / n, w = 2 * r * Math.sin(ang / 2), base = w * n / 2, dif = Math.abs(base - PI * r); if(dif > prev + 1e-12) ok4 = false; prev = dif; }); });
+  di('la base del zigzag se acerca a π·r al subir los sectores, sin llegar (3 radios × 5 cortes)', ok4);
+  di('la regla egipcia de ocho novenos se queda a menos del 1 % de π·r²', [2, 3, 4].every(r => Math.abs((8/9 * 2 * r) ** 2 - PI * r * r) / (PI * r * r) < .01));
+  // 4 · la alacena: las docenas y el litro
+  di('un chous son 12 kotylai, un metretes 12 choes, la hidria 4 choes, la crátera 8', VASIJAS.oinocoe.kot === 12 && VASIJAS.anfora.kot === 144 && VASIJAS.hidria.kot / 12 === 4 && VASIJAS.cratera.kot / 12 === 8);
+  di('el ánfora hace unos 39 litros y el cubo de un palmo es un litro', Math.abs(litros(VASIJAS.anfora.kot) - 38.88) < 1e-9 && Math.abs(litros(VASIJAS.cubo.kot) - 1) < 1e-9);
+  di('la hidria se llena con 48 kylikes justas y con 4 oinocoes', cabenAla({grande:'hidria', pequena:'kylix'}) === 48 && cabenAla({grande:'hidria', pequena:'oinocoe'}) === 4);
+  // 5 · los generadores
+  let ok6 = true, n6 = 0; for(const k in TIPOS) for(let i = 0; i < 80; i++){ const e = TIPOS[k].gen(); n6++;
+    const sol = typeof e.sol === 'number' ? String(e.sol).replace('.', ',') : e.sol;
+    if(!e.ok(sol) || e.ok('999999999') || e.ok('') || !e.t || !e.exp) ok6 = false; }
+  di('los ' + Object.keys(TIPOS).length + ' generadores del taller aceptan su solución y rechazan basura (' + n6 + ' pruebas)', ok6);
+  let ok7 = true; const guardaMesa = {...mesa}, guardaTorno = {...torno}, guardaCirc = {...circ}, guardaAla = {...ala};
+  for(let i = 0; i < 60; i++){ for(const k in TIPOS){ const e = TIPOS[k].gen(); if(e.pon) e.pon(); }
+    if(!FIGS[mesa.fig] || mesa.b < 2 || mesa.b > 8 || mesa.h < 1 || mesa.h > 6 || mesa.b2 >= mesa.b || ![24,48,96].includes(torno.barro) || ![2,1,0.5,0.25].includes(torno.grosor)
+       || ![2,3,4].includes(circ.r) || ![4,8,16,32,64].includes(circ.n) || !VASIJAS[ala.grande] || !VASIJAS[ala.pequena]) ok7 = false; }
+  Object.assign(mesa, guardaMesa); Object.assign(torno, guardaTorno); Object.assign(circ, guardaCirc); Object.assign(ala, guardaAla);
+  di('«verlo en la sala» deja los mandos en valores que existen (360 pruebas)', ok7);
+  // 6 · los encargos
+  di('los ' + ENCARGOS.length + ' encargos apuntan a una sala que existe', ENCARGOS.every(e => SALAS[e.sala]));
+  di('cada encargo de opciones tiene UNA correcta, y todas explican', ENCARGOS.filter(e => e.ops).every(e => e.ops.filter(o => o.ok).length === 1 && e.ops.every(o => o.r && o.r.length > 20)));
+  di('cada encargo de manipulativo trae pre, bien y mal', ENCARGOS.filter(e => !e.ops).every(e => e.pre && e.bien && e.mal));
+  let ok8 = true; ENCARGOS.forEach(e => { if(e.ops) return; e.pre(); if(e.ok()) ok8 = false; });
+  di('ningún encargo de manipulativo está resuelto nada más abrirlo', ok8);
+  di('las ' + Object.keys(SALAS).length + ' salas tienen rótulo y pintor', Object.keys(SALAS).every(k => LEMAS[k] && PINTA[k]));
+  di('los rangos cubren los ' + ENCARGOS.length + ' encargos y acaban en firmante, con el horno a 950', rangoDe(0).n === 'Aprendiz de barro' && rangoDe(ENCARGOS.length).n === 'Firmante' && rangoDe(7).n === 'Pintor' && gradosHorno(ENCARGOS.length) === 950);
+  di('los ' + HUEVOS.length + ' hallazgos tienen su frase', HUEVOS.every(h => HUEVO_DICE[h]));
+  d.innerHTML = li.join('');
+  pintaEncargo();
+});
+
+/* ── EL VESTIDO DE LAS SALAS y LA APERTURA ────────────────────────────── */
+Object.keys(SALAS).forEach(k => {
+  const pan = $(SALAS[k]), [nom, lema] = LEMAS[k];
+  const rot = document.createElement('div'); rot.className = 'salaRot';
+  rot.innerHTML = '<b>' + nom + '</b><span>' + lema + '</span>'; pan.insertBefore(rot, pan.firstChild);
+});
+{
+  const d = leeTurno();
+  if(d){
+    enc = d.enc; d.hechos.forEach(i => { if(i >= 0 && i < ENCARGOS.length) hechos.add(i); });
+    (d.huevos || []).forEach(h => { if(HUEVO_DICE[h]) huevos.add(h); });
+    const t = d.taller || {}; taller.ac = t.ac|0; taller.racha = t.racha|0; taller.mejor = t.mejor|0;
+    if(d.aj) Object.keys(AJ).forEach(k => { if(d.aj[k] !== undefined) AJ[k] = d.aj[k]; });
+    if(d.nombre) $('selloNombre').value = d.nombre;
+    t0 = d.t0 || Date.now();
+    ultimoRango = rangoDe(hechos.size).n;
+  }
+  aplicaAjustes();
+  pintaEncargo();
+  armaQuieto();
+  document.addEventListener('pointerdown', () => Ruido.despierta(), {once:true});
+}
+
+</script>
+</body></html>
