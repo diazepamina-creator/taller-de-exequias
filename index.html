@@ -199,6 +199,16 @@ button.b[aria-pressed="true"]{border-color:var(--barro);color:var(--barro)}
   font-size:13px;line-height:1.35;z-index:5;opacity:0;transform:translateY(6px);transition:opacity .3s ease,transform .3s ease;pointer-events:none}
 .globo::after{content:'';position:absolute;right:-8px;top:14px;border:6px solid transparent;border-left-color:var(--cal)}
 .globo.mira{opacity:1;transform:none}
+/* QUELONA, cruzando una escena a su paso. Con la manía de contar en voz alta. */
+.pasea{position:absolute;left:-64px;bottom:14px;width:56px;pointer-events:none;z-index:6;animation:cruzaLento 7s linear forwards}
+.pasea svg{width:100%;height:auto;display:block;filter:drop-shadow(0 3px 8px rgba(0,0,0,.45))}
+.pasea b{position:absolute;left:56px;bottom:16px;white-space:nowrap;background:var(--cal);color:#1A1310;
+  border-radius:10px;padding:4px 9px;font-size:11.5px;font-weight:400;font-family:'Space Mono',monospace}
+.pasea svg .pata1{animation:pata .5s ease-in-out infinite alternate;transform-origin:12px 30px}
+.pasea svg .pata2{animation:pata .5s ease-in-out infinite alternate-reverse;transform-origin:27px 30px}
+@keyframes cruzaLento{from{left:-64px}to{left:100%}}
+@keyframes pata{from{transform:rotate(-9deg)}to{transform:rotate(9deg)}}
+.soplable:hover{fill:rgba(217,164,65,.14)}
 /* los malabares: ocho vasijas girando alrededor de Exequias */
 .malabar{position:absolute;right:20px;top:-84px;width:140px;height:140px;pointer-events:none;z-index:5}
 .malabar i{position:absolute;left:50%;top:50%;width:14px;height:20px;margin:-10px 0 0 -7px;
@@ -296,11 +306,20 @@ input.nombre{font-family:inherit;font-size:15px;padding:8px 10px;border-radius:9
   padding:24px;text-align:center;transition:opacity .5s ease;color:#EDE0C8}
 .boot.fuera{opacity:0;pointer-events:none}
 .boot .tit{font-family:'Marcellus',serif;font-size:clamp(24px,6vw,34px);color:#D2743F;letter-spacing:1px}
-.boot .torno{width:120px;height:120px}
-.boot .torno .rueda{transform-origin:60px 96px;animation:gira 1.1s linear infinite}
-.boot .torno .barro{transform-origin:60px 96px;animation:sube 2.4s ease-out forwards}
-@keyframes gira{to{transform:rotate(360deg)}}
-@keyframes sube{0%{transform:scaleY(.25)}100%{transform:scaleY(1)}}
+.bootEscena{position:relative;width:246px;height:150px}
+.bootEscena .pulpo{position:absolute;left:2px;bottom:14px;width:88px;z-index:3;filter:drop-shadow(0 4px 10px rgba(0,0,0,.6))}
+.bootEscena .pulpo svg{width:100%;height:auto;display:block}
+.boot .torno{position:absolute;right:0;bottom:0;width:200px;height:150px;z-index:2}
+.boot .torno .giro{animation:vibra .34s linear infinite}
+.boot .torno .barro{transform-origin:112px 92px;animation:abre 2.4s ease-out forwards}
+.boot .torno .barro .boca{animation:abreBoca 2.4s ease-out forwards}
+.boot .torno .brazos{animation:amasa .62s ease-in-out infinite alternate}
+@keyframes vibra{0%,100%{opacity:.25}50%{opacity:1}}
+/* el barro no sube: se ABRE. Empieza chato y se ensancha hasta ser cuenco. */
+/* no sube un pegote: suben las PAREDES de una torta ancha */
+@keyframes abre{0%{transform:scaleY(.1)}60%{transform:scaleY(1.06)}100%{transform:scaleY(1)}}
+@keyframes abreBoca{0%,35%{opacity:0}100%{opacity:1}}
+@keyframes amasa{from{transform:translateY(1px)}to{transform:translateY(-3px)}}
 .boot .lista{font-family:'Space Mono',monospace;font-size:12px;letter-spacing:1.6px;text-transform:uppercase;color:#B5A48F;display:flex;gap:14px}
 .boot .lista span{opacity:0;animation:pasaLista .3s forwards}
 .boot .saltar{position:absolute;bottom:26px;font-family:'Space Mono',monospace;font-size:10.5px;letter-spacing:1.6px;text-transform:uppercase;color:#B5A48F;opacity:.8}
@@ -320,20 +339,48 @@ footer.pie svg circle{fill:var(--tenue)}
 @media (prefers-reduced-motion: reduce){
   *{animation-duration:.001ms !important;transition-duration:.001ms !important}
   .asomo.arriba.mira,.asomo.arriba.mira.falla{transform:translateY(calc(-64% + 2px))}
+  .pasea{animation:none;left:auto;right:12px}
 }
 </style>
 </head><body>
 
 <div class="boot" id="boot" role="status" aria-live="polite">
   <div class="tit">El taller de Exequias</div>
-  <svg class="torno" viewBox="0 0 120 120" aria-hidden="true">
-    <ellipse cx="60" cy="100" rx="52" ry="9" fill="#3A2418"/>
-    <g class="rueda"><ellipse cx="60" cy="96" rx="44" ry="7" fill="#4A372C" stroke="#D2743F" stroke-width="1.5"/>
-      <path d="M20 96 H100 M60 89 V103" stroke="#D2743F" stroke-width="1" opacity=".6"/></g>
-    <g class="barro"><path d="M44 96 Q38 60 48 40 Q52 28 60 24 Q68 28 72 40 Q82 60 76 96 Z" fill="#D2743F"/>
-      <path d="M50 32 Q60 26 70 32" stroke="#1A1310" stroke-width="1.5" fill="none"/></g>
-  </svg>
-  <div class="lista" id="bootLista"></div>
+  <div class="bootEscena">
+    <div class="pulpo" id="bootPulpo" aria-hidden="true"></div>
+    <svg class="torno" viewBox="0 0 174 130" aria-hidden="true">
+      <!-- el suelo -->
+      <ellipse cx="112" cy="120" rx="54" ry="6.5" fill="#3A2418"/>
+      <!-- la rueda de abajo, la que se pisa, vista de lado -->
+      <ellipse cx="112" cy="112" rx="36" ry="6" fill="#3A2418"/>
+      <ellipse cx="112" cy="110" rx="36" ry="6" fill="#4A372C" stroke="#D2743F" stroke-width="1.2"/>
+      <!-- que gira se nota por las rayas, no por dar vueltas a un óvalo -->
+      <g class="giro" fill="none" stroke="#D2743F" stroke-width="1.4" stroke-linecap="round">
+        <path d="M70 106 q-9 3 -15 1"/><path d="M154 106 q9 3 15 1"/>
+        <path d="M73 114 q-8 2 -13 0"/><path d="M151 114 q8 2 13 0"/>
+      </g>
+      <!-- el eje y la tabla de arriba, donde se trabaja -->
+      <rect x="108" y="92" width="8" height="20" fill="#4A372C"/>
+      <ellipse cx="112" cy="96" rx="30" ry="5.4" fill="#3A2418"/>
+      <ellipse cx="112" cy="94.6" rx="30" ry="5.4" fill="#4A372C" stroke="#D2743F" stroke-width="1.1"/>
+      <!-- EL BARRO. Empieza siendo una torta ancha y le SUBEN las paredes:
+           el ancho no cambia, lo que crece es la pared. Así se abre un cuenco. -->
+      <ellipse cx="112" cy="92" rx="27" ry="5.2" fill="#D2743F"/>
+      <g class="barro">
+        <path d="M85 92 Q83 68 112 66 Q141 68 139 92 Z" fill="#D2743F"/>
+        <ellipse class="boca" cx="112" cy="66.5" rx="27" ry="5.6" fill="#2A1A12" stroke="#A8552A" stroke-width="1.2"/>
+      </g>
+      <!-- dos brazos más, que salen de detrás del alfarero y abren el borde -->
+      <g class="brazos" stroke-linecap="round" fill="none">
+        <path d="M6 64 Q62 42 134 70" stroke="#241C36" stroke-width="7"/>
+        <path d="M6 64 Q62 42 134 70" stroke="#A8553F" stroke-width="4.4"/>
+        <path d="M4 88 Q46 96 84 90" stroke="#241C36" stroke-width="7"/>
+        <path d="M4 88 Q46 96 84 90" stroke="#A8553F" stroke-width="4.4"/>
+        <g fill="#C4705A"><circle cx="44" cy="53.4" r="1.5"/><circle cx="66" cy="51.6" r="1.5"/>
+          <circle cx="40" cy="92.6" r="1.5"/><circle cx="60" cy="93.4" r="1.5"/></g>
+      </g>
+    </svg>
+  </div>  <div class="lista" id="bootLista"></div>
   <div class="saltar">toca para saltar</div>
 </div>
 
@@ -382,8 +429,8 @@ footer.pie svg circle{fill:var(--tenue)}
 </div>
 <div class="panel informe encargo" id="informe" hidden>
   <div class="asomo arriba" id="asomoArriba" aria-hidden="true"></div>
-  <div class="cara" id="caraVasija"></div>
-  <div class="quien">La vasija</div>
+  <div class="cara" id="caraTortuga"></div>
+  <div class="quien">Quelona, la tortuga del taller</div>
   <p class="encTxt" id="infTxt"></p>
 </div>
 
@@ -589,18 +636,19 @@ const PI = Math.PI;
    litros, el chous de doce kotylai y el metretes de doce choes. ── */
 const KOTYLE = 0.27;
 const VASIJAS = {
-  kylix:   {nom:'kylix',   pl:'kylikes',  kot:1,   uso:'la copa de beber; una kotyle'},
-  oinocoe: {nom:'oinocoe', pl:'oinocoes', kot:12,  uso:'la jarra de servir; un chous, doce kotylai'},
-  hidria:  {nom:'hidria',  pl:'hidrias',  kot:48,  uso:'la de ir a la fuente, con tres asas; cuatro choes'},
-  cratera: {nom:'crátera', pl:'cráteras', kot:96,  uso:'donde se mezcla el vino con agua; ocho choes'},
-  anfora:  {nom:'ánfora',  pl:'ánforas',  kot:144, uso:'la de guardar y transportar; un metretes, doce choes'},
-  cubo:    {nom:'cubo de un palmo', pl:'cubos de un palmo', kot:1/KOTYLE, uso:'un litro: lo que hoy se usa en la cocina'}
+  kylix:   {art:'la', un:'una', nom:'kylix',   pl:'kylikes',  kot:1,   uso:'la copa de beber; una kotyle'},
+  oinocoe: {art:'la', un:'una', nom:'oinocoe', pl:'oinocoes', kot:12,  uso:'la jarra de servir; un chous, doce kotylai'},
+  hidria:  {art:'la', un:'una', nom:'hidria',  pl:'hidrias',  kot:48,  uso:'la de ir a la fuente, con tres asas; cuatro choes'},
+  cratera: {art:'la', un:'una', nom:'crátera', pl:'cráteras', kot:96,  uso:'donde se mezcla el vino con agua; ocho choes'},
+  anfora:  {art:'el', un:'un', nom:'ánfora',  pl:'ánforas',  kot:144, uso:'la de guardar y transportar; un metretes, doce choes'},
+  cubo:    {art:'el', un:'un', nom:'cubo de un palmo', pl:'cubos de un palmo', kot:1/KOTYLE, uso:'un litro: lo que hoy se usa en la cocina'}
 };
 const litros = kot => kot * KOTYLE;
+/* el ánfora es «el ánfora» y la hidria es «la hidria»: cada una con su artículo */
+const laV = (k, may) => { const t = VASIJAS[k].art + ' ' + VASIJAS[k].nom; return may ? t[0].toUpperCase() + t.slice(1) : t; };
 
 /* ── LOS RETRATOS. Exequias y Jeferión, copiados de la línea del tiempo tal
-   cual. La vasija es nueva: una copa de ojos —las de verdad llevaban dos
-   ojos enormes pintados para espantar el mal— con sonrisa de asa. ── */
+   cual. Quelona es nueva. ── */
 const CARA_EXEQUIAS = `<svg viewBox="0 0 46 48" aria-hidden="true">
   <!-- EXEQUIAS · el alfarero. Pulpo, porque en un torno hacen falta más
        manos de las que tiene nadie. El nombre es el del alfarero ateniense
@@ -654,32 +702,64 @@ const CARA_EXEQUIAS = `<svg viewBox="0 0 46 48" aria-hidden="true">
   </g>
 </svg>`;
 const CARA_JEFERION = `<svg viewBox="4 2 44 44"> <path d="M7 41 Q8 28 20 26 L32 26 Q44 29 45 41 Z" fill="#A9B347" stroke="#241C36" stroke-width="1.2"/> <path d="M45.4 39 L42.6 34.6 L41.2 38 L38.6 33.4 L37.4 36.6" fill="none" stroke="#7A882C" stroke-width="2.4" stroke-linejoin="round" stroke-linecap="round"/> <path d="M13 28.5 Q25 34 35 41" stroke="#7E5C86" stroke-width="4" fill="none"/> <path d="M13 28.5 Q25 34 35 41" stroke="rgba(233,184,78,.55)" stroke-width="1.1" fill="none"/> <path d="M36 30 L43 21 L41.5 14" stroke="#241C36" stroke-width="5.4" fill="none" stroke-linecap="round" stroke-linejoin="round"/> <path d="M36 30 L43 21 L41.5 14" stroke="#A9B347" stroke-width="3.6" fill="none" stroke-linecap="round" stroke-linejoin="round"/> <rect x="38.8" y="10.2" width="5.2" height="4.4" rx="1.8" fill="#A9B347" stroke="#241C36" stroke-width="1"/> <circle cx="24" cy="16" r="8.6" fill="#A9B347" stroke="#241C36" stroke-width="1.2"/> <path d="M20 16.2 L10.2 16.2 Q7 16.2 7 19.4 Q7 22.6 10.2 22.6 L20 22.6 Z" fill="#A9B347" stroke="#241C36" stroke-width="1.2" stroke-linejoin="round"/><rect x="16.5" y="16.6" width="4" height="5.6" fill="#A9B347"/><circle cx="9.6" cy="18.4" r=".75" fill="#241C36"/><path d="M8.8 21.4 H17" stroke="#241C36" stroke-width=".9" stroke-linecap="round"/> <circle cx="20.4" cy="15" r="3.5" fill="#f2f6fb" stroke="#241C36" stroke-width="1.2"/> <circle cx="27.8" cy="14.6" r="3.5" fill="#f2f6fb" stroke="#241C36" stroke-width="1.2"/> <path d="M23.9 14.9 H24.3" stroke="#241C36" stroke-width="1.2"/> <circle cx="20.7" cy="15.2" r="1.35" fill="#140F1F"/><circle cx="28.1" cy="14.8" r="1.35" fill="#140F1F"/> <rect x="25.6" y="9.5" width="5" height="1.6" rx=".8" fill="#241C36" transform="rotate(12 28.1 10.3)"/> <rect x="17.2" y="9.9" width="5" height="1.6" rx=".8" fill="#241C36" transform="rotate(-12 19.7 10.7)"/> <path d="M16.6 8 Q24 3.4 31.4 8" fill="none" stroke="#5E7A2A" stroke-width="1.4" stroke-linecap="round"/> <ellipse cx="18" cy="7.6" rx="2" ry=".9" fill="#7FA33C" stroke="rgba(16,11,26,.35)" stroke-width=".5" transform="rotate(-26 18 7.6)"/> <ellipse cx="30" cy="7.6" rx="2" ry=".9" fill="#7FA33C" stroke="rgba(16,11,26,.35)" stroke-width=".5" transform="rotate(26 30 7.6)"/> <ellipse cx="22.3" cy="5.3" rx="1.9" ry=".85" fill="#7FA33C" stroke="rgba(16,11,26,.35)" stroke-width=".5" transform="rotate(-10 22.3 5.3)"/> <ellipse cx="25.8" cy="5.2" rx="1.9" ry=".85" fill="#7FA33C" stroke="rgba(16,11,26,.35)" stroke-width=".5" transform="rotate(10 25.8 5.2)"/> </svg>`;
-const CARA_VASIJA = `<svg viewBox="0 0 46 48" aria-hidden="true">
-  <!-- LA VASIJA QUE HABLA. Un ánfora panzuda con la cara de las copas de
-       ojos: dos ojos grandes de almendra, la nariz que las copas llevaban
-       entre los ojos, y una sonrisa que es la curva de un asa. Va en los
-       colores de las figuras negras, que es su oficio. -->
-  <ellipse cx="23" cy="46" rx="12" ry="1.8" fill="#000" opacity=".3"/>
+/* El ánfora que Exequias levanta al ascender: la misma que firma, sin cara
+   ninguna. Las vasijas de este taller hablan, pero no ponen caras. */
+const VASIJA_LISA = `<svg viewBox="0 0 46 48" aria-hidden="true">
   <path d="M17 3 H29 L28 8 Q40 14 39 26 Q38 40 23 44 Q8 40 7 26 Q6 14 18 8 Z" fill="#D2743F" stroke="#1A1310" stroke-width="1.4" stroke-linejoin="round"/>
   <path d="M17 3 H29" stroke="#1A1310" stroke-width="2.2" stroke-linecap="round"/>
-  <!-- las asas, que son las orejas -->
   <path d="M10 12 Q2 18 8 28" fill="none" stroke="#1A1310" stroke-width="2.6" stroke-linecap="round"/>
   <path d="M36 12 Q44 18 38 28" fill="none" stroke="#1A1310" stroke-width="2.6" stroke-linecap="round"/>
-  <!-- la banda de rayos del pie -->
   <path d="M12 38 L15 33 L18 38 L21 33 L24 38 L27 33 L30 38 L33 33 L35 38" fill="none" stroke="#1A1310" stroke-width="1"/>
-  <!-- los ojos de la copa de ojos -->
-  <path d="M10.5 20 Q16 13 21.5 20 Q16 27 10.5 20 Z" fill="#EDE0C8" stroke="#1A1310" stroke-width="1.2"/>
-  <path d="M24.5 20 Q30 13 35.5 20 Q30 27 24.5 20 Z" fill="#EDE0C8" stroke="#1A1310" stroke-width="1.2"/>
-  <circle cx="16.4" cy="20" r="3" fill="#1A1310"/><circle cx="29.6" cy="20" r="3" fill="#1A1310"/>
-  <circle cx="17.4" cy="19" r="1" fill="#EDE0C8"/><circle cx="30.6" cy="19" r="1" fill="#EDE0C8"/>
-  <!-- la nariz de las copas de ojos, entre los dos -->
-  <path d="M23 21 L21.6 25.5 H24.4 Z" fill="#8C3A46" stroke="#1A1310" stroke-width=".8"/>
-  <!-- la sonrisa: la curva de un asa -->
-  <path d="M15 29 Q23 36 31 29" fill="none" stroke="#1A1310" stroke-width="1.8" stroke-linecap="round"/>
-  <path d="M15 29 Q23 33.5 31 29" fill="#EDE0C8" stroke="none" opacity=".9"/>
+  <path d="M11 17 Q23 13 35 17 L34.4 24 Q23 20 11.6 24 Z" fill="#1A1310"/>
+  <text x="23" y="22.4" text-anchor="middle" font-family="serif" font-size="6" fill="#D2743F" letter-spacing=".6">ΕΧΣΕΚΙΑΣ</text>
+</svg>`;
+/* QUELONA · la tortuga del taller. Se llama así porque los griegos llamaban
+   chelone a las tortugas, igual que Miut se llama Miut. El caparazón no es
+   un adorno: es un teselado —placas que cubren sin solaparse ni dejar
+   hueco—, que es la definición de área paseándose por el taller. Y es el
+   animal de Zenón, así que de límites sabe lo suyo. */
+const CARA_TORTUGA = `<svg viewBox="0 0 46 48" aria-hidden="true">
+  <ellipse cx="23" cy="45.4" rx="16" ry="2" fill="#000" opacity=".3"/>
+  <g fill="#7E8F55" stroke="#1A1310" stroke-width="1.2" stroke-linejoin="round">
+    <path d="M7.6 31.6 Q2.4 33.6 3 39.4 Q3.4 43.4 7 43.4 Q10.4 43.4 11.4 39.6 Z"/>
+    <path d="M38.4 31.6 Q43.6 33.6 43 39.4 Q42.6 43.4 39 43.4 Q35.6 43.4 34.6 39.6 Z"/>
+  </g>
+  <path d="M5.6 31.4 C5.6 13.6 12.4 7.4 23 7.4 C33.6 7.4 40.4 13.6 40.4 31.4 Q23 36.6 5.6 31.4 Z" fill="#CB6836" stroke="#1A1310" stroke-width="1.5" stroke-linejoin="round"/>
+  <g fill="#AE5327"><path d="M15.6 10.6 Q23 8.2 30.4 10.6 L31 18 H15 Z"/><path d="M15 25.2 H31 L30.6 33 Q23 34.4 15.4 33 Z"/></g>
+  <g stroke="#1A1310" stroke-width="1.1" fill="none">
+    <path d="M15.4 9.8 Q13.4 20 14.4 33.6"/><path d="M30.6 9.8 Q32.6 20 31.6 33.6"/>
+    <path d="M14.9 18 H31.1"/><path d="M14.9 25.2 H31.1"/><path d="M23 8 V33.9"/>
+  </g>
+  <g stroke="#1A1310" stroke-width=".9" fill="none"><path d="M9.4 30.6 Q9.6 26 10.2 21"/><path d="M36.6 30.6 Q36.4 26 35.8 21"/></g>
+  <circle cx="23" cy="37.6" r="7.6" fill="#7E8F55" stroke="#1A1310" stroke-width="1.3"/>
+  <circle cx="19.8" cy="36.2" r="2.7" fill="#EDE0C8" stroke="#1A1310" stroke-width=".8"/>
+  <circle cx="26.2" cy="36.2" r="2.7" fill="#EDE0C8" stroke="#1A1310" stroke-width=".8"/>
+  <circle cx="20.2" cy="36.4" r="1.35" fill="#1A1310"/><circle cx="26.6" cy="36.4" r="1.35" fill="#1A1310"/>
+  <circle cx="20.7" cy="35.7" r=".5" fill="#EDE0C8"/><circle cx="27.1" cy="35.7" r=".5" fill="#EDE0C8"/>
+  <g fill="#1A1310"><circle cx="21.7" cy="40.2" r=".55"/><circle cx="24.3" cy="40.2" r=".55"/></g>
+  <path d="M20.4 42.2 Q23 44.2 25.6 42.2" fill="none" stroke="#1A1310" stroke-width="1.1" stroke-linecap="round"/>
+</svg>`;
+/* La misma, de perfil, para cuando cruza una escena andando. */
+const TORTUGA_ANDA = `<svg viewBox="0 0 46 48" aria-hidden="true">
+  <ellipse cx="23" cy="42.4" rx="17" ry="2" fill="#000" opacity=".3"/>
+  <g fill="#7E8F55" stroke="#1A1310" stroke-width="1.2" stroke-linejoin="round">
+    <path class="pata1" d="M12 30 Q8.6 32 9 37.4 Q9.2 40.6 12.4 40.6 Q15 40.6 15.4 37 Z"/>
+    <path class="pata2" d="M27 30 Q23.6 32.4 24 37.8 Q24.2 41 27.4 41 Q30 41 30.4 37.4 Z"/>
+    <path d="M6.6 26.4 Q2.6 26.8 2.4 29.6 Q4.6 30.6 7.6 29.4 Z"/>
+  </g>
+  <path d="M4.4 28.6 C4.4 15.6 12.6 10.4 23 10.4 C33.4 10.4 41.2 16 41.2 27.4 Q23 33.4 4.4 28.6 Z" fill="#CB6836" stroke="#1A1310" stroke-width="1.5" stroke-linejoin="round"/>
+  <g stroke="#1A1310" stroke-width="1.1" fill="none">
+    <path d="M13 11.8 Q11.4 20 12.2 31.2"/><path d="M23.4 10.4 Q23.4 20 23.6 32.6"/><path d="M33.4 12 Q34.4 20 34 31"/>
+    <path d="M6 22.6 Q23 27.6 40.4 22.2"/>
+  </g>
+  <g fill="#AE5327"><path d="M13.6 12.6 Q18.4 10.8 23 10.8 L23 22.8 Q17.6 22.4 13 21.2 Z"/><path d="M24 23 Q29.4 22.8 34 21.6 L34 31 Q29 32.4 24 32.6 Z"/></g>
+  <path d="M40 26.4 Q44.6 25.6 45 21.4 Q45.2 16.6 40.6 16.6 Q36.2 16.6 35.6 21" fill="#7E8F55" stroke="#1A1310" stroke-width="1.3" stroke-linejoin="round"/>
+  <circle cx="41.4" cy="20" r="2.3" fill="#EDE0C8" stroke="#1A1310" stroke-width=".8"/>
+  <circle cx="41.9" cy="20.1" r="1.15" fill="#1A1310"/><circle cx="42.4" cy="19.5" r=".45" fill="#EDE0C8"/>
+  <path d="M4.6 27 Q1.4 27.6 0.8 30.4" fill="none" stroke="#7E8F55" stroke-width="2.4" stroke-linecap="round"/>
 </svg>`;
 $('caraExequias').innerHTML = CARA_EXEQUIAS;
-$('caraVasija').innerHTML = CARA_VASIJA;
+$('caraTortuga').innerHTML = CARA_TORTUGA;
 
 /* ── EL SONIDO: el torno, el barro, el crujido del horno, y lo de siempre. */
 const Ruido = (() => {
@@ -701,6 +781,10 @@ const Ruido = (() => {
     torno(){ tono(70, .5, .05, 'sawtooth', 0, 110); },
     barro(){ tono(120, .12, .12, 'sine', 0, 60); },
     horno(){ for(let i = 0; i < 5; i++) tono(2000 + Math.random() * 1500, .03, .03, 'square', i * .06); },
+    /* soplar en la boca de una vasija: la nota la pone el hueco. Es un
+       resonador de Helmholtz, y la frecuencia va con 1/raíz del volumen:
+       cuanto más cabe, más grave. Aquí la cuenta es de verdad. */
+    sopla(hz, t0 = 0){ tono(hz, .55, .09, 'sine', t0); tono(hz * 2, .3, .022, 'sine', t0 + .01); tono(3200, .05, .012, 'square', t0); },
     bien(){ tono(523, .14, .07, 'triangle'); tono(784, .22, .06, 'triangle', .1); },
     mal(){ tono(150, .22, .1, 'square'); },
     asciende(){ tono(392, .16, .08, 'triangle'); tono(523, .16, .08, 'triangle', .16); tono(784, .34, .08, 'triangle', .32); this.horno(); }
@@ -1001,6 +1085,9 @@ $('cColoca').addEventListener('click', () => { circ.colocado = !circ.colocado; R
    contando: la capacidad es cuántas veces cabe la unidad. Y el cubo de un
    palmo, que es el litro, para pasar del taller a la cocina.            */
 const ala = {grande:'hidria', pequena:'kylix', vertidas:0, delfines:false};
+const sopladas = new Set();
+const SOPLABLES = ['kylix', 'oinocoe', 'hidria', 'cratera', 'anfora'];
+const notaDe = tipo => Math.round(480 / Math.sqrt(litros(VASIJAS[tipo].kot)));
 const cabenAla = a => VASIJAS[a.grande].kot / VASIJAS[a.pequena].kot;
 
 function siluetaVasija(g, tipo, cx, base, alto, lleno, extra = {}){
@@ -1023,6 +1110,11 @@ function siluetaVasija(g, tipo, cx, base, alto, lleno, extra = {}){
   if(tipo === 'kylix'){
     el(g, 'path', {d:`M${cx - w/2} ${base - alto*.7} Q${cx - w/2 - 14} ${base - alto*.72} ${cx - w/2 - 6} ${base - alto*.55}`, fill:'none', stroke:'var(--figuraO)', 'stroke-width':2.2, 'stroke-linecap':'round'});
     el(g, 'path', {d:`M${cx + w/2} ${base - alto*.7} Q${cx + w/2 + 14} ${base - alto*.72} ${cx + w/2 + 6} ${base - alto*.55}`, fill:'none', stroke:'var(--figuraO)', 'stroke-width':2.2, 'stroke-linecap':'round'});
+  }
+  if(tipo !== 'cubo'){
+    /* la boca: se puede soplar, y suena. Va la última para quedar encima. */
+    const z = el(g, 'path', {d, fill:'transparent', style:'cursor:pointer', class:'soplable', 'data-tipo':tipo});
+    z.setAttribute('role', 'button'); z.setAttribute('aria-label', 'Soplar en ' + laV(tipo));
   }
   if(tipo === 'anfora'){
     /* la firma del ánfora: se puede tocar */
@@ -1056,18 +1148,25 @@ function pintaAlacena(){
     txt(g, 526, cy + r + 14, 'el fondo de la copa de Dioniso', {'text-anchor':'end', 'font-size':10, fill:'var(--oro)'});
   }
   const f = g.querySelector('.firmaAnfora'); if(f) f.addEventListener('click', () => abreFirma('la firma del ánfora'));
+  g.querySelectorAll('.soplable').forEach(z => z.addEventListener('click', e => { e.stopPropagation(); sopla(z.getAttribute('data-tipo'), z); }));
 }
 function leeAlacena(){
   const G = VASIJAS[ala.grande], P = VASIJAS[ala.pequena], caben = cabenAla(ala), entero = Number.isInteger(redondo(caben, 6));
   $('lecAlacena').innerHTML =
     '<span class="def">La capacidad de una vasija es cuántas veces cabe dentro la vasija que se toma por unidad. Se mide llenando.</span>'
-    + (ala.vertidas === 0 ? 'La ' + G.nom + ' está vacía. Viértale ' + P.pl + ' y cuente.'
+    + (ala.vertidas === 0 ? laV(ala.grande, true) + ' está vacía. Viértale ' + P.pl + ' y cuente.'
       : ala.vertidas < caben ? 'Van <b>' + ala.vertidas + '</b> ' + P.pl + ' y aún no rebosa. Siga.'
       : 'Llena con <b>' + cifra(caben, 2) + '</b> ' + P.pl + (entero ? ': cabe justo, sin sobrar ni faltar. ' : ': ' + Math.floor(caben) + ' enteras y ' + (caben - Math.floor(caben) > .5 ? 'casi otra' : 'un poco más') + '. ')
-        + 'Eso es lo que <b>mide</b> la ' + G.nom + ' en ' + P.pl + '. '
-        + (ala.pequena === 'cubo' ? 'Y como el cubo de un palmo es un litro, la ' + G.nom + ' hace <b>' + cifra(litros(G.kot), 1) + ' litros</b>: el taller y la cocina, unidos por un cubo.'
+        + 'Eso es lo que <b>mide</b> ' + laV(ala.grande) + ' en ' + P.pl + '. '
+        + (ala.pequena === 'cubo' ? 'Y como el cubo de un palmo es un litro, ' + laV(ala.grande) + ' hace <b>' + cifra(litros(G.kot), 1) + ' litros</b>: el taller y la cocina, unidos por un cubo.'
           : 'En Grecia se contaba en docenas: ' + (G.kot >= 12 ? G.kot / 12 + ' choes' : '') + (G.kot >= 144 ? ', un metretes' : '') + '. Doce por doce, contra el diez por diez de la estepa.'))
-    + '<span class="cuenta">' + G.kot + ' ÷ ' + cifra(P.kot, 2) + ' = ' + cifra(caben, 2) + ' ' + P.pl + '   ·   ' + cifra(litros(G.kot), 2) + ' L</span>';
+    + '<span class="cuenta">' + G.kot + ' ÷ ' + cifra(P.kot, 2) + ' = ' + cifra(caben, 2) + ' ' + P.pl + '   ·   ' + cifra(litros(G.kot), 2) + ' L</span>'
+    /* las vasijas siguen hablando en primera persona, como en Grecia, aunque
+       ya no tengan cara: la que habla es la grande, y dice lo que mide. */
+    + '<span class="murmullo">' + (ala.vertidas >= caben
+        ? laV(ala.grande, true) + ', en griego y en primera persona: «' + (G.kot === 144 ? 'soy un metretes' : G.kot === 96 ? 'soy ocho choes' : 'soy cuatro choes') + ', y me han llenado hasta el labio».'
+        : laV(ala.grande, true) + ' dice, como decían las vasijas: «en mí caben ' + cifra(caben, 2) + ' ' + P.pl + '; cuéntalas si no me crees».') + '</span>'
+    + (huevos.has('musica') ? '<span class="murmullo">Y suenan: la nota de una vasija la pone el hueco, no el barro. Cuanto más cabe, más grave.</span>' : '');
 }
 function mandosAlacena(){
   tira('aGrande', ['hidria', 'cratera', 'anfora'], () => ala.grande, v => { ala.grande = v; ala.vertidas = 0; ala.delfines = false; Ruido.barro(); pintaAlacena2(); }, v => VASIJAS[v].nom, 'n v');
@@ -1104,7 +1203,7 @@ const ENCARGOS = [
   {sala:'mesa', pre(){ Object.assign(mesa, {fig:'rect', b:5, h:3, corte:false}); },
    t:'Empecemos por el suelo. <b>Extiende un rectángulo de seis palmos por cuatro</b> sobre la malla y dime cuántos cuadrados de un palmo lo cubren. Cuéntalos si hace falta: para eso está la malla.',
    ok: () => mesa.fig === 'rect' && mesa.b === 6 && mesa.h === 4,
-   bien:'Seis por fila, cuatro filas: <b>veinticuatro</b> cuadrados de un palmo. Eso, y no otra cosa, es el área: cuántos cuadrados de la unidad hacen falta para cubrirme. Lo demás son maneras de contar más rápido.',
+   bien:'Seis por fila, cuatro filas: <b>veinticuatro</b> cuadrados de un palmo. Eso, y no otra cosa, es el área: cuántos cuadrados de la unidad hacen falta para cubrir la figura. Yo lo he comprobado andando, que para eso tengo tiempo: veinticuatro pasos, uno por cuadrado.',
    mal(){ if(mesa.fig !== 'rect') return 'Pide un rectángulo, y eso es un ' + FIGS[mesa.fig] + '. Cambia la figura.';
           return 'Es un rectángulo, pero de ' + mesa.b + ' por ' + mesa.h + '. Pedía seis por cuatro.'; }},
   /* 2 · la mesa: el triángulo es medio rectángulo */
@@ -1135,14 +1234,14 @@ const ENCARGOS = [
   {sala:'torno', pre(){ Object.assign(torno, {barro:48, grosor:2, forma:'disco'}); },
    t:'Al torno. Un pegote de <b>cuarenta y ocho palmos cúbicos</b> de barro, extendido a dos palmos de grosor. <b>Estíralo hasta medio palmo</b> y dime qué ha cambiado y qué no.',
    ok: () => torno.forma === 'disco' && torno.grosor === 0.5,
-   bien:'El disco ha pasado de 24 a <b>96 palmos cuadrados</b>: cuatro veces más área, porque es cuatro veces más fino. Y el barro sigue siendo <b>48</b>: estirar no crea barro. El área es lo que <b>cubro</b>; el volumen es lo que <b>soy</b>. No confundas lo uno con lo otro, que es lo que hacen todos.',
+   bien:'El disco ha pasado de 24 a <b>96 palmos cuadrados</b>: cuatro veces más área, porque es cuatro veces más fino. Y el barro sigue siendo <b>48</b>: estirar no crea barro. El área es lo que el barro <b>cubre</b>; el volumen es el barro que <b>hay</b>. No confundas lo uno con lo otro, que es lo que hace todo el mundo con prisa.',
    mal(){ if(torno.forma !== 'disco') return 'Pide el barro extendido, no levantado. Vuelve a extenderlo.';
           return 'Está a ' + cifra(torno.grosor, 2) + ' de grosor. Pedía medio palmo: 0,5.'; }},
   /* 6 · el torno: capacidad no es barro */
   {sala:'torno', pre(){ Object.assign(torno, {barro:48, grosor:0.5, forma:'disco'}); },
    t:'El mismo barro, el mismo grosor de medio palmo. Ahora <b>levántalo</b> en vasija con esa pared, y mírala por dentro. ¿Lo que cabe es lo mismo que el barro que hay?',
    ok: () => torno.forma === 'vasija' && torno.grosor === 0.5,
-   bien:'No, y ni de lejos: con 48 palmos cúbicos de barro sale una vasija en la que caben <b>más de cien litros</b>. Lo que cabe es el <b>hueco</b>, y el hueco no es barro: es donde no hay barro. Con la pared más fina hay más hueco y el mismo barro. Tres cosas: el área que cubro extendido, el barro que soy, el hueco que dejo. Tres.',
+   bien:'No, y ni de lejos: con 48 palmos cúbicos de barro sale una vasija en la que caben <b>más de cien litros</b>. Lo que cabe es el <b>hueco</b>, y el hueco no es barro: es donde no hay barro. Con la pared más fina hay más hueco y el mismo barro. Tres cosas distintas: lo que el barro cubre, el barro que hay, y el hueco que queda. Tres, y yo las llevo contadas desde antes de que tú llegaras.',
    mal(){ if(torno.forma !== 'vasija') return 'Sigue extendido. Pulsa <b>levantado</b>.';
           return 'Levantado, sí, pero con pared de ' + cifra(torno.grosor, 2) + '. Pedía la de medio palmo, para comparar con lo de antes.'; }},
   /* 7 · el círculo: el zigzag */
@@ -1164,14 +1263,14 @@ const ENCARGOS = [
    t:'Con sesenta y cuatro es un rectángulo casi del todo. El escriba de la obra de al lado pregunta, con razón: ¿esto <b>demuestra</b> que el área del círculo es π·r²?',
    ops:[
      {t:'Sí: con sesenta y cuatro ya se ve que es un rectángulo.', ok:false, r:'Se ve que <b>se parece</b>, que no es lo mismo. Los bordes de arriba y de abajo son arcos, y con mil sectores siguen siendo arcos. Lo que hay aquí es un límite: la figura se acerca al rectángulo tanto como se quiera. Demostrar eso del todo pide límites, y lo hizo Arquímedes dos siglos después.'},
-     {t:'No: es un límite. Se acerca al rectángulo tanto como se quiera, pero los bordes nunca son rectos. La demostración entera es de Arquímedes.', ok:true, r:'Exacto, y es lo honesto. La fórmula es exacta, la razón se <b>ve</b> aquí, y la demostración con todas las letras está en las deudas y en Siracusa, dos siglos más tarde. El escriba egipcio tenía la regla de ocho novenos sin saber por qué; tú tienes el porqué sin la demostración. Es un paso.'},
+     {t:'No: es un límite. Se acerca al rectángulo tanto como se quiera, pero los bordes nunca son rectos. La demostración entera es de Arquímedes.', ok:true, r:'Exacto, y es lo honesto. De límites entiendo yo un rato: dentro de un siglo, en Elea, un señor llamado Zenón contará que Aquiles no me alcanza nunca porque siempre le falta la mitad de lo que le falta. Se acerca cuanto quiera. No llega. La fórmula es exacta, la razón se <b>ve</b> aquí, y la demostración con todas las letras está en las deudas y en Siracusa, dos siglos más tarde. El escriba egipcio tenía la regla de ocho novenos sin saber por qué; tú tienes el porqué sin la demostración. Es un paso.'},
      {t:'No: las fórmulas del círculo no se demuestran, se aprenden de memoria.', ok:false, r:'Todas las fórmulas se demuestran, o no son fórmulas sino conjuros. Ésta se demuestra; lo que pasa es que la demostración entera pide límites, que no son de segundo. Lo que sí es de segundo es ver de dónde sale, y eso es el zigzag.'}
    ]},
   /* 10 · la alacena: llenar y contar */
   {sala:'alacena', pre(){ Object.assign(ala, {grande:'hidria', pequena:'kylix', vertidas:0, delfines:false}); },
    t:'A la alacena. La <b>hidria</b> es la de ir a la fuente, con tres asas. <b>Llénala con la kylix</b>, la copa de beber, y cuenta cuántas caben. No lo calcules: viértelas.',
    ok: () => ala.grande === 'hidria' && ala.pequena === 'kylix' && ala.vertidas >= 48,
-   bien:'<b>Cuarenta y ocho</b> kylikes, justas. Eso es lo que mido: la capacidad es cuántas veces cabe dentro la unidad, y se sabe llenando. En Grecia lo decían en docenas: cuarenta y ocho kotylai son <b>cuatro choes</b>, cuatro jarras de servir.',
+   bien:'<b>Cuarenta y ocho</b> kylikes, justas: las he contado una a una, que es como se cuenta bien. La capacidad es cuántas veces cabe dentro la unidad, y se sabe llenando. En Grecia lo decían en docenas: cuarenta y ocho kotylai son <b>cuatro choes</b>, cuatro jarras de servir.',
    mal(){ if(ala.grande !== 'hidria' || ala.pequena !== 'kylix') return 'Pide la hidria llenada con la kylix. Elige esas dos.';
           if(ala.vertidas === 0) return 'Está vacía. Vierte.';
           return 'Van ' + ala.vertidas + ' y aún no rebosa. Sigue, o pulsa «hasta llenar».'; }},
@@ -1218,7 +1317,7 @@ function pintaRango(){
 let enc = 0, elegida = null;
 const hechos = new Set();
 const huevos = new Set();
-const HUEVOS = ['firma', 'tesara', 'delfines', 'malabares', 'vecino', 'andocides', 'horno'];
+const HUEVOS = ['firma', 'tesara', 'delfines', 'malabares', 'musica', 'vecino', 'andocides', 'horno'];
 let ultimoRango = 'Aprendiz de barro';
 
 const GUARDADO = 'exequias.turno.v1';
@@ -1227,7 +1326,7 @@ let t0 = Date.now();
 function guardaTurno(){
   try{
     localStorage.setItem(GUARDADO, JSON.stringify({
-      v:1, ts:Date.now(), t0, enc, hechos:[...hechos], huevos:[...huevos], nombre:$('selloNombre').value || '',
+      v:1, ts:Date.now(), t0, enc, hechos:[...hechos], huevos:[...huevos], sop:[...sopladas], nombre:$('selloNombre').value || '',
       taller:{ac:taller.ac, racha:taller.racha, mejor:taller.mejor}, aj:AJ
     }));
   }catch(e){}
@@ -1255,9 +1354,9 @@ function pintaOpciones(){
     caja.appendChild(b);
   });
 }
-const CIERRE = '<b>Taller cerrado, y el horno a 950 grados.</b> Tres preguntas sobre el mismo barro, y ninguna es la otra: lo que cubro extendido se cuenta '
-  + 'con cuadrados y se llama área; lo que soy es el barro, que no cambia por estirarlo; lo que dejo hueco se mide llenando y se llama capacidad. '
-  + 'Las áreas se hacen cortando y moviendo; el círculo, casi; y el cubo de un palmo es el litro que une este taller con tu cocina. Ya puedes firmar la vasija: «Exequias me hizo, tú me pintaste».';
+const CIERRE = '<b>Taller cerrado, y el horno a 950 grados.</b> Tres preguntas sobre el mismo barro, y ninguna es la otra: lo que el barro cubre extendido se cuenta '
+  + 'con cuadrados y se llama área; el barro que hay no cambia por estirarlo ni por levantarlo; y el hueco que queda se mide llenando y se llama capacidad. '
+  + 'Las áreas se hacen cortando y moviendo; el círculo, casi; y el cubo de un palmo es el litro que une este taller con tu cocina. Ya puedes firmar la vasija: «Exequias me hizo, tú me pintaste». Yo me quedo aquí, que tengo doscientos años por delante y ninguna prisa.';
 function pintaEncargo(){
   const e = ENCARGOS[enc], ultimo = enc === ENCARGOS.length - 1, hecho = hechos.has(enc);
   if(e.pre) e.pre();
@@ -1295,7 +1394,7 @@ const EXEQUIAS_MAL = '<svg viewBox="0 -8 46 56" aria-hidden="true">' + dentroDe(
   + BRAZO('M12 30 Q2 20 12 16 Q18 14 19 19', [[7, 19], [11, 16.5], [15, 16]]) + '</svg>';
 const EXEQUIAS_VASIJA = '<svg viewBox="0 -12 46 60" aria-hidden="true">' + dentroDe(CARA_EXEQUIAS)
   + BRAZO('M34 30 Q46 22 40 2', [[43, 8], [42.6, 12]])
-  + '<g transform="translate(31 -12) scale(.42)">' + dentroDe(CARA_VASIJA) + '</g></svg>';
+  + '<g transform="translate(31 -12) scale(.42)">' + dentroDe(VASIJA_LISA) + '</g></svg>';
 $('asomoLado').innerHTML = CARA_JEFERION;
 $('asomoEntero').innerHTML = EXEQUIAS_VASIJA;
 
@@ -1331,6 +1430,58 @@ function vecinoAsoma(){
 function armaQuieto(){ clearTimeout(quieto); vecinoFuera(); quieto = setTimeout(vecinoAsoma, 60000); }
 ['pointerdown', 'keydown', 'scroll'].forEach(ev => addEventListener(ev, armaQuieto, {passive:true}));
 
+/* QUELONA CRUZANDO LA ESCENA. Anda por la malla de palmos contando
+   cuadrados, que es lo suyo. Va por encima del dibujo y se va sola. */
+function paseaTortuga(sala, dice){
+  const esc = $(SALAS[sala]) && $(SALAS[sala]).querySelector('.escena');
+  if(!esc) return;
+  const vieja = esc.querySelector('.pasea'); if(vieja) vieja.remove();
+  const d = document.createElement('div'); d.className = 'pasea';
+  d.innerHTML = TORTUGA_ANDA + (dice ? '<b>' + dice + '</b>' : '');
+  esc.appendChild(d);
+  setTimeout(() => d.remove(), 7200);
+}
+
+/* EL CONCIERTO. Soplar en la boca de una vasija da una nota, y la nota la
+   pone el hueco: un resonador de Helmholtz suena con 1/raíz del volumen,
+   así que la kylix pía y el ánfora ronca. Quien las sopla las cinco, se
+   gana el concierto: Exequias con los ocho brazos y las cinco vasijas. */
+function ondas(g, tipo){
+  const z = g.querySelector('.soplable[data-tipo="' + tipo + '"]'); if(!z) return;
+  const c = z.getBBox(), x = c.x + c.width / 2, y = c.y + 4;
+  for(let i = 1; i <= 3; i++){
+    const p = document.createElementNS(NS, 'path');
+    p.setAttribute('d', `M${x - 7 * i} ${y - 5 * i} Q${x} ${y - 9 * i} ${x + 7 * i} ${y - 5 * i}`);
+    p.setAttribute('fill', 'none'); p.setAttribute('stroke', 'var(--oro)');
+    p.setAttribute('stroke-width', '1.6'); p.setAttribute('stroke-linecap', 'round');
+    p.setAttribute('opacity', String(1 - i * .22)); p.setAttribute('class', 'nueva');
+    g.appendChild(p); setTimeout(() => p.remove(), 900);
+  }
+}
+function sopla(tipo){
+  if(!SOPLABLES.includes(tipo)) return;
+  Ruido.despierta(); Ruido.sopla(notaDe(tipo));
+  ondas($('svgAlacena'), tipo);
+  if(sopladas.has(tipo)) return;
+  sopladas.add(tipo); guardaTurno();
+  if(sopladas.size >= SOPLABLES.length) setTimeout(concierto, 700);
+}
+function concierto(){
+  if(huevos.has('musica')) return;
+  huevo('musica');
+  /* de grave a agudo y vuelta: el ánfora abajo, la kylix arriba */
+  const orden = ['anfora', 'cratera', 'hidria', 'oinocoe', 'kylix', 'oinocoe', 'hidria', 'kylix', 'anfora'];
+  orden.forEach((v, i) => Ruido.sopla(notaDe(v), i * .28));
+  asoma('asomoEntero', 'mira', 3400);
+  malabares();
+  const inf = $('informe'); inf.hidden = false; inf.className = 'panel informe encargo';
+  $('infTxt').innerHTML = '<b>Las cinco suenan, y ninguna igual.</b> Sopla en la boca de una vasija y el aire de dentro va y viene como un columpio: '
+    + 'eso es la nota, y la pone <b>el hueco</b>, no el barro. Cuanto más cabe, más grave — la kylix pía a ' + notaDe('kylix') + ' vibraciones por segundo y el ánfora ronca a ' + notaDe('anfora') + '. '
+    + 'La cuenta es de las de verdad: la nota va con <b>uno partido por la raíz del volumen</b>. Exequias, que tiene ocho brazos, ya está tocando con las cinco a la vez. '
+    + 'Yo llevo el compás, que para eso soy la única de este taller que lleva una lira encima: la primera se hizo con un caparazón como el mío.';
+  pintaAlacena2();
+}
+
 /* los malabares: ocho vasijas, una por brazo, y una se cae */
 function malabares(){
   const m = $('malabar'); m.hidden = false; m.innerHTML = '<div style="position:absolute;left:50%;top:50%;width:58px;margin:-29px 0 0 -29px">' + CARA_EXEQUIAS + '</div>';
@@ -1343,6 +1494,7 @@ const HUEVO_DICE = {
   tesara:'tesara… tria',
   delfines:'el fondo de la copa',
   malabares:'ocho brazos, ocho vasijas',
+  musica:'las cinco vasijas cantan',
   vecino:'el vecino de la palestra',
   andocides:'Andócides, el que dio la vuelta',
   horno:'cocido a 950 grados'
@@ -1376,6 +1528,7 @@ $('comprobar').addEventListener('click', () => {
     if(sube){ ultimoRango = r; Ruido.asciende(); asciende(); } else Ruido.bien();
     pintaEncargo(); inf.hidden = false;
     $('infTxt').innerHTML = dice + (sube ? '<br><b>Asciende a ' + r.toLowerCase() + '.</b>' : '');
+    if(enc === 0) paseaTortuga('mesa', 'veinticuatro pasos');
     if(hechos.size >= ENCARGOS.length){ $('horno').classList.add('brasa'); Ruido.horno(); huevo('horno'); setTimeout(() => $('horno').classList.remove('brasa'), 1800); }
     guardaTurno();
   } else Ruido.mal();
@@ -1420,7 +1573,7 @@ $('ixTodo').addEventListener('click', () => { ENCARGOS.forEach((_, i) => hechos.
   $('ixCero').addEventListener('click', () => {
     if(!armado){ armado = true; $('ixCero').classList.add('armado'); $('ixCero').textContent = 'Pulsa otra vez para borrarlo';
       clearTimeout(reloj); reloj = setTimeout(desarma, 5000); return; }
-    desarma(); borraTurno(); hechos.clear(); huevos.clear(); enc = 0; taller.ac = 0; taller.racha = 0; taller.mejor = 0; ultimoRango = 'Aprendiz de barro'; t0 = Date.now();
+    desarma(); borraTurno(); hechos.clear(); huevos.clear(); sopladas.clear(); enc = 0; taller.ac = 0; taller.racha = 0; taller.mejor = 0; ultimoRango = 'Aprendiz de barro'; t0 = Date.now();
     pintaEncargo();
   });
 }
@@ -1443,6 +1596,8 @@ const GLOSARIO = [
   ['figuras rojas', 'la técnica de después', 'Lo contrario: el fondo en negro y las figuras del color del barro, con los detalles pintados a pincel. Permite dibujar mejor los cuerpos. Es el tema oscuro de esta app.'],
   ['Andócides', 'hacia el 530 a.C.', 'El alfarero en cuyo taller alguien dio la vuelta a la técnica: negro el fondo, rojas las figuras. Trabajó justo después de Exequias, y algunas vasijas suyas llevan las dos técnicas, una en cada cara, como si dudara. Cambiar de tema en los ajustes es hacer lo que hizo él.', 'andocides'],
   ['firma', 'ΕΧΣΕΚΙΑΣ ΕΓΡΑΦΣΕ ΚΑΠΟΙΕΣΕ ΜΕ', '«Exequias me pintó y me hizo». Las vasijas hablaban en primera persona. Se conservan una docena de firmas suyas.'],
+  ['Quelona', 'chelone · tortuga', 'La tortuga del taller, que comenta lo que sale. Se llama así porque <i>chelone</i> es «tortuga» en griego, igual que Miut se llama Miut porque los egipcios llamaban <i>miw</i> a los gatos. Su caparazón es un teselado: placas que cubren sin solaparse ni dejar hueco.'],
+  ['Zenón', 'Elea, hacia el 450 a.C.', 'El que contó que Aquiles no alcanza nunca a la tortuga, porque siempre le queda la mitad de lo que le queda. No es que no la alcance: es que así contado nunca se acaba de contar. De ahí salen los límites, y de ahí sale el círculo de este taller.'],
   ['límite', 'acercarse tanto como se quiera', 'Cuando una figura se acerca a otra más y más sin llegar nunca, y aun así el número al que se acerca es exacto. El zigzag del círculo es uno.'],
   ['litro', 'un decímetro cúbico', 'Definido en 1795 como el volumen de un cubo de un decímetro de lado. El cubo de un palmo de este taller.']
 ];
@@ -1517,7 +1672,7 @@ const numeroLibre = v => { const s = String(v).trim(); const n = parseFloat(s.in
 const casi = (v, sol, tol = 1e-9) => { const n = numeroLibre(v); return n !== null && Math.abs(n - sol) <= tol; };
 const solTxt = e => typeof e.sol === 'number' ? cifra(e.sol, 2) : e.sol;
 
-const una = k => (VASIJAS[k].nom === 'ánfora' ? 'un ' : 'una ') + VASIJAS[k].nom;
+const una = k => VASIJAS[k].un + ' ' + VASIJAS[k].nom;
 const TIPOS = {
   mesa: {n:'La mesa', sala:'mesa', gen(){
     const fig = elige(['rect', 'tri', 'para', 'trap']), b = al(3, 8), h = al(2, 6), b2 = al(1, b - 1);
@@ -1681,7 +1836,7 @@ $('selloCopiar').addEventListener('click', async () => {
 const PASOS = [
   {id:'franja',   t:'Tu rango', d:'Empiezas como aprendiz de barro. Cada tres encargos asciendes: tornero, pintor, maestro del taller. Al cerrar los doce, firmante: el que puede firmar la vasija.'},
   {id:'horno',    t:'El horno', d:'Sube con cada encargo hecho. Al cerrar el taller llega a 950 grados, que es a la temperatura a la que el barniz se vuelve negro.'},
-  {id:'pEncargo', t:'El encargo', d:'Exequias pide. Se hace en la sala de abajo y se pulsa Comprobar. La vasija contesta: en Grecia hablaban en primera persona.'},
+  {id:'pEncargo', t:'El encargo', d:'Exequias pide. Se hace en la sala de abajo y se pulsa Comprobar. Contesta Quelona, la tortuga del taller, que es lenta pero no se equivoca.'},
   {sel:'.fila',   t:'Los mandos', d:'Lo que se puede tocar: la figura y sus medidas, el grosor del barro, los sectores, las vasijas. Y el gesto: cortar y mover, recolocar, verter.'},
   {sel:'.escena', t:'La escena', d:'El barro sobre la malla de palmos. Cambia con los mandos: es donde se ve lo que la cuenta dice.'},
   {sel:'.lectura',t:'La lectura', d:'La definición primero, en cursiva, y luego la cuenta contada. Nunca una fórmula sin su corte.'},
@@ -1719,6 +1874,9 @@ addEventListener('keydown', e => { if(e.key === 'Escape'){ cierraGuia(); $('mAju
 
 /* ═══ EL ARRANQUE ════════════════════════════════════════════════════ */
 {
+  /* Exequias al torno: el retrato de la línea, y dos brazos más que salen de
+     detrás para abrir el barro. Ocho brazos y aun así se le cae algo. */
+  $('bootPulpo').innerHTML = CARA_EXEQUIAS;
   const lineas = ['barro', 'torno', 'horno', 'firma'];
   const rapido = matchMedia('(prefers-reduced-motion: reduce)').matches;
   $('bootLista').innerHTML = lineas.map((l, i) => '<span style="animation-delay:' + (rapido ? 0 : .3 + i * .45) + 's">' + l + '</span>').join('');
@@ -1762,6 +1920,9 @@ $('ixDiag').addEventListener('click', () => {
        || ![2,3,4].includes(circ.r) || ![4,8,16,32,64].includes(circ.n) || !VASIJAS[ala.grande] || !VASIJAS[ala.pequena]) ok7 = false; }
   Object.assign(mesa, guardaMesa); Object.assign(torno, guardaTorno); Object.assign(circ, guardaCirc); Object.assign(ala, guardaAla);
   di('«verlo en la sala» deja los mandos en valores que existen (360 pruebas)', ok7);
+  di('las cinco vasijas suenan de grave a agudo según lo que cabe (1/raíz del volumen)',
+     (() => { const n = SOPLABLES.map(notaDe); return n.every((v, i) => i === 0 || v < n[i-1]) && notaDe('anfora') < notaDe('kylix')
+              && SOPLABLES.every(v => Math.abs(notaDe(v) - 480 / Math.sqrt(litros(VASIJAS[v].kot))) < 1); })());
   // 6 · los encargos
   di('los ' + ENCARGOS.length + ' encargos apuntan a una sala que existe', ENCARGOS.every(e => SALAS[e.sala]));
   di('cada encargo de opciones tiene UNA correcta, y todas explican', ENCARGOS.filter(e => e.ops).every(e => e.ops.filter(o => o.ok).length === 1 && e.ops.every(o => o.r && o.r.length > 20)));
@@ -1786,6 +1947,7 @@ Object.keys(SALAS).forEach(k => {
   if(d){
     enc = d.enc; d.hechos.forEach(i => { if(i >= 0 && i < ENCARGOS.length) hechos.add(i); });
     (d.huevos || []).forEach(h => { if(HUEVO_DICE[h]) huevos.add(h); });
+    (d.sop || []).forEach(v => { if(SOPLABLES.includes(v)) sopladas.add(v); });
     const t = d.taller || {}; taller.ac = t.ac|0; taller.racha = t.racha|0; taller.mejor = t.mejor|0;
     if(d.aj) Object.keys(AJ).forEach(k => { if(d.aj[k] !== undefined) AJ[k] = d.aj[k]; });
     if(d.nombre) $('selloNombre').value = d.nombre;

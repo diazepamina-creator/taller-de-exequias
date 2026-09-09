@@ -19,8 +19,12 @@ metretes, litro) y el litro como decímetro cúbico.
 ## Qué hace
 
 El mismo barro, extendido en el suelo o levantado en vasija. Exequias, el
-alfarero, pide; la vasija contesta, porque en Grecia las vasijas hablaban en
-primera persona. Doce encargos, cada uno sobre un manipulativo que se toca.
+alfarero, pide; contesta **Quelona**, la tortuga del taller, que se llama así
+porque *chelone* es «tortuga» en griego. Es lenta y no se equivoca, su
+caparazón es un teselado y, siendo el animal de Zenón, es quien explica por
+qué el círculo se acerca a π·r² sin llegar del todo. Las vasijas siguen
+hablando en primera persona en las lecturas de la alacena, como en Grecia,
+pero sin cara. Doce encargos, cada uno sobre un manipulativo que se toca.
 
 Todo sale de **una sola idea** —medir es contar unidades, y cada pregunta
 tiene la suya— para que el alumno no confunda tres cosas que se parecen: lo
@@ -41,6 +45,7 @@ recipiente *deja hueco* (capacidad).
   dice honestamente que es un límite, no una demostración.
 - **La alacena** — las vasijas griegas con sus medidas de verdad. Se llena la
   grande con la pequeña, contando. Y el cubo de un palmo, que es el litro.
+  Cada vasija se puede soplar, y suena según lo que le cabe.
 
 Y una quinta sala que no está en el índice.
 
@@ -79,7 +84,11 @@ Y una quinta sala que no está en el índice.
 - **Autodiagnóstico**: diecinueve comprobaciones que prueban cada cuenta
   contra sí misma.
 - **El turno se guarda en el propio aparato** y caduca a las cuatro horas.
-- Siete hallazgos escondidos. Cada uno se explica cuando se encuentra.
+- **Las vasijas suenan**: se sopla en la boca de cualquiera de las cinco y da
+  su nota. La pone el hueco, no el barro: la frecuencia va con uno partido por
+  la raíz del volumen, así que cuanto más cabe, más grave. Quien las sopla
+  todas se gana el concierto.
+- Ocho hallazgos escondidos. Cada uno se explica cuando se encuentra.
 
 ## Lo que aún no está
 
