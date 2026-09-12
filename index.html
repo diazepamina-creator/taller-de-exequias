@@ -341,6 +341,30 @@ footer.pie svg circle{fill:var(--tenue)}
   .asomo.arriba.mira,.asomo.arriba.mira.falla{transform:translateY(calc(-64% + 2px))}
   .pasea{animation:none;left:auto;right:12px}
 }
+
+/* ── EL MODO AULA ───────────────────────────────────────────────────────
+   Para la pizarra digital. Dos cosas, y ninguna más: todo un tercio más
+   grande, que es lo que se nota desde el fondo de la clase; y, si hay
+   sitio, el encargo a la izquierda y la sala a la derecha, para que se
+   vean a la vez y no haya que rodar con el dedo mientras se explica.
+   El zoom escala TODO a la vez —letra, botones, dibujos—, así que no hay
+   que tocar ni un tamaño suelto y nada se descoloca.                     */
+@media (min-width:900px){
+  body[data-aula="si"]{zoom:1.32;max-width:1430px}
+}
+@media (min-width:1100px){
+  body[data-aula="si"] .aulaRejilla{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.06fr);
+    gap:0 14px;align-items:start}
+  /* las columnas dejan de ser transparentes SOLO aquí: fuera del modo aula
+     son `display:contents` y la página se lee en fila, como siempre */
+  body[data-aula="si"] .colIzq,
+  body[data-aula="si"] .colDer{display:block;min-width:0}
+  body[data-aula="si"] .colIzq > .panel:first-child,
+  body[data-aula="si"] .colDer > .panel:first-child{margin-top:0}
+  body[data-aula="si"] .colIzq > footer.pie{margin-top:18px}
+}
+.aulaRejilla,.colIzq,.colDer{display:contents}
+.barra button.aula[aria-pressed="true"]{color:var(--oro)}
 </style>
 </head><body>
 
@@ -402,6 +426,7 @@ footer.pie svg circle{fill:var(--tenue)}
     <button id="bDeudas" aria-pressed="false">Deudas</button>
     <span style="flex:1"></span>
     <button id="bSello">Sello</button>
+    <button id="bAula" class="aula" aria-pressed="false">Aula</button>
     <button id="bAjustes">Ajustes</button>
   </nav>
   <div class="franja" id="franja">
@@ -792,8 +817,9 @@ const Ruido = (() => {
 })();
 
 /* ── LOS AJUSTES. El tema es la técnica: figuras rojas o figuras negras. ── */
-const AJ = {tema:'rojas', texto:'normal', fuente:'legible', movimiento:'normal', sonido:'si', lang:'es', andocides:false};
+const AJ = {vista:'normal', tema:'rojas', texto:'normal', fuente:'legible', movimiento:'normal', sonido:'si', lang:'es', andocides:false};
 const AJ_OPS = {
+  vista:     {etq:'vista',       ops:[['normal','normal'], ['aula','aula · pizarra']]},
   tema:      {etq:'técnica',     ops:[['rojas','figuras rojas'], ['negras','figuras negras · proyector']]},
   texto:     {etq:'texto',       ops:[['normal','normal'], ['grande','grande']]},
   fuente:    {etq:'tipografía',  ops:[['legible','legible'], ['inscripcion','de inscripción']]},
@@ -803,6 +829,8 @@ const AJ_OPS = {
 };
 function aplicaAjustes(){
   const r = document.documentElement;
+  document.body.dataset.aula = AJ.vista === 'aula' ? 'si' : 'no';
+  if(window.pintaAula) pintaAula();
   r.dataset.tema = AJ.tema; r.dataset.texto = AJ.texto; r.dataset.fuente = AJ.fuente; r.dataset.movimiento = AJ.movimiento;
   document.querySelectorAll('#aj button').forEach(b => b.setAttribute('aria-pressed', String(AJ[b.dataset.k] === b.dataset.v)));
 }
@@ -1960,5 +1988,40 @@ Object.keys(SALAS).forEach(k => {
   document.addEventListener('pointerdown', () => Ruido.despierta(), {once:true});
 }
 
+
+/* ── EL MODO AULA ───────────────────────────────────────────────────────
+   La rejilla se monta aquí y no en el HTML: se envuelven los paneles que
+   ya existen, sin tocar el orden del documento. Fuera del modo aula los
+   envoltorios son `display:contents`, o sea que no pintan nada y la página
+   se lee como siempre, también para un lector de pantalla.               */
+{
+  const rej = document.createElement('div'); rej.className = 'aulaRejilla';
+  const izq = document.createElement('div'); izq.className = 'colIzq';
+  const der = document.createElement('div'); der.className = 'colDer';
+  const enc = $('pEncargo') || document.querySelector('.panel.encargo');
+  enc.parentNode.insertBefore(rej, enc);
+  rej.appendChild(izq); rej.appendChild(der);
+  izq.appendChild(enc);
+  const inf = $('informe'); if(inf) izq.appendChild(inf);
+  const rot = $('rotuloLibre'); if(rot) der.appendChild(rot);
+  Object.values(SALAS).forEach(id => { const p = $(id); if(p) der.appendChild(p); });
+  /* el pie se muda a la columna de la izquierda, que se queda libre bajo el
+     encargo: así el alto de la página es el de la columna más alta y no la
+     suma de las dos */
+  const pie = document.querySelector('footer.pie'), marca = document.createComment('pie');
+  if(pie) pie.before(marca);
+  const muda = si => { if(!pie) return; if(si) izq.appendChild(pie); else marca.after(pie); };
+
+  const pinta = () => {
+    const si = document.body.dataset.aula === 'si';
+    muda(si && innerWidth >= 1100);
+    const b = $('bAula');
+    if(b){ b.setAttribute('aria-pressed', String(si)); b.textContent = si ? 'Salir del aula' : 'Aula'; }
+  };
+  window.pintaAula = pinta;
+  addEventListener('resize', pinta);
+  $('bAula').addEventListener('click', () => { AJ.vista = AJ.vista === 'aula' ? 'normal' : 'aula'; aplicaAjustes(); guardaTurno(); });
+  pinta();
+}
 </script>
 </body></html>
