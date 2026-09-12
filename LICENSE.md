@@ -1,7 +1,7 @@
 # Licencia
 
 **EL TALLER DE EXEQUIAS**
-Manipulativo de áreas y capacidad para 2.º de ESO
+Manipulativo de áreas y capacidad para 1.º y 2.º de ESO
 
 © 2026 Andrés Asensio
 
@@ -36,7 +36,7 @@ permitido por la licencia.
 ## Cómo citar
 
 > Asensio, A. (2026). *El taller de Exequias: manipulativo de áreas
-> y capacidad para 2.º de ESO* [Aplicación web]. CC BY-NC-SA 4.0.
+> y capacidad para 1.º y 2.º de ESO* [Aplicación web]. CC BY-NC-SA 4.0.
 
 ## Tipografías
 
