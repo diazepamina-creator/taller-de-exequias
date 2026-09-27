@@ -103,5 +103,6 @@ cargan de Google Fonts; sin ellas se ve igual con las del sistema.
 
 © 2026 Andrés Asensio. Diseño didáctico e implementación propios.
 
-Licencia [Creative Commons BY-NC-SA 4.0](LICENSE.md): se puede compartir y
-adaptar **citando la autoría**, **sin uso comercial** y **compartiendo igual**.
+Licencia [Creative Commons BY-NC-ND 4.0](LICENSE.md): se puede compartir
+tal cual **citando la autoría** y **sin uso comercial**, pero **no difundir
+versiones modificadas**.
